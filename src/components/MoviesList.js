@@ -34,12 +34,12 @@ class MovieList extends Component {
                     movies.map(movie => {
 
                         return (
-                            <div key={movie.imdbID} className="MoviesList-item">
+                            <div key={movie.id} className="MoviesList-item">
                                 <Movie
-                                    id={movie.imdbID}
-                                    title={movie.Title}
-                                    year={movie.Year}
-                                    poster={movie.Poster}
+                                    id={movie.id}
+                                    title={movie.title}
+                                    year={movie.release_date}
+                                    poster={movie.poster_path}
                                 />
                             </div>
 

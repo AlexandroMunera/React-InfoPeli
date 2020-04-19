@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom'
 
 export class Movie extends Component {
     static propTypes = {
-        id: PropTypes.string,
+        id: PropTypes.number,
         title: PropTypes.string,
         year: PropTypes.string,
         poster: PropTypes.string
@@ -13,6 +13,7 @@ export class Movie extends Component {
 
     render() {
         const { id, poster, title, year } = this.props
+        const IMG_URL = 'https://image.tmdb.org/t/p/w185';
 
         return (
             <Link to={`/detail/${id}`} clasame="card">
@@ -20,7 +21,7 @@ export class Movie extends Component {
                     <figure classame="image">
                         <img
                             alt={title}
-                            src={poster}
+                            src={IMG_URL + poster}
                         />
                     </figure>
                 </div>

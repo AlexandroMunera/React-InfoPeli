@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import apiMovies from '../services/apiMovies';
 
 const API_KEY = 'e18e73b2'
 
@@ -9,20 +10,17 @@ export class SearchForm extends Component {
         inputMovie: ''
     };
 
-    constructor(props){
-        super(props)
-        fetch(`https://www.omdbapi.com/?apikey=${API_KEY}&s=war&r=json`)
-        .then(res => res.json())
-        .then(results => {
-            const { Search = [] } = results
-        console.log('Info Peli', Search)
+    async componentDidMount() {
 
-            this.props.onResults(Search)
-        });
-    }
+        const Search = await apiMovies.getPopularMovies()
+        this.props.onResults(Search)
+      
+    };
+    
 
     _handleSubmit = (e) => {
         e.preventDefault()
+        
         const { inputMovie } = this.state
 
         fetch(`https://www.omdbapi.com/?apikey=${API_KEY}&s=${inputMovie}`)
