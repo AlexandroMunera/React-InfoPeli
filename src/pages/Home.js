@@ -7,7 +7,8 @@ import MoviesList from '../components/MoviesList';
 
 export default class Home extends Component {
 
-    state = { usedSearch: false, results: [] }
+    // state = { usedSearch: false, results: [] }
+    state = { usedSearch: true, results: [] }
 
     _handleResults = (results) => {
       this.setState({ results, usedSearch: true })

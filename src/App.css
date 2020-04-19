@@ -18,9 +18,20 @@
 
 .MoviesList-item {
   margin-bottom: 24px;
-  width: 30%;
+  width: 32%;
+  box-shadow: 0 5px 10px rgba(0,0,0, 0.5);
+  border-radius: 10px ;
 }
 
+.MoviesList-item:hover{
+  border: 1px solid white;
+
+}
+
+figure > img {
+  border-radius: 10px 10px 0px 0px ;
+  width: 100%;
+}
 
 .footer {
   padding: 1rem 0.5rem 1rem !important;

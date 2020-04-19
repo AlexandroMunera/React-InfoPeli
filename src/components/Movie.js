@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import {Link} from 'react-router-dom'
+import { Link } from 'react-router-dom'
+
 
 export class Movie extends Component {
     static propTypes = {
@@ -24,11 +25,11 @@ export class Movie extends Component {
                     </figure>
                 </div>
                 <div clasame="card-content">
-                    <div clasame="media">
-                        <div clasame="media-content">
-                            <p className="title is-4">{title}</p>
-                            <p className="subtitle is-6">{year}</p>
-                        </div>
+                    <div clasame="content">
+                            <p className="title is-6">{title}</p>
+                            <p className="subtitle is-6">
+                                {year}
+                            </p>
                     </div>
                 </div>
             </Link>

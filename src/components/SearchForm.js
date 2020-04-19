@@ -9,6 +9,17 @@ export class SearchForm extends Component {
         inputMovie: ''
     };
 
+    constructor(props){
+        super(props)
+        fetch(`https://www.omdbapi.com/?apikey=${API_KEY}&s=war&r=json`)
+        .then(res => res.json())
+        .then(results => {
+            const { Search = [] } = results
+        console.log('Info Peli', Search)
+
+            this.props.onResults(Search)
+        });
+    }
 
     _handleSubmit = (e) => {
         e.preventDefault()

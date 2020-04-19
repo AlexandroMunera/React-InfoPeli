@@ -5,17 +5,22 @@ import Movie from './Movie';
 
 class MovieList extends Component {
 
+    constructor(){
+        super()
+        const footer = document.getElementsByTagName('footer')
+        footer[0].classList.remove("footerToEnd");
+  
+        const divMinion = document.getElementsByClassName('imgMinion')
+  
+        if (typeof divMinion[0] !== 'undefined') {
+            
+            divMinion[0].classList.remove('imgMinion')
+        }
+    }
+
     static propTypes = {
         movies: PropTypes.array
     }
-
-    componentDidMount = () => {
-      const footer = document.getElementsByTagName('footer')
-      footer[0].classList.remove("footerToEnd");
-
-      const divMinion = document.getElementsByClassName('imgMinion')
-      divMinion[0].classList.remove('imgMinion')
-    };
     
 
     render() {
