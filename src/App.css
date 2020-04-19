@@ -1,0 +1,38 @@
+.App {
+  padding-top: 36px;
+  text-align: center;
+  height: 100%; 
+}
+
+.SearchForm-wrapper {
+  display: flex;
+  justify-content: center;
+}
+
+.MoviesList {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  padding: 16px;
+}
+
+.MoviesList-item {
+  margin-bottom: 24px;
+  width: 30%;
+}
+
+
+.footer {
+  padding: 1rem 0.5rem 1rem !important;
+}
+
+.footerToEnd {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+}
+
+.imgMinion {
+  position: absolute;
+    bottom: 10%;
+}
