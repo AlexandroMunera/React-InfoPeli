@@ -25,9 +25,9 @@ export default class Home extends Component {
         return (
             <div>
                 <Title>Info Pelis</Title>
-                <div className='SearchForm-wrapper '>
+                
                     <SearchForm onResults={this._handleResults} />
-                </div>
+                
                 <div className="columns">
                     <div className="column is-2"></div>
                     <div className="column is-8">

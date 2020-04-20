@@ -1,8 +1,12 @@
 import React from 'react'
+import 'typeface-roboto';
+import { Typography } from '@material-ui/core';
 
 const Title = ({children}) => {
     return (
-            <h1 className="title">{children}</h1>
+        <Typography variant="h4" component="h2">
+            {children}
+        </Typography>
     )
 }
 
