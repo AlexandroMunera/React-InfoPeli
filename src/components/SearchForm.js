@@ -1,29 +1,12 @@
-import { IconButton, InputBase, Paper } from '@material-ui/core';
-import { withStyles } from "@material-ui/core/styles";
-import SearchIcon from '@material-ui/icons/Search';
 import React, { Component } from 'react';
+import { TextField, Button, Icon } from '@material-ui/core';
+import { withStyles } from "@material-ui/core/styles";
 import apiMovies from '../services/apiMovies';
 
-
-const styles = theme => ({
+const useStyles = theme => ({
     root: {
-        padding: '2px 4px',
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        width: 400,
-    },
-    input: {
-        marginLeft: theme.spacing(1),
-        flex: 1,
-    },
-    iconButton: {
-        padding: 10,
-    },
-    divider: {
-        height: 28,
-        margin: 4,
-    },
+        backgroundColor: "red"
+    }
 });
 
 export class SearchForm extends Component {
@@ -43,9 +26,7 @@ export class SearchForm extends Component {
 
     _handleSubmit = (e) => {
         e.preventDefault()
-
-        console.log('e', e)
-
+        
         const { inputMovie } = this.state
 
         apiMovies.searchMovie(inputMovie)
@@ -62,30 +43,29 @@ export class SearchForm extends Component {
 
 
     render() {
-        const { classes } = this.props;
+        const classes = useStyles();    
         return (
-
-            <Paper component="form" className={classes.root}>
-                <InputBase
-                    className={classes.input}
-                    placeholder="Ingresa una peli ..."
-                    inputProps={{ 'aria-label': 'Ingresa una peli' }}
-
+            <div>
+                <TextField
+                    id="outlined-search"
+                    label="Ingresa una peli..."
+                    type="search"
+                    variant="outlined"
+                    size="small"
+                    onChange={this._handleChange}
+                    // helperText="Utiliza el formulario para buscar una peli 🎥"
                 />
-                <IconButton 
-                    type="submit"
-                    className={classes.iconButton} 
-                    aria-label="search"
-                    onSubmit={this._handleSubmit}>
-                    <SearchIcon />
-                </IconButton>
-
-                {/* <Divider className={classes.divider} orientation="vertical" />
-                <IconButton color="primary" className={classes.iconButton} aria-label="directions">
-                    <DirectionsIcon />
-                </IconButton> */}
-            </Paper>
+                <Button
+                    variant="contained"
+                    color="primary"
+                    className={classes.button}
+                    endIcon={<Icon>send</Icon>}
+                    onClick={this._handleSubmit}
+                >
+                    Buscar
+                </Button>
+            </div>
         )
     }
 }
-export default withStyles(styles)(SearchForm);
+export default withStyles(useStyles)(SearchForm);

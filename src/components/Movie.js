@@ -1,41 +1,48 @@
-import React, { Component } from 'react'
-import PropTypes from 'prop-types'
+import React from 'react'
 import { Link } from 'react-router-dom'
-
-
-export class Movie extends Component {
-    static propTypes = {
-        id: PropTypes.number,
-        title: PropTypes.string,
-        year: PropTypes.string,
-        poster: PropTypes.string
-    }
-
-    render() {
-        const { id, poster, title, year } = this.props
-        const IMG_URL = 'https://image.tmdb.org/t/p/w185';
-
-        return (
-            <Link to={`/detail/${id}`} clasame="card">
-                <div clasame="card-image">
-                    <figure classame="image">
-                        <img
-                            alt={title}
-                            src={IMG_URL + poster}
-                        />
-                    </figure>
-                </div>
-                <div clasame="card-content">
-                    <div clasame="content">
-                            <p className="title is-6">{title}</p>
-                            <p className="subtitle is-6">
-                                {year}
-                            </p>
-                    </div>
-                </div>
-            </Link>
-        )
-    }
+import { withStyles, Card, CardMedia, CardContent, Typography, CardActions, IconButton, Button, CardActionArea } from '@material-ui/core';
+import clsx from 'clsx';
+import FavoriteIcon from '@material-ui/icons/Favorite';
+import ShareIcon from '@material-ui/icons/Share';
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import MoreVertIcon from '@material-ui/icons/MoreVert';
+function Movie({ id, poster, title, year, classes }) {
+    return (
+        <Card className={classes.item}>
+            <CardActionArea>
+                <Link to={`/detail/${id}`} clasame="card">
+                    <CardMedia className={classes.media}
+                        image={poster}
+                        title={title}
+                    />
+                </Link>
+                <CardContent>
+                    <Typography component="span" variant="h6">
+                        {title}
+                    </Typography>
+                </CardContent>
+            </CardActionArea>
+            <CardActions>
+                <IconButton aria-label="add to favorites">
+                    <FavoriteIcon />
+                </IconButton>
+                {/* <IconButton aria-label="share">
+                    <ShareIcon />
+                </IconButton> */}
+            </CardActions>
+        </Card>
+    )
 }
 
-export default Movie
+export default withStyles({
+    item: {
+        // maxWidth: "600px",
+        margin: "1em",
+        width: "300px",
+        height: "520px",
+        boxSizing: "border-box"
+    },
+    media: {
+        height: "400px"
+    }
+})(Movie)

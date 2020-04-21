@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import './App.css';
 import Detail from './pages/Detail';
-import Home from './pages/Home';
 import { Switch, Route } from 'react-router-dom'
 import { NotFount } from './pages/NotFound';
-import BackgroundImage from './assets/backgroundImage2.jpg'
+import Home from './pages/Home';
+// import BackgroundImage from './assets/backgroundImage2.jpg'
 
 class App extends Component {
 
@@ -18,12 +18,12 @@ class App extends Component {
 
         </Switch>
 
-      <div className='imgMinion'>
+      {/* <div className='imgMinion'>
 
         <img  id='imgMinion' style= {{width: '50%'}} src={BackgroundImage} alt="background"/>
-      </div>
+      </div> */}
 
-        <footer className="footer footerToEnd">
+        {/* <footer className="footer footerToEnd">
           <div className="content has-text-centered">
             <p>
               <strong>Info Peli</strong>  <span role='img'
@@ -32,7 +32,7 @@ class App extends Component {
                 </a>.
             </p>
           </div>
-        </footer>
+        </footer> */}
 
       </div>
     );

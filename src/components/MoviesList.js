@@ -1,53 +1,47 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types'
 import Movie from './Movie';
+import { Grid } from '@material-ui/core';
+import IMG_NULL from '../assets/noImg.png'
 
 
 class MovieList extends Component {
 
-    constructor(){
-        super()
-        const footer = document.getElementsByTagName('footer')
-        footer[0].classList.remove("footerToEnd");
-  
-        const divMinion = document.getElementsByClassName('imgMinion')
-  
-        if (typeof divMinion[0] !== 'undefined') {
-            
-            divMinion[0].classList.remove('imgMinion')
-        }
-    }
-
     static propTypes = {
         movies: PropTypes.array
     }
-    
 
     render() {
         const { movies } = this.props
-
-
+        const IMG_URL = 'https://image.tmdb.org/t/p/w185';
+        console.log('movies', movies)
         return (
 
-            <div className="MoviesList">
+            <Grid container justify="center"
+                style={{paddingTop: '1%'}}>
+                
                 {
-                    movies.map(movie => {
+                movies.map(movie => {
 
-                        return (
-                            <div key={movie.id} className="MoviesList-item">
-                                <Movie
-                                    id={movie.id}
-                                    title={movie.title}
-                                    year={movie.release_date}
-                                    poster={movie.poster_path}
-                                />
-                            </div>
+                    const poster = movie.poster_path  == null
+                         ? movie.poster_path = IMG_NULL
+                         : IMG_URL + movie.poster_path
+                         
 
-                        );
-                    }
-                    )
+                    return (
+                        <Grid key={movie.id} item>
+                            <Movie                                
+                                id={movie.id}
+                                title={movie.title}
+                                year={movie.release_date}
+                                poster={poster}
+                            />
+                        </Grid>
+                    );
                 }
-            </div>
+                )
+            }
+            </Grid>
         )
     }
 }

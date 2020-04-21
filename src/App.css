@@ -1,14 +1,10 @@
 .App {
-  padding-top: 36px;
+  /* padding-top: 36px; */
   text-align: center;
   height: 100%; 
 }
 
-.SearchForm-wrapper {
-  display: flex;
-  justify-content: center;
-}
-
+/* 
 .MoviesList {
   display: flex;
   flex-wrap: wrap;
@@ -25,25 +21,9 @@
 
 .MoviesList-item:hover{
   border: 1px solid white;
-
 }
 
 figure > img {
   border-radius: 10px 10px 0px 0px ;
   width: 100%;
-}
-
-.footer {
-  padding: 1rem 0.5rem 1rem !important;
-}
-
-.footerToEnd {
-  position: absolute;
-  bottom: 0;
-  width: 100%;
-}
-
-.imgMinion {
-  position: absolute;
-    bottom: 10%;
-}
+} */
