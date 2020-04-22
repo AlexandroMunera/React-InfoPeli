@@ -18,9 +18,11 @@ export class SearchForm extends Component {
 
     async componentDidMount() {
 
-        const Search = await apiMovies.getPopularMovies()
-        this.props.onResults(Search)
-
+        await apiMovies.getPopularMovies()
+            .then(Search => {
+                console.log('Search', Search)
+                this.props.onResults(Search)
+            })
     };
 
 
@@ -31,6 +33,8 @@ export class SearchForm extends Component {
 
         apiMovies.searchMovie(inputMovie)
             .then(results => {
+                 console.log('movies', results)
+
                 this.props.onResults(results)
             })
     }

@@ -14,33 +14,39 @@ class MovieList extends Component {
     render() {
         const { movies } = this.props
         const IMG_URL = 'https://image.tmdb.org/t/p/w185';
-        console.log('movies', movies)
         return (
-
             <Grid container justify="center"
-                style={{paddingTop: '1%'}}>
-                
+                style={{ paddingTop: '1%' }}>
+
                 {
-                movies.map(movie => {
+                    movies.map(movie => {
 
-                    const poster = movie.poster_path  == null
-                         ? movie.poster_path = IMG_NULL
-                         : IMG_URL + movie.poster_path
-                         
+                        const poster = movie.poster_path == null
+                            ? movie.poster_path = IMG_NULL
+                            : IMG_URL + movie.poster_path
 
-                    return (
-                        <Grid key={movie.id} item>
-                            <Movie                                
-                                id={movie.id}
-                                title={movie.title}
-                                year={movie.release_date}
-                                poster={poster}
-                            />
-                        </Grid>
-                    );
+                        // Validar el tamanio del title, no mayor a 28 caracteres
+                        movie.title = movie.title.length > 40
+                            ? movie.title.substring(0, 39) + " ..."
+                            : movie.title
+
+                        return (
+                            <Grid key={movie.id} item>
+
+                                <Movie
+                                    id={movie.id}
+                                    title={movie.title}
+                                    titleFull={movie.title}
+                                    year={movie.release_date}
+                                    poster={poster}
+                                    release_date={movie.release_date}
+                                    vote_average={movie.vote_average}
+                                />
+                            </Grid>
+                        );
+                    }
+                    )
                 }
-                )
-            }
             </Grid>
         )
     }

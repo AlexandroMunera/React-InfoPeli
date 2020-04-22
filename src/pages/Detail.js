@@ -21,13 +21,11 @@ export default class Detail extends Component {
         fetch(`http://www.omdbapi.com/?apikey=${API_KEY}&i=${id}`)
         .then(res => res.json())
         .then(movie => {
-            console.log('movie', movie)
             this.setState({movie})
             
         });
     } 
     componentDidMount = () => {
-        console.log('this.props', this.props)
       const { movieId } = this.props.match.params
       this._fetchMovie({ id: movieId})
     };
