@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import CssBaseline from '@material-ui/core/CssBaseline';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
@@ -7,6 +6,7 @@ import Link from '@material-ui/core/Link';
 import { SearchForm } from '../components/SearchForm';
 import MoviesList from '../components/MoviesList';
 import BackgroundImage from '../assets/backgroundImage2.jpg'
+import Header from '../components/Header';
 
 
 
@@ -32,8 +32,8 @@ export default function Home() {
   const classes = useStyles();
 
   const [results, setResults] = useState([]);
-  // const [usedSearch, setUsedSearch] = useState(false);  
-  const [usedSearch, setUsedSearch] = useState(true);  
+  //  const [usedSearch, setUsedSearch] = useState(false);  
+  const [usedSearch, setUsedSearch] = useState(true);
 
   function _handleResults(movies) {
     setResults(movies)
@@ -49,8 +49,8 @@ export default function Home() {
 
   return (
     <div className={classes.root}>
-      <CssBaseline />
-      <div className={classes.main}>
+
+        <Header />
 
         <Typography variant="h4" component="h2">
           Info Peli
@@ -58,15 +58,14 @@ export default function Home() {
 
         <SearchForm onResults={_handleResults} />
 
-        
-            {
-               usedSearch
-                ? _renderResults()
-                : <small>Usa el formulario para buscar una peli
+
+        {
+          usedSearch
+            ? _renderResults()
+            : <small>Usa el formulario para buscar una peli
               <span role='img' aria-label="Movie"> 🎥</span></small>
-            }
-        
-      </div>
+        }
+
 
       <div>
         <img id='imgMinion' style={{ width: '50%', paddingTop: '10%' }} src={BackgroundImage} alt="background" />
