@@ -13,7 +13,7 @@ class MovieList extends Component {
 
     render() {
         const { movies } = this.props
-        const IMG_URL = 'https://image.tmdb.org/t/p/w185';
+        const IMG_URL = 'https://image.tmdb.org/t/p/w342';
         return (
             <Grid container justify="center"
                 style={{ paddingTop: '1%' }}>
@@ -25,9 +25,9 @@ class MovieList extends Component {
                             ? movie.poster_path = IMG_NULL
                             : IMG_URL + movie.poster_path
 
-                        // Validar el tamanio del title, no mayor a 28 caracteres
-                        movie.title = movie.title.length > 40
-                            ? movie.title.substring(0, 39) + " ..."
+                        // Validar el tamanio del title, no mayor a 23 caracteres
+                        movie.title = movie.title.length > 23
+                            ? movie.title.substring(0, 22) + ".."
                             : movie.title
 
                         return (
@@ -37,7 +37,7 @@ class MovieList extends Component {
                                     id={movie.id}
                                     title={movie.title}
                                     titleFull={movie.title}
-                                    year={movie.release_date}
+                                    year={new Date(movie.release_date).getFullYear()}
                                     poster={poster}
                                     release_date={movie.release_date}
                                     vote_average={movie.vote_average}

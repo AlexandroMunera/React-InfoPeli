@@ -1,11 +1,8 @@
-import IMG_NULL from '../assets/noImg.png'
 const BASE_API = 'https://api.themoviedb.org/3/';
 const API_KEY = 'b835070ca3f98419c2433584bf3af7cd';
 const API_LANGUAGE = 'es';
-const IMG_URL = 'https://image.tmdb.org/t/p/w185';
 
 class ApiMovies {
-
   async getPopularMovies() {
     const query = await fetch(`${BASE_API}movie/popular?api_key=${API_KEY}&language=${API_LANGUAGE}&page=1`);
     const { results } = await query.json();

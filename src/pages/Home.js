@@ -67,10 +67,10 @@ export default function Home() {
             }
         
       </div>
-{/* 
+
       <div>
         <img id='imgMinion' style={{ width: '50%', paddingTop: '10%' }} src={BackgroundImage} alt="background" />
-      </div> */}
+      </div>
 
       <footer className={classes.footer}>
         <Container maxWidth="sm">

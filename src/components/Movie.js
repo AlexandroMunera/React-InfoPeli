@@ -1,22 +1,22 @@
+import { Avatar, Card, CardActionArea, CardContent, CardMedia, Divider, Typography, withStyles } from '@material-ui/core';
+import { AvatarGroup, Rating } from '@material-ui/lab';
 import React, { Component } from 'react';
-import {
-    Card, CardActionArea, CardActions, CardContent,
-    CardMedia, IconButton, Typography, withStyles,
-    Divider
-} from '@material-ui/core';
-import { Rating } from '@material-ui/lab'
-import FavoriteIcon from '@material-ui/icons/Favorite';
 import { Link } from 'react-router-dom';
 import apiMovies from '../services/apiMovies';
+import IMG_NULL from '../assets/noImg.png'
+
+const PROFIL_IMG_URL = 'https://image.tmdb.org/t/p/w45';
 
 class Movie extends Component {
-    
-    constructor(props){
+
+    constructor(props) {
         super(props)
         this._getData = this._getData.bind(this)
     }
 
     state = {
+        genres: [],
+        actors: []
     }
 
     async _getData(idFilm) {
@@ -25,17 +25,28 @@ class Movie extends Component {
 
         var genresConcate = detailMovieAPI.genres[0] === undefined ? 'Not register' : detailMovieAPI.genres[0].name;
 
-        if(detailMovieAPI.genres[1] !== undefined)
-        {
-          genresConcate = genresConcate + ', ' + detailMovieAPI.genres[1].name;
+        if (detailMovieAPI.genres[1] !== undefined) {
+            genresConcate = genresConcate + ', ' + detailMovieAPI.genres[1].name;
         }
 
-        this.setState({
-              genres: genresConcate                
-            })
-      }
+        const mainCastMovieAPI = await apiMovies.getMainCast(idFilm);
+        const actors = mainCastMovieAPI.cast.map(actor => {
+            let aObj = {}
+            aObj['cast_id'] = actor.cast_id;
+            aObj['profile_path'] = actor.profile_path == null
+            ? IMG_NULL
+            : PROFIL_IMG_URL + actor.profile_path;
+            aObj['name'] = actor.name;
+            return aObj
+        });
 
-    componentWillMount = () => this._getData(this.props.id);
+        this.setState({
+            genres: genresConcate,
+            actors
+        })
+    }
+    
+    componentDidMount = () => this._getData(this.props.id);
     render() {
 
         const {
@@ -54,7 +65,7 @@ class Movie extends Component {
                     </Link>
                     <CardContent className={classes.cardContent}>
                         <Typography
-                            component="p" variant="h6">
+                            component="p" variant="subtitle1">
                             {title} ({year})
                     </Typography>
 
@@ -64,45 +75,62 @@ class Movie extends Component {
                             max={10}
                         />
 
+                        <Typography
+                            component="p" color="textPrimary"
+                            variant="subtitle2">
+                            {this.state.genres}
+                        </Typography>
+
                         <Divider className={classes.divider} light />
 
-                        <Typography
-                            component="p" variant="h6">
-                            {this.state.genres}
-                        generos
-                    </Typography>
-
+                        <AvatarGroup className={classes.avatarGroup}
+                             max={5}>
+                            {this.state.actors.map(face => (
+                                <Avatar key={face.cast_id} 
+                                    alt={face.name} src={face.profile_path} />
+                            ))
+                            }
+                        </AvatarGroup>
                     </CardContent>
                 </CardActionArea>
-                <CardActions>
+                {/* <CardActions className={classes.cardActions}>
                     <IconButton aria-label="add to favorites">
                         <FavoriteIcon />
                     </IconButton>
-                    {/* <IconButton aria-label="share">
+                    <IconButton aria-label="share">
                     <ShareIcon />
-                </IconButton> */}
-                </CardActions>
+                </IconButton>
+                </CardActions> */}
             </Card>
         )
     }
 }
 
+
+
 export default withStyles({
     item: {
         // maxWidth: "600px",
         margin: "1em",
-        width: "352px",
-        height: "580px",
+        width: "260px",
+        height: "515px",
         boxSizing: "border-box"
     },
     media: {
-        height: "400px"
+        height: "350px"
     },
     cardContent: {
-        padding: "5px"
+        padding: "8px",
+        textAlign: "left"
+    },
+    cardActions: {
+        padding: "0px"
     },
     divider: {
         margin: "10px"
+    },
+    avatarGroup: {
+        paddingLeft: '8px'
     }
 
 })(Movie)

@@ -20,7 +20,6 @@ export class SearchForm extends Component {
 
         await apiMovies.getPopularMovies()
             .then(Search => {
-                console.log('Search', Search)
                 this.props.onResults(Search)
             })
     };
@@ -33,8 +32,6 @@ export class SearchForm extends Component {
 
         apiMovies.searchMovie(inputMovie)
             .then(results => {
-                 console.log('movies', results)
-
                 this.props.onResults(results)
             })
     }
