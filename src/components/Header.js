@@ -49,7 +49,7 @@ export default function Head(props) {
           <InputBase
             onChange={(e) => setInputMovie(e.target.value)}
             onKeyPress={(e) => e.key === 'Enter' ? _handleSubmit(e) : ''}
-            placeholder="Search…"
+            placeholder="Ingresa una peli…"
             classes={{
               root: classes.inputRoot,
               input: classes.inputInput,
