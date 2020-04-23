@@ -30,8 +30,8 @@ export default function Home() {
   const classes = useStyles();
 
   const [results, setResults] = useState([]);
-   const [usedSearch, setUsedSearch] = useState(false);  
-  // const [usedSearch, setUsedSearch] = useState(true);
+  // const [usedSearch, setUsedSearch] = useState(false);  
+   const [usedSearch, setUsedSearch] = useState(true);
 
   function _handleResults(movies) {
     setResults(movies)
@@ -50,6 +50,7 @@ export default function Home() {
     <div className={classes.root}>
 
         <Header onResults={_handleResults}/>
+
 
         {
           usedSearch
