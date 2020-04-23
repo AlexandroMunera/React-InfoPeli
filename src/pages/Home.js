@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
@@ -6,36 +6,30 @@ import Link from '@material-ui/core/Link';
 import MoviesList from '../components/MoviesList';
 import BackgroundImage from '../assets/backgroundImage2.jpg'
 import Header from '../components/Header';
-
-
-const useStyles = makeStyles((theme) => ({
-  root: {
-    display: 'flex',
-    flexDirection: 'column',
-    minHeight: '100vh',
-  },
-  main: {
-    marginTop: theme.spacing(8),
-    marginBottom: theme.spacing(2),
-  },
-  footer: {
-    padding: theme.spacing(2, 1),
-    marginTop: 'auto',
-    backgroundColor:
-      theme.palette.type === 'light' ? theme.palette.grey[200] : theme.palette.grey[800],
-  },
-}));
+import apiMovies from '../services/apiMovies';
 
 export default function Home() {
   const classes = useStyles();
 
-  const [results, setResults] = useState([]);
-  // const [usedSearch, setUsedSearch] = useState(false);  
-   const [usedSearch, setUsedSearch] = useState(true);
+  const [results, setResults] = useState('');
+
+  // De forma similar a componentDidMount y componentDidUpdate
+  useEffect(() => {
+
+    // Actualiza el título del documento usando la API del navegador
+    document.title = `Info Peli - Las del momento !`;
+
+    //Obtener directamente las peliculas populares
+    if (results === '') {
+       apiMovies.getPopularMovies()
+              .then(Search => {
+                setResults(Search)
+              })
+    }
+  });
 
   function _handleResults(movies) {
     setResults(movies)
-    setUsedSearch(true)
   }
 
   function _renderResults() {
@@ -49,20 +43,13 @@ export default function Home() {
   return (
     <div className={classes.root}>
 
-        <Header onResults={_handleResults}/>
+      <Header onResults={_handleResults} />
 
-
-        {
-          usedSearch
-            ? _renderResults()
-            : <h2>Usa el formulario para buscar una peli
-              <span role='img' aria-label="Movie"> 🎥</span></h2>
-        }
-
+      {_renderResults()}
 
       <div>
-        <img id='imgMinion' style={{ width: '50%', paddingTop: '10%' }} 
-        src={BackgroundImage} alt="background" />
+        <img id='imgMinion' style={{ width: '50%', paddingTop: '10%' }}
+          src={BackgroundImage} alt="background" />
       </div>
 
       <footer className={classes.footer}>
@@ -81,3 +68,21 @@ export default function Home() {
     </div>
   );
 }
+
+const useStyles = makeStyles((theme) => ({
+  root: {
+    display: 'flex',
+    flexDirection: 'column',
+    minHeight: '100vh',
+  },
+  main: {
+    marginTop: theme.spacing(8),
+    marginBottom: theme.spacing(2),
+  },
+  footer: {
+    padding: theme.spacing(2, 1),
+    marginTop: 'auto',
+    backgroundColor:
+      theme.palette.type === 'light' ? theme.palette.grey[200] : theme.palette.grey[800],
+  },
+}));

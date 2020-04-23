@@ -1,4 +1,4 @@
-import { Avatar, Card, CardActionArea, CardContent, CardMedia, Divider, Typography, withStyles } from '@material-ui/core';
+import { Avatar, Card, CardActionArea, CardContent, CardMedia, Divider, Typography, withStyles, Chip } from '@material-ui/core';
 import { AvatarGroup, Rating } from '@material-ui/lab';
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
@@ -14,39 +14,35 @@ class Movie extends Component {
         this._getData = this._getData.bind(this)
     }
 
-    state = {
-        genres: [],
-        actors: []
-    }
+    state = { genres: [], actors: [] }
 
     async _getData(idFilm) {
 
         const detailMovieAPI = await apiMovies.getMovie(idFilm);
+        // console.log('detailMovieAPI.genres[0]', detailMovieAPI.genres.slice(0,2))
+        //         var genresConcate = detailMovieAPI.genres[0] === undefined ? 'Not register' : detailMovieAPI.genres[0].name;
 
-        var genresConcate = detailMovieAPI.genres[0] === undefined ? 'Not register' : detailMovieAPI.genres[0].name;
-
-        if (detailMovieAPI.genres[1] !== undefined) {
-            genresConcate = genresConcate + ', ' + detailMovieAPI.genres[1].name;
-        }
+        //         if (detailMovieAPI.genres[1] !== undefined) {
+        //             genresConcate = genresConcate + ', ' + detailMovieAPI.genres[1].name;
+        //         }
 
         const mainCastMovieAPI = await apiMovies.getMainCast(idFilm);
+
         const actors = mainCastMovieAPI.cast.map(actor => {
             let aObj = {}
             aObj['cast_id'] = actor.cast_id;
             aObj['profile_path'] = actor.profile_path == null
-            ? IMG_NULL
-            : PROFIL_IMG_URL + actor.profile_path;
+                ? IMG_NULL
+                : PROFIL_IMG_URL + actor.profile_path;
             aObj['name'] = actor.name;
             return aObj
         });
 
-        this.setState({
-            genres: genresConcate,
-            actors
-        })
+        this.setState({ genres: detailMovieAPI.genres.slice(0, 2), actors })
     }
-    
+
     componentDidMount = () => this._getData(this.props.id);
+
     render() {
 
         const {
@@ -67,7 +63,7 @@ class Movie extends Component {
                         <Typography
                             component="p" variant="subtitle1">
                             {title} ({year})
-                    </Typography>
+                        </Typography>
 
                         <Rating name="rating"
                             value={vote_average} precision={0.5}
@@ -75,18 +71,26 @@ class Movie extends Component {
                             max={10}
                         />
 
-                        <Typography
-                            component="p" color="textPrimary"
-                            variant="subtitle2">
-                            {this.state.genres}
-                        </Typography>
+                        <div className={classes.divGenres}>
+                            {this.state.genres.map((genre) => {
+                                return (
+                                    <li key={genre.id}>
+                                        <Chip
+                                            size="small"
+                                            label={genre.name}
+                                            className={classes.chip}
+                                        />
+                                    </li>
+                                )
+                            })}
+                        </div>
 
                         <Divider className={classes.divider} light />
 
                         <AvatarGroup className={classes.avatarGroup}
-                             max={5}>
+                            max={5}>
                             {this.state.actors.map(face => (
-                                <Avatar key={face.cast_id} 
+                                <Avatar key={face.cast_id}
                                     alt={face.name} src={face.profile_path} />
                             ))
                             }
@@ -131,6 +135,16 @@ export default withStyles({
     },
     avatarGroup: {
         paddingLeft: '8px'
-    }
+    },
+    divGenres: {
+        display: 'flex',
+        justifyContent: 'left',
+        flexWrap: 'wrap',
+        listStyle: 'none',
+        margin: 0,
+    },
+    chip: {
+        margin: '1px',
+    },
 
 })(Movie)

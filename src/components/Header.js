@@ -2,24 +2,13 @@ import { fade, IconButton, InputBase, makeStyles, Toolbar, Typography } from '@m
 import AppBar from '@material-ui/core/AppBar';
 import MenuIcon from '@material-ui/icons/Menu';
 import SearchIcon from '@material-ui/icons/Search';
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import apiMovies from '../services/apiMovies';
 
 export default function Head(props) {
 
   const [inputMovie, setInputMovie] = useState('');
 
-  // De forma similar a componentDidMount y componentDidUpdate
-  useEffect(() => {
-    // Actualiza el título del documento usando la API del navegador
-    document.title = `Las pelis del momento.`;
-
-    //Obtener directamente las peliculas populares
-    apiMovies.getPopularMovies()
-            .then(Search => {
-                props.onResults(Search)
-            })
-  });
 
   function _handleSubmit(e) {
     e.preventDefault()
@@ -31,12 +20,11 @@ export default function Head(props) {
           props.onResults(results)
         })
     }
-
   }
 
   const classes = useStyles();
   return (
-    <AppBar position="static">
+    <AppBar className={classes.appBar} position="fixed">
       <Toolbar>
         <IconButton
           edge="start"
@@ -59,6 +47,7 @@ export default function Head(props) {
             }}
             inputProps={{ 'aria-label': 'search' }}
             onChange={(e) => setInputMovie(e.target.value)}
+            onKeyPress={(e) => e.key === 'Enter' ? _handleSubmit(e) : '' }
           />
           <IconButton
             edge="start"
@@ -77,6 +66,9 @@ export default function Head(props) {
 
 const useStyles = makeStyles((theme) => ({
 
+  appBar: {
+    backgroundColor: '#1976d2'
+  },
   menuButton: {
     marginRight: theme.spacing(2),
   },
