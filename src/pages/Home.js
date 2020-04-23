@@ -34,7 +34,7 @@ export default function Home() {
 
   function _renderResults() {
     return results.length === 0
-      ? <h2><span role='img' aria-label="Triste">😞</span> No se encontraron
+      ? <h2 style={{marginTop: '5%'}}><span role='img' aria-label="Triste">😞</span> No se encontraron
              resultados para tu busquedad.</h2>
       : <MoviesList movies={results} />
   }

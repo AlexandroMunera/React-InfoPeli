@@ -16,7 +16,7 @@ class MovieList extends Component {
         const IMG_URL = 'https://image.tmdb.org/t/p/w342';
         return (
             <Grid container justify="center"
-                style={{ paddingTop: '5%' }}>
+                style={{ paddingTop: '1%' }}>
 
                 {
                     movies.map(movie => {

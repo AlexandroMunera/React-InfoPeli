@@ -1,19 +1,16 @@
+import React, { useState } from 'react';
 import { fade, IconButton, InputBase, makeStyles, Toolbar, Typography } from '@material-ui/core';
 import AppBar from '@material-ui/core/AppBar';
 import MenuIcon from '@material-ui/icons/Menu';
 import SearchIcon from '@material-ui/icons/Search';
-import React, { useState } from 'react';
 import apiMovies from '../services/apiMovies';
 
 export default function Head(props) {
 
   const [inputMovie, setInputMovie] = useState('');
 
-
-  function _handleSubmit(e) {
-    e.preventDefault()
-
-    if(inputMovie !== ''){
+  function _handleSubmit() {
+    if (inputMovie !== '') {
 
       apiMovies.searchMovie(inputMovie)
         .then(results => {
@@ -24,7 +21,7 @@ export default function Head(props) {
 
   const classes = useStyles();
   return (
-    <AppBar className={classes.appBar} position="fixed">
+    <AppBar className={classes.appBar} position="sticky">
       <Toolbar>
         <IconButton
           edge="start"
@@ -37,27 +34,28 @@ export default function Head(props) {
         </IconButton>
         <Typography className={classes.title} variant="h6" noWrap>
           Info Peli
-          </Typography>
+        </Typography>
+
         <div className={classes.search}>
-          <InputBase
-            placeholder="Ingresa una peli..."
-            classes={{
-              root: classes.inputRoot,
-              input: classes.inputInput,
-            }}
-            inputProps={{ 'aria-label': 'search' }}
-            onChange={(e) => setInputMovie(e.target.value)}
-            onKeyPress={(e) => e.key === 'Enter' ? _handleSubmit(e) : '' }
-          />
           <IconButton
             edge="start"
             className={classes.searchIcon}
             color="inherit"
             aria-label="open drawer"
-            onClick={_handleSubmit}
+            onClick={() => _handleSubmit()}
           >
             <SearchIcon />
           </IconButton>
+          <InputBase
+            onChange={(e) => setInputMovie(e.target.value)}
+            onKeyPress={(e) => e.key === 'Enter' ? _handleSubmit(e) : ''}
+            placeholder="Search…"
+            classes={{
+              root: classes.inputRoot,
+              input: classes.inputInput,
+            }}
+            inputProps={{ 'aria-label': 'search' }}
+          />
         </div>
       </Toolbar>
     </AppBar>
@@ -87,9 +85,8 @@ const useStyles = makeStyles((theme) => ({
     '&:hover': {
       backgroundColor: fade(theme.palette.common.white, 0.25),
     },
+    flexGrow: '2',
     marginLeft: 0,
-    flexGrow: 2,
-
     width: '100%',
     [theme.breakpoints.up('sm')]: {
       marginLeft: theme.spacing(1),
@@ -101,9 +98,9 @@ const useStyles = makeStyles((theme) => ({
     height: '100%',
     position: 'absolute',
     // pointerEvents: 'none',
-    // display: 'flex',
-    // alignItems: 'center',
-    // justifyContent: 'center',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   inputRoot: {
     color: 'inherit',
