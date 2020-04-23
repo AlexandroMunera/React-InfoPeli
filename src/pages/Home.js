@@ -3,11 +3,9 @@ import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import Link from '@material-ui/core/Link';
-import { SearchForm } from '../components/SearchForm';
 import MoviesList from '../components/MoviesList';
 import BackgroundImage from '../assets/backgroundImage2.jpg'
 import Header from '../components/Header';
-
 
 
 const useStyles = makeStyles((theme) => ({
@@ -32,8 +30,8 @@ export default function Home() {
   const classes = useStyles();
 
   const [results, setResults] = useState([]);
-  //  const [usedSearch, setUsedSearch] = useState(false);  
-  const [usedSearch, setUsedSearch] = useState(true);
+   const [usedSearch, setUsedSearch] = useState(false);  
+  // const [usedSearch, setUsedSearch] = useState(true);
 
   function _handleResults(movies) {
     setResults(movies)
@@ -42,7 +40,8 @@ export default function Home() {
 
   function _renderResults() {
     return results.length === 0
-      ? <p>Sorry! <span role='img' aria-label="Triste">😞</span> No results found.</p>
+      ? <h2><span role='img' aria-label="Triste">😞</span> No se encontraron
+             resultados para tu busquedad.</h2>
       : <MoviesList movies={results} />
   }
 
@@ -50,25 +49,19 @@ export default function Home() {
   return (
     <div className={classes.root}>
 
-        <Header />
-
-        <Typography variant="h4" component="h2">
-          Info Peli
-        </Typography>
-
-        <SearchForm onResults={_handleResults} />
-
+        <Header onResults={_handleResults}/>
 
         {
           usedSearch
             ? _renderResults()
-            : <small>Usa el formulario para buscar una peli
-              <span role='img' aria-label="Movie"> 🎥</span></small>
+            : <h2>Usa el formulario para buscar una peli
+              <span role='img' aria-label="Movie"> 🎥</span></h2>
         }
 
 
       <div>
-        <img id='imgMinion' style={{ width: '50%', paddingTop: '10%' }} src={BackgroundImage} alt="background" />
+        <img id='imgMinion' style={{ width: '50%', paddingTop: '10%' }} 
+        src={BackgroundImage} alt="background" />
       </div>
 
       <footer className={classes.footer}>

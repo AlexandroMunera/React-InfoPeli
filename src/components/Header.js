@@ -1,50 +1,87 @@
-import React from 'react'
-import MenuIcon from '@material-ui/icons/Menu';
+import { fade, IconButton, InputBase, makeStyles, Toolbar, Typography } from '@material-ui/core';
 import AppBar from '@material-ui/core/AppBar';
-import { Toolbar, IconButton, Typography, InputBase, makeStyles, fade } from '@material-ui/core';
+import MenuIcon from '@material-ui/icons/Menu';
 import SearchIcon from '@material-ui/icons/Search';
+import React, { useState, useEffect } from 'react';
+import apiMovies from '../services/apiMovies';
 
-export default function Head() {
-    const classes = useStyles();
-    return (
-        <AppBar position="static">
-        <Toolbar>
+export default function Head(props) {
+
+  const [inputMovie, setInputMovie] = useState('');
+
+  // De forma similar a componentDidMount y componentDidUpdate
+  // useEffect(() => {
+  //   // Actualiza el título del documento usando la API del navegador
+  //   document.title = `Las pelis del momento`;
+
+  //   //Obtener directamente las peliculas populares
+  //   apiMovies.getPopularMovies()
+  //           .then(Search => {
+  //               props.onResults(Search)
+  //           })
+  // });
+
+  function _handleSubmit(e) {
+    e.preventDefault()
+
+    if(inputMovie !== ''){
+
+      apiMovies.searchMovie(inputMovie)
+        .then(results => {
+          props.onResults(results)
+        })
+    }
+
+  }
+
+  const classes = useStyles();
+  return (
+    <AppBar position="static">
+      <Toolbar>
+        <IconButton
+          edge="start"
+          className={classes.menuButton}
+          color="inherit"
+          aria-label="open drawer"
+          onClick={() => console.log('abrir menu')}
+        >
+          <MenuIcon />
+        </IconButton>
+        <Typography className={classes.title} variant="h6" noWrap>
+          Info Peli
+          </Typography>
+        <div className={classes.search}>
+          <InputBase
+            placeholder="Ingresa una peli..."
+            classes={{
+              root: classes.inputRoot,
+              input: classes.inputInput,
+            }}
+            inputProps={{ 'aria-label': 'search' }}
+            onChange={(e) => setInputMovie(e.target.value)}
+          />
           <IconButton
             edge="start"
-            className={classes.menuButton}
+            className={classes.searchIcon}
             color="inherit"
             aria-label="open drawer"
+            onClick={_handleSubmit}
           >
-            <MenuIcon />
+            <SearchIcon />
           </IconButton>
-          <Typography className={classes.title} variant="h6" noWrap>
-            Info Peli
-          </Typography>
-          <div className={classes.search}>
-            <div className={classes.searchIcon}>
-              <SearchIcon />
-            </div>
-            <InputBase
-              placeholder="Ingresa una peli..."
-              classes={{
-                root: classes.inputRoot,
-                input: classes.inputInput,
-              }}
-              inputProps={{ 'aria-label': 'search' }}
-            />
-          </div>
-        </Toolbar>
-      </AppBar>
-    )
+        </div>
+      </Toolbar>
+    </AppBar>
+  )
 }
 
 const useStyles = makeStyles((theme) => ({
-  
+
   menuButton: {
     marginRight: theme.spacing(2),
   },
   title: {
-    flexGrow: 2,
+    flexGrow: 3,
     textAlign: 'left',
     display: 'none',
     [theme.breakpoints.up('sm')]: {
@@ -71,10 +108,10 @@ const useStyles = makeStyles((theme) => ({
     padding: theme.spacing(0, 2),
     height: '100%',
     position: 'absolute',
-    pointerEvents: 'none',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
+    // pointerEvents: 'none',
+    // display: 'flex',
+    // alignItems: 'center',
+    // justifyContent: 'center',
   },
   inputRoot: {
     color: 'inherit',
