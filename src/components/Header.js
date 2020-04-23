@@ -12,7 +12,7 @@ export default function Head(props) {
   // De forma similar a componentDidMount y componentDidUpdate
   useEffect(() => {
     // Actualiza el título del documento usando la API del navegador
-    document.title = `Las pelis del momento`;
+    document.title = `Las pelis del momento.`;
 
     //Obtener directamente las peliculas populares
     apiMovies.getPopularMovies()
