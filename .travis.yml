@@ -10,7 +10,7 @@ script:
 deploy:
   provider: firebase
   token:
-    secure: "$FIREBASE_TOKEN"
+    secure: "1//03oM-wlg8wjxSCgYIARAAGAMSNwF-L9IrLp7sXwnHars74vlj8C55hvvgwswe16-yjlUt5zy75VH8oFt8SWUveKeRxVitdwFV_sc"
 # after_success:
 #   - firebase deploy --token $FIREBASE_TOKEN
 on:
