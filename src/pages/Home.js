@@ -21,10 +21,10 @@ export default function Home() {
 
     //Obtener directamente las peliculas populares
     if (results === '') {
-       apiMovies.getPopularMovies()
-              .then(Search => {
-                setResults(Search)
-              })
+      apiMovies.getPopularMovies()
+        .then(Search => {
+          setResults(Search)
+        })
     }
   });
 
@@ -34,7 +34,7 @@ export default function Home() {
 
   function _renderResults() {
     return results.length === 0
-      ? <h2 style={{marginTop: '5%'}}><span role='img' aria-label="Triste">😞</span> No se encontraron
+      ? <h2 style={{ marginTop: '5%' }}><span role='img' aria-label="Triste">😞</span> No se encontraron
              resultados para tu busquedad.</h2>
       : <MoviesList movies={results} />
   }
@@ -45,26 +45,32 @@ export default function Home() {
 
       <Header onResults={_handleResults} />
 
-      {_renderResults()}
 
-      <div>
-        <img id='imgMinion' style={{ width: '50%', paddingTop: '10%' }}
-          src={BackgroundImage} alt="background" />
-      </div>
+      <main className={classes.content}>
 
-      <footer className={classes.footer}>
-        <Container maxWidth="sm">
-          <Typography variant="body1"><strong>Info Peli</strong>  <span role='img'
-            aria-label="Movie"> 🎥 </span>
-            <Link
-              color="inherit"
-              href="https://www.linkedin.com/in/freud-alexandro/">
-              por Freud Munera
+        <div className={classes.toolbar} />
+
+        {_renderResults()}
+
+        <div>
+          <img id='imgMinion' style={{ width: '50%', paddingTop: '10%' }}
+            src={BackgroundImage} alt="background" />
+        </div>
+
+        <footer className={classes.footer}>
+          <Container maxWidth="sm">
+            <Typography variant="body1"><strong>Info Peli</strong>  <span role='img'
+              aria-label="Movie"> 🎥 </span>
+              <Link
+                color="inherit"
+                href="https://www.linkedin.com/in/freud-alexandro/">
+                por Freud Munera
             </Link>
-          </Typography>
-        </Container>
-      </footer>
+            </Typography>
+          </Container>
+        </footer>
 
+      </main>
     </div>
   );
 }
@@ -72,17 +78,18 @@ export default function Home() {
 const useStyles = makeStyles((theme) => ({
   root: {
     display: 'flex',
-    flexDirection: 'column',
+    // flexDirection: 'column',
     minHeight: '100vh',
-  },
-  main: {
-    marginTop: theme.spacing(8),
-    marginBottom: theme.spacing(2),
   },
   footer: {
     padding: theme.spacing(2, 1),
     marginTop: 'auto',
     backgroundColor:
       theme.palette.type === 'light' ? theme.palette.grey[200] : theme.palette.grey[800],
+  },
+  toolbar: theme.mixins.toolbar,
+  content: {
+    flexGrow: 1,
+    // padding: theme.spacing(3),
   },
 }));
