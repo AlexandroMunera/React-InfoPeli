@@ -78,6 +78,9 @@ export default function Header(props) {
           >
             <MenuIcon />
           </IconButton>
+
+          <MovieFilterIcon style={{marginRight: '10px',}}
+             fontSize="large" />
           <Typography className={classes.title} variant="h6" noWrap>
             Info Peli
         </Typography>
@@ -192,15 +195,16 @@ const useStyles = makeStyles((theme) => ({
   inputRoot: {
     color: 'inherit',
     width: '85%',
-    justifyContent: 'center'
+    justifyContent: 'left'
   },
   inputInput: {
-    textAlign: 'center',
+    textAlign: 'left',
     padding: theme.spacing(1, 1, 1, 0),
     // vertical padding + font size from searchIcon
-    paddingLeft: `calc(1em + ${theme.spacing(4)}px)`,
+    // paddingLeft: `calc(1em + ${theme.spacing(1)}px)`,
+    paddingLeft: `${theme.spacing(1)}px`,
     transition: theme.transitions.create('width'),
-    width: '100%',
+    // width: '100%',
     [theme.breakpoints.up('sm')]: {
       width: '15ch',
       '&:focus': {
