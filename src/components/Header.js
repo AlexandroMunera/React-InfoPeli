@@ -1,40 +1,36 @@
-import React, { useState } from 'react';
 import { fade, IconButton, InputBase, makeStyles, Toolbar, Typography, useTheme } from '@material-ui/core';
 import AppBar from '@material-ui/core/AppBar';
-import MenuIcon from '@material-ui/icons/Menu';
-import SearchIcon from '@material-ui/icons/Search';
-import apiMovies from '../services/apiMovies';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Divider from '@material-ui/core/Divider';
 import Drawer from '@material-ui/core/Drawer';
 import Hidden from '@material-ui/core/Hidden';
-import InboxIcon from '@material-ui/icons/MoveToInbox';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
-import MailIcon from '@material-ui/icons/Mail';
+import LocalMoviesIcon from '@material-ui/icons/LocalMovies';
+import MenuIcon from '@material-ui/icons/Menu';
+import MovieFilterIcon from '@material-ui/icons/MovieFilter';
+import SearchIcon from '@material-ui/icons/Search';
+import React, { useState } from 'react';
+import apiMovies from '../services/apiMovies';
 
 const drawerWidth = 240;
 
 export default function Header(props) {
 
+  const { container } = props;
+  const [mobileOpen, setMobileOpen] = useState(false);
   const [inputMovie, setInputMovie] = useState('');
+  const classes = useStyles();
+  const theme = useTheme();
 
   function _handleSubmit() {
     if (inputMovie !== '') {
-
       apiMovies.searchMovie(inputMovie)
-        .then(results => {
-          props.onResults(results)
-        })
+        .then(results => { props.onResults(results) })
     }
   }
-
-  const { container } = props;
-  const classes = useStyles();
-  const theme = useTheme();
-  const [mobileOpen, setMobileOpen] = React.useState(false);
 
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
@@ -45,22 +41,26 @@ export default function Header(props) {
       <div className={classes.toolbar} />
       <Divider />
       <List>
-        {['Inbox', 'Starred', 'Send email', 'Drafts'].map((text, index) => (
-          <ListItem button key={text}>
-            <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
-            <ListItemText primary={text} />
+        {props.genres.map(movie => (
+          <ListItem button key={movie.id}>
+            <ListItemIcon>{movie.id % 2 === 0
+              ? <MovieFilterIcon /> : <LocalMoviesIcon />}
+            </ListItemIcon>
+            <ListItemText primary={movie.name} />
           </ListItem>
         ))}
       </List>
-      <Divider />
+      {/* <Divider />
       <List>
-        {['All mail', 'Trash', 'Spam'].map((text, index) => (
+        {['All mail', 'Trash', 'Spam','Favoritos'].map((text, index) => (
           <ListItem button key={text}>
-            <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
+            <ListItemIcon>{index % 2 === 0
+              ? <RecentActorsIcon /> : <FavoriteIcon />}
+            </ListItemIcon>
             <ListItemText primary={text} />
           </ListItem>
         ))}
-      </List>
+      </List> */}
     </div>
   );
 
@@ -136,13 +136,13 @@ export default function Header(props) {
           </Drawer>
         </Hidden>
       </nav>
-      
+
     </>
   )
 }
 
 const useStyles = makeStyles((theme) => ({
-
+  toolbar: theme.mixins.toolbar,
   appBar: {
     [theme.breakpoints.up('sm')]: {
       width: `calc(100% - ${drawerWidth}px)`,
@@ -215,9 +215,9 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   // necessary for content to be below app bar
-  
+
   drawerPaper: {
     width: drawerWidth,
   },
-  
+
 }));

@@ -1,3 +1,5 @@
+//Documentation:  https://developers.themoviedb.org/
+//https://www.themoviedb.org/documentation/api
 const BASE_API = 'https://api.themoviedb.org/3/';
 const API_KEY = 'b835070ca3f98419c2433584bf3af7cd';
 const API_LANGUAGE = 'es';
@@ -45,7 +47,7 @@ class ApiMovies {
   async searchMovie(text) {
     const query = await fetch(`${BASE_API}search/movie?api_key=${API_KEY}&query=${text}&page=1`);
     const { results } = await query.json();
-    
+
     return await results;
   }
 
@@ -53,6 +55,11 @@ class ApiMovies {
     const query = await fetch(`${BASE_API}movie/${idMovie}/videos?api_key=${API_KEY}&language=${API_LANGUAGE}`);
     const { results } = await query.json();
     return results;
+  }
+
+  async getGenres() {
+    const query = await fetch(`${BASE_API}genre/movie/list?api_key=${API_KEY}&language=${API_LANGUAGE}`);
+    return await query.json();
   }
 
 }

@@ -12,6 +12,7 @@ export default function Home() {
   const classes = useStyles();
 
   const [results, setResults] = useState('');
+  const [genres, setGenres] = useState([]);
 
   // De forma similar a componentDidMount y componentDidUpdate
   useEffect(() => {
@@ -24,6 +25,11 @@ export default function Home() {
       apiMovies.getPopularMovies()
         .then(Search => {
           setResults(Search)
+        })
+
+        apiMovies.getGenres()
+        .then(res => {
+          setGenres(res['genres'])
         })
     }
   });
@@ -43,8 +49,7 @@ export default function Home() {
   return (
     <div className={classes.root}>
 
-      <Header onResults={_handleResults} />
-
+      <Header genres={genres} onResults={_handleResults} />
 
       <main className={classes.content}>
 
@@ -69,7 +74,6 @@ export default function Home() {
             </Typography>
           </Container>
         </footer>
-
       </main>
     </div>
   );
