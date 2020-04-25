@@ -1,19 +1,18 @@
-import React, { useState, useEffect, useContext } from "react";
-import Typography from "@material-ui/core/Typography";
-import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
 import Link from "@material-ui/core/Link";
-import MoviesList from "../components/MoviesList";
+import { makeStyles } from "@material-ui/core/styles";
+import Typography from "@material-ui/core/Typography";
+import React, { useContext, useEffect, useState } from "react";
 import BackgroundImage from "../assets/backgroundImage2.jpg";
 import Header from "../components/Header";
-import apiMovies from "../services/apiMovies";
+import MoviesList from "../components/MoviesList";
 import GenresContext from "../context/genresContext";
+import apiMovies from "../services/apiMovies";
 
 export default function Home() {
   const classes = useStyles();
 
   const [results, setResults] = useState("");
-  // const [genres, setGenres] = useState([]);
   const { genres, setGenres } = useContext(GenresContext);
 
   // De forma similar a componentDidMount y componentDidUpdate
@@ -28,32 +27,32 @@ export default function Home() {
         apiMovies.getPopularMovies().then((Search) => {
           Search.map((movie) => {
             let generos = [];
-            movie.genre_ids.map((genreId) => {
+            movie.genre_ids.map((genreId) => 
               generos.push({
                 id: genreId,
-                name: res.genres.filter((g) => g.id == genreId)[0].name,
-              });
-            });
-            movie.generos = generos;
+                name: res.genres.filter((g) => g.id === genreId)[0].name,
+              })
+            );
+            return movie.generos = generos;
           });
           setResults(Search);
         });
       });
     }
-  }, [results]);
+  }, [results,setGenres]);
 
   function _handleResults(movies) {
 
     //Agregar los generos a las peliculas
     movies.map((movie) => {
       let generos = [];
-      movie.genre_ids.map((genreId) => {
+      movie.genre_ids.map((genreId) => 
         generos.push({
           id: genreId,
-          name: genres.filter((g) => g.id == genreId)[0].name,
-        });
-      });
-      movie.generos = generos;
+          name: genres.filter((g) => g.id === genreId)[0].name,
+        })
+      );
+      return movie.generos = generos;
     });
 
     setResults(movies);

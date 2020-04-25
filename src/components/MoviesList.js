@@ -1,16 +1,11 @@
-import React, { useEffect, useContext } from "react";
-import PropTypes from "prop-types";
-import Movie from "./Movie";
 import { Grid } from "@material-ui/core";
+import PropTypes from "prop-types";
+import React from "react";
 import IMG_NULL from "../assets/noImg.png";
-import GenresContext from "../context/genresContext";
+import Movie from "./Movie";
 
 export default function MovieList({ movies }) {
-  const IMG_URL = "https://image.tmdb.org/t/p/w342";
-
-  useEffect(() => {
-    console.log('movies en moviesList', movies)    
-}, [movies]) //Solo renderizar si cambian las peliculas
+  const IMG_URL = "https://image.tmdb.org/t/p/w342"; //Solo renderizar si cambian las peliculas
 
   return (
     <Grid container justify="center" style={{ paddingTop: "1%" }}>
@@ -36,7 +31,7 @@ export default function MovieList({ movies }) {
               poster={poster}
               release_date={movie.release_date}
               vote_average={movie.vote_average}
-              genres={movie.generos.slice(0,2)}
+              genres={movie.generos.slice(0, 2)}
             />
           </Grid>
         );
