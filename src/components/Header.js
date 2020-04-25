@@ -14,12 +14,12 @@ import MovieFilterIcon from '@material-ui/icons/MovieFilter';
 import SearchIcon from '@material-ui/icons/Search';
 import React, { useState } from 'react';
 import apiMovies from '../services/apiMovies';
+import PropTypes from 'prop-types';
 
 const drawerWidth = 240;
 
-export default function Header(props) {
-
-  const { container } = props;
+export default function Header({ container,onResults,genres }) {
+  
   const [mobileOpen, setMobileOpen] = useState(false);
   const [inputMovie, setInputMovie] = useState('');
   const classes = useStyles();
@@ -28,7 +28,7 @@ export default function Header(props) {
   function _handleSubmit() {
     if (inputMovie !== '') {
       apiMovies.searchMovie(inputMovie)
-        .then(results => { props.onResults(results) })
+        .then(results => { onResults(results) })
     }
   }
 
@@ -41,7 +41,7 @@ export default function Header(props) {
       <div className={classes.toolbar} />
       <Divider />
       <List>
-        {props.genres.map(movie => (
+        {genres.map(movie => (
           <ListItem button key={movie.id}>
             <ListItemIcon>{movie.id % 2 === 0
               ? <MovieFilterIcon /> : <LocalMoviesIcon />}
@@ -79,8 +79,8 @@ export default function Header(props) {
             <MenuIcon />
           </IconButton>
 
-          <MovieFilterIcon style={{marginRight: '10px',}}
-             fontSize="large" />
+          <MovieFilterIcon style={{ marginRight: '10px', }}
+            fontSize="large" />
           <Typography className={classes.title} variant="h6" noWrap>
             Info Peli
         </Typography>
@@ -144,6 +144,10 @@ export default function Header(props) {
   )
 }
 
+Header.propTypes = {
+  container: PropTypes.any
+}
+
 const useStyles = makeStyles((theme) => ({
   toolbar: theme.mixins.toolbar,
   appBar: {
@@ -202,7 +206,7 @@ const useStyles = makeStyles((theme) => ({
     padding: theme.spacing(1, 1, 1, 0),
     // vertical padding + font size from searchIcon
     // paddingLeft: `calc(1em + ${theme.spacing(1)}px)`,
-    paddingLeft: `${theme.spacing(1)}px`,
+    paddingLeft: `${theme.spacing(2)}px`,
     transition: theme.transitions.create('width'),
     // width: '100%',
     [theme.breakpoints.up('sm')]: {

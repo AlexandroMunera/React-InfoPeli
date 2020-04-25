@@ -1,29 +1,29 @@
-import React, { Component } from 'react';
-import './App.css';
-import Detail from './pages/Detail';
-import { Switch, Route } from 'react-router-dom'
-import { NotFount } from './pages/NotFound';
-import Home from './pages/Home';
+import React, { Component } from "react";
+import "./App.css";
+import Detail from "./pages/Detail";
+import { Switch, Route } from "react-router-dom";
+import { NotFount } from "./pages/NotFound";
+import Home from "./pages/Home";
+import { GenresContexProvider } from "./context/genresContext";
 // import BackgroundImage from './assets/backgroundImage2.jpg'
 
 class App extends Component {
-
   render() {
     return (
-      <div className="App">
-        <Switch>
-          <Route exact path='/' component={Home}></Route>
-          <Route path='/detail/:movieId' component={Detail}></Route>
-          <Route component={NotFount}></Route>
+      <GenresContexProvider>
+        <div className="App">
+          <Switch>
+            <Route exact path="/" component={Home}></Route>
+            <Route path="/detail/:movieId" component={Detail}></Route>
+            <Route component={NotFount}></Route>
+          </Switch>
 
-        </Switch>
-
-      {/* <div className='imgMinion'>
+          {/* <div className='imgMinion'>
 
         <img  id='imgMinion' style= {{width: '50%'}} src={BackgroundImage} alt="background"/>
       </div> */}
 
-        {/* <footer className="footer footerToEnd">
+          {/* <footer className="footer footerToEnd">
           <div className="content has-text-centered">
             <p>
               <strong>Info Peli</strong>  <span role='img'
@@ -33,8 +33,8 @@ class App extends Component {
             </p>
           </div>
         </footer> */}
-
-      </div>
+        </div>
+      </GenresContexProvider>
     );
   }
 }
