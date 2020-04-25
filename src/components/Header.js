@@ -1,35 +1,53 @@
-import { fade, IconButton, InputBase, makeStyles, Toolbar, Typography, useTheme } from '@material-ui/core';
-import AppBar from '@material-ui/core/AppBar';
-import CssBaseline from '@material-ui/core/CssBaseline';
-import Divider from '@material-ui/core/Divider';
-import Drawer from '@material-ui/core/Drawer';
-import Hidden from '@material-ui/core/Hidden';
-import List from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
-import ListItemText from '@material-ui/core/ListItemText';
-import LocalMoviesIcon from '@material-ui/icons/LocalMovies';
-import MenuIcon from '@material-ui/icons/Menu';
-import MovieFilterIcon from '@material-ui/icons/MovieFilter';
-import SearchIcon from '@material-ui/icons/Search';
-import React, { useState } from 'react';
-import apiMovies from '../services/apiMovies';
-import PropTypes from 'prop-types';
+import {
+  fade,
+  IconButton,
+  InputBase,
+  makeStyles,
+  Toolbar,
+  Typography,
+  useTheme,
+} from "@material-ui/core";
+import AppBar from "@material-ui/core/AppBar";
+import CssBaseline from "@material-ui/core/CssBaseline";
+import Divider from "@material-ui/core/Divider";
+import Drawer from "@material-ui/core/Drawer";
+import Hidden from "@material-ui/core/Hidden";
+import List from "@material-ui/core/List";
+import ListItem from "@material-ui/core/ListItem";
+import ListItemIcon from "@material-ui/core/ListItemIcon";
+import ListItemText from "@material-ui/core/ListItemText";
+import LocalMoviesIcon from "@material-ui/icons/LocalMovies";
+import MenuIcon from "@material-ui/icons/Menu";
+import MovieFilterIcon from "@material-ui/icons/MovieFilter";
+import SearchIcon from "@material-ui/icons/Search";
+import React, { useState } from "react";
+import apiMovies from "../services/apiMovies";
+import PropTypes from "prop-types";
 
 const drawerWidth = 240;
 
-export default function Header({ container,onResults,genres }) {
-  
+export default function Header({ container, onResults, genres, actualGenre }) {
   const [mobileOpen, setMobileOpen] = useState(false);
-  const [inputMovie, setInputMovie] = useState('');
+  const [inputMovie, setInputMovie] = useState("");
   const classes = useStyles();
   const theme = useTheme();
 
   function _handleSubmit() {
-    if (inputMovie !== '') {
-      apiMovies.searchMovie(inputMovie)
-        .then(results => { onResults(results) })
+    if (inputMovie !== "") {
+      apiMovies.searchMovie(inputMovie).then((results) => {
+        onResults(results);
+      });
     }
+  }
+
+  function _handleChangeGenre(idGenre,nameGenre) {
+
+    actualGenre(nameGenre)  //Props que se utiliza para mostrar el title en Home.js
+
+    //Consultar las peliculas por el genero y enviarlas por props
+    apiMovies.getMoviesByGenreId(idGenre).then((results) => {
+      onResults(results);
+    });
   }
 
   const handleDrawerToggle = () => {
@@ -41,12 +59,16 @@ export default function Header({ container,onResults,genres }) {
       <div className={classes.toolbar} />
       <Divider />
       <List>
-        {genres.map(movie => (
-          <ListItem button key={movie.id}>
-            <ListItemIcon>{movie.id % 2 === 0
-              ? <MovieFilterIcon /> : <LocalMoviesIcon />}
+        {genres.map((g) => (
+          <ListItem
+            button
+            key={g.id}
+            onClick={() => _handleChangeGenre(g.id, g.name)}
+          >
+            <ListItemIcon>
+              {g.id % 2 === 0 ? <MovieFilterIcon /> : <LocalMoviesIcon />}
             </ListItemIcon>
-            <ListItemText primary={movie.name} />
+            <ListItemText primary={g.name} />
           </ListItem>
         ))}
       </List>
@@ -79,11 +101,10 @@ export default function Header({ container,onResults,genres }) {
             <MenuIcon />
           </IconButton>
 
-          <MovieFilterIcon style={{ marginRight: '10px', }}
-            fontSize="large" />
+          <MovieFilterIcon style={{ marginRight: "10px" }} fontSize="large" />
           <Typography className={classes.title} variant="h6" noWrap>
             Info Peli
-        </Typography>
+          </Typography>
 
           <div className={classes.search}>
             <IconButton
@@ -97,13 +118,13 @@ export default function Header({ container,onResults,genres }) {
             </IconButton>
             <InputBase
               onChange={(e) => setInputMovie(e.target.value)}
-              onKeyPress={(e) => e.key === 'Enter' ? _handleSubmit(e) : ''}
+              onKeyPress={(e) => (e.key === "Enter" ? _handleSubmit(e) : "")}
               placeholder="Ingresa una peli…"
               classes={{
                 root: classes.inputRoot,
                 input: classes.inputInput,
               }}
-              inputProps={{ 'aria-label': 'search' }}
+              inputProps={{ "aria-label": "search" }}
             />
           </div>
         </Toolbar>
@@ -114,7 +135,7 @@ export default function Header({ container,onResults,genres }) {
           <Drawer
             container={container}
             variant="temporary"
-            anchor={theme.direction === 'rtl' ? 'right' : 'left'}
+            anchor={theme.direction === "rtl" ? "right" : "left"}
             open={mobileOpen}
             onClose={handleDrawerToggle}
             classes={{
@@ -139,85 +160,83 @@ export default function Header({ container,onResults,genres }) {
           </Drawer>
         </Hidden>
       </nav>
-
     </>
-  )
+  );
 }
 
 Header.propTypes = {
-  container: PropTypes.any
-}
+  container: PropTypes.any,
+};
 
 const useStyles = makeStyles((theme) => ({
   toolbar: theme.mixins.toolbar,
   appBar: {
-    [theme.breakpoints.up('sm')]: {
+    [theme.breakpoints.up("sm")]: {
       width: `calc(100% - ${drawerWidth}px)`,
       marginLeft: drawerWidth,
     },
-    backgroundColor: '#1976d2'
-
+    backgroundColor: "#1976d2",
   },
   menuButton: {
     marginRight: theme.spacing(2),
-    [theme.breakpoints.up('sm')]: {
-      display: 'none',
+    [theme.breakpoints.up("sm")]: {
+      display: "none",
     },
   },
   title: {
     flexGrow: 3,
-    textAlign: 'left',
-    display: 'none',
-    [theme.breakpoints.up('sm')]: {
-      display: 'block',
+    textAlign: "left",
+    display: "none",
+    [theme.breakpoints.up("sm")]: {
+      display: "block",
     },
   },
   search: {
-    position: 'relative',
+    position: "relative",
     borderRadius: theme.shape.borderRadius,
     backgroundColor: fade(theme.palette.common.white, 0.15),
-    '&:hover': {
+    "&:hover": {
       backgroundColor: fade(theme.palette.common.white, 0.25),
     },
-    flexGrow: '2',
+    flexGrow: "2",
     marginLeft: 0,
-    width: '100%',
-    [theme.breakpoints.up('sm')]: {
+    width: "100%",
+    [theme.breakpoints.up("sm")]: {
       marginLeft: theme.spacing(1),
-      width: 'auto',
+      width: "auto",
     },
   },
   searchIcon: {
     padding: theme.spacing(0, 2),
-    height: '100%',
-    position: 'absolute',
+    height: "100%",
+    position: "absolute",
     // pointerEvents: 'none',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
   },
   inputRoot: {
-    color: 'inherit',
-    width: '85%',
-    justifyContent: 'left'
+    color: "inherit",
+    width: "85%",
+    justifyContent: "left",
   },
   inputInput: {
-    textAlign: 'left',
+    textAlign: "left",
     padding: theme.spacing(1, 1, 1, 0),
     // vertical padding + font size from searchIcon
     // paddingLeft: `calc(1em + ${theme.spacing(1)}px)`,
     paddingLeft: `${theme.spacing(2)}px`,
-    transition: theme.transitions.create('width'),
+    transition: theme.transitions.create("width"),
     // width: '100%',
-    [theme.breakpoints.up('sm')]: {
-      width: '15ch',
-      '&:focus': {
-        width: '20ch',
+    [theme.breakpoints.up("sm")]: {
+      width: "15ch",
+      "&:focus": {
+        width: "20ch",
       },
     },
   },
   drawer: {
-    [theme.breakpoints.up('sm')]: {
+    [theme.breakpoints.up("sm")]: {
       width: drawerWidth,
       flexShrink: 0,
     },
@@ -227,5 +246,4 @@ const useStyles = makeStyles((theme) => ({
   drawerPaper: {
     width: drawerWidth,
   },
-
 }));

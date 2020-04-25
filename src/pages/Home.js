@@ -13,7 +13,15 @@ export default function Home() {
   const classes = useStyles();
 
   const [results, setResults] = useState("");
+  const [actualGenre, setActualGenre] = useState("Las del momento !");
   const { genres, setGenres } = useContext(GenresContext);
+
+  // useEffect((props) => {
+  //   actualGenre
+  //   return () => {
+  //     cleanup
+  //   }
+  // }, [actualGenre])
 
   // De forma similar a componentDidMount y componentDidUpdate
   useEffect(() => {
@@ -27,32 +35,31 @@ export default function Home() {
         apiMovies.getPopularMovies().then((Search) => {
           Search.map((movie) => {
             let generos = [];
-            movie.genre_ids.map((genreId) => 
+            movie.genre_ids.map((genreId) =>
               generos.push({
                 id: genreId,
                 name: res.genres.filter((g) => g.id === genreId)[0].name,
               })
             );
-            return movie.generos = generos;
+            return (movie.generos = generos);
           });
           setResults(Search);
         });
       });
     }
-  }, [results,setGenres]);
+  }, [results, setGenres]);
 
   function _handleResults(movies) {
-
     //Agregar los generos a las peliculas
     movies.map((movie) => {
       let generos = [];
-      movie.genre_ids.map((genreId) => 
+      movie.genre_ids.map((genreId) =>
         generos.push({
           id: genreId,
           name: genres.filter((g) => g.id === genreId)[0].name,
         })
       );
-      return movie.generos = generos;
+      return (movie.generos = generos);
     });
 
     setResults(movies);
@@ -67,13 +74,23 @@ export default function Home() {
         No se encontraron resultados para tu busquedad.
       </h2>
     ) : (
-      <MoviesList movies={results} />
+      <>
+        <Typography
+          align="left"
+          variant="h4"
+          color="textPrimary"
+          className={classes.tituloGenero}
+        >
+          {actualGenre}
+        </Typography>
+        <MoviesList movies={results} />
+      </>
     );
   }
 
   return (
     <div className={classes.root}>
-      <Header genres={genres} onResults={_handleResults} />
+      <Header genres={genres} onResults={_handleResults} actualGenre={(actualGenre) => setActualGenre(actualGenre) } />
 
       <main className={classes.content}>
         <div className={classes.toolbar} />
@@ -93,7 +110,7 @@ export default function Home() {
           <Container maxWidth="sm">
             <Typography variant="body1">
               <strong>Info Peli</strong>
-              <span role="img" aria-label="Movie">
+              <span style={{ margin: "2px" }} role="img" aria-label="Movie">
                 🎥
               </span>
               <Link
@@ -128,5 +145,9 @@ const useStyles = makeStyles((theme) => ({
   content: {
     flexGrow: 1,
     // padding: theme.spacing(3),
+  },
+  tituloGenero: {
+    marginTop: theme.spacing(1),
+    paddingLeft: theme.spacing(6),
   },
 }));
