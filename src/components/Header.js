@@ -6,6 +6,7 @@ import {
   Toolbar,
   Typography,
   useTheme,
+  SwipeableDrawer,
 } from "@material-ui/core";
 import AppBar from "@material-ui/core/AppBar";
 import CssBaseline from "@material-ui/core/CssBaseline";
@@ -40,14 +41,15 @@ export default function Header({ container, onResults, genres, actualGenre }) {
     }
   }
 
-  function _handleChangeGenre(idGenre,nameGenre) {
-
-    actualGenre(nameGenre)  //Props que se utiliza para mostrar el title en Home.js
+  function _handleChangeGenre(idGenre, nameGenre) {
+    actualGenre(nameGenre); //Props que se utiliza para mostrar el title en Home.js
 
     //Consultar las peliculas por el genero y enviarlas por props
     apiMovies.getMoviesByGenreId(idGenre).then((results) => {
       onResults(results);
     });
+
+    mobileOpen && handleDrawerToggle();
   }
 
   const handleDrawerToggle = () => {
@@ -132,11 +134,12 @@ export default function Header({ container, onResults, genres, actualGenre }) {
       <nav className={classes.drawer} aria-label="mailbox folders">
         {/* The implementation can be swapped with js to avoid SEO duplication of links. */}
         <Hidden smUp implementation="css">
-          <Drawer
+          <SwipeableDrawer
             container={container}
             variant="temporary"
             anchor={theme.direction === "rtl" ? "right" : "left"}
             open={mobileOpen}
+            onOpen={handleDrawerToggle}
             onClose={handleDrawerToggle}
             classes={{
               paper: classes.drawerPaper,
@@ -146,7 +149,7 @@ export default function Header({ container, onResults, genres, actualGenre }) {
             }}
           >
             {drawer}
-          </Drawer>
+          </SwipeableDrawer>
         </Hidden>
         <Hidden xsDown implementation="css">
           <Drawer
