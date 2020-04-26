@@ -1,7 +1,11 @@
 import Container from "@material-ui/core/Container";
+import Fab from '@material-ui/core/Fab';
 import Link from "@material-ui/core/Link";
 import { makeStyles } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
+import useScrollTrigger from '@material-ui/core/useScrollTrigger';
+import Zoom from '@material-ui/core/Zoom';
+import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
 import React, { useContext, useEffect, useState } from "react";
 import BackgroundImage from "../assets/backgroundImage2.jpg";
 import Header from "../components/Header";
@@ -9,19 +13,12 @@ import MoviesList from "../components/MoviesList";
 import GenresContext from "../context/genresContext";
 import apiMovies from "../services/apiMovies";
 
-export default function Home() {
+export default function Home(props) {
   const classes = useStyles();
 
   const [results, setResults] = useState("");
   const [actualGenre, setActualGenre] = useState("Las del momento !");
   const { genres, setGenres } = useContext(GenresContext);
-
-  // useEffect((props) => {
-  //   actualGenre
-  //   return () => {
-  //     cleanup
-  //   }
-  // }, [actualGenre])
 
   // De forma similar a componentDidMount y componentDidUpdate
   useEffect(() => {
@@ -63,6 +60,13 @@ export default function Home() {
     });
 
     setResults(movies);
+
+    //Volver al inicio de la pagina
+    const anchor = document.querySelector('#root');
+    if (anchor) {
+      anchor.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+
   }
 
   function _renderResults() {
@@ -83,14 +87,18 @@ export default function Home() {
         >
           {actualGenre}
         </Typography>
-        <MoviesList movies={results} />
+        <MoviesList movies={results} />       
       </>
     );
   }
 
   return (
     <div className={classes.root}>
-      <Header genres={genres} onResults={_handleResults} actualGenre={(actualGenre) => setActualGenre(actualGenre) } />
+      <Header
+        genres={genres}
+        onResults={_handleResults}
+        actualGenre={(actualGenre) => setActualGenre(actualGenre)}
+      />
 
       <main className={classes.content}>
         <div className={classes.toolbar} />
@@ -123,7 +131,38 @@ export default function Home() {
           </Container>
         </footer>
       </main>
+
+      <ScrollTop {...props}>
+          <Fab color="secondary" size="small" aria-label="scroll back to top">
+            <KeyboardArrowUpIcon />
+          </Fab>
+        </ScrollTop>
+
     </div>
+  );
+}
+
+function ScrollTop(props) {
+  const { children } = props;
+  const classes = useStyles();
+  const trigger = useScrollTrigger({
+    disableHysteresis: true,
+    threshold: 100,
+  });
+
+  const handleClick = (event) => {
+    const anchor = (event.target.ownerDocument || document).querySelector('#root');
+    if (anchor) {
+      anchor.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+  };
+
+  return (
+    <Zoom in={trigger}>
+      <div onClick={handleClick} role="presentation" className={classes.rootZoom}>
+        {children}
+      </div>
+    </Zoom>
   );
 }
 
@@ -132,6 +171,11 @@ const useStyles = makeStyles((theme) => ({
     display: "flex",
     // flexDirection: 'column',
     minHeight: "100vh",
+  },
+  rootZoom: {
+    position: 'fixed',
+    bottom: theme.spacing(2),
+    right: theme.spacing(2),
   },
   footer: {
     padding: theme.spacing(2, 1),
