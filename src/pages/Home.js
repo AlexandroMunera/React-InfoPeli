@@ -17,20 +17,18 @@ export default function Home(props) {
   const classes = useStyles();
 
   const [results, setResults] = useState("");
-  const [actualGenre, setActualGenre] = useState("Las del momento !");
+  const [actualGenre, setActualGenre] = useState({id:0,name:'Las del momento'});
   const { genres, setGenres } = useContext(GenresContext);
 
-  // De forma similar a componentDidMount y componentDidUpdate
   useEffect(() => {
     // Actualiza el título del documento usando la API del navegador
-    document.title = `Info Peli - Las del momento !`;
-
+    document.title = `Info Peli - ${actualGenre.name}`;
     //Obtener directamente las peliculas populares y los generos
     if (results === "") {
       apiMovies.getGenres().then((res) => {
         setGenres(res["genres"]);
         apiMovies.getPopularMovies().then((Search) => {
-          Search.map((movie) => {
+          Search.results.map((movie) => {
             let generos = [];
             movie.genre_ids.map((genreId) =>
               generos.push({
@@ -44,11 +42,11 @@ export default function Home(props) {
         });
       });
     }
-  }, [results, setGenres]);
+  }, [actualGenre,results, setGenres]);
 
   function _handleResults(movies) {
     //Agregar los generos a las peliculas
-    movies.map((movie) => {
+    movies.results.map((movie) => {
       let generos = [];
       movie.genre_ids.map((genreId) =>
         generos.push({
@@ -85,9 +83,9 @@ export default function Home(props) {
           color="textPrimary"
           className={classes.tituloGenero}
         >
-          {actualGenre}
+         {actualGenre.name}
         </Typography>
-        <MoviesList movies={results} />       
+        <MoviesList movies={results} actualGenre={actualGenre} />       
       </>
     );
   }
@@ -97,7 +95,7 @@ export default function Home(props) {
       <Header
         genres={genres}
         onResults={_handleResults}
-        actualGenre={(actualGenre) => setActualGenre(actualGenre)}
+        actualGenre={(idGenre,nameGenre) => setActualGenre(({id: idGenre, name: nameGenre}))}
       />
 
       <main className={classes.content}>

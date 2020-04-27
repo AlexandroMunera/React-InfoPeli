@@ -34,19 +34,22 @@ export default function Header({ container, onResults, genres, actualGenre }) {
   const theme = useTheme();
 
   function _handleSubmit() {
+    
     if (inputMovie !== "") {
-      apiMovies.searchMovie(inputMovie).then((results) => {
-        onResults(results);
+      apiMovies.searchMovie(inputMovie).then((Search) => {
+        onResults(Search);
       });
+
+      actualGenre(inputMovie); //Props que se utiliza para mostrar el title en Home.js
     }
   }
 
   function _handleChangeGenre(idGenre, nameGenre) {
-    actualGenre(nameGenre); //Props que se utiliza para mostrar el title en Home.js
+    actualGenre(idGenre,nameGenre);
 
     //Consultar las peliculas por el genero y enviarlas por props
-    apiMovies.getMoviesByGenreId(idGenre).then((results) => {
-      onResults(results);
+    apiMovies.getMoviesByGenreId(idGenre).then((Search) => {
+      onResults(Search);
     });
 
     mobileOpen && handleDrawerToggle();
