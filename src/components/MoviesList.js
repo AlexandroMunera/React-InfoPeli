@@ -94,7 +94,7 @@ export default function MovieList({ movies, actualGenre , props}) {
       <Typography variant="caption" color="initial" align="center">
         Se encontraron {films.total_results} pelis
       </Typography>
-      <Grid container justify="center" style={{ paddingTop: "1%" }}>
+      <Grid container justify="space-around" style={{ paddingTop: "1%" }}>
         {films.results.map((movie) => {
           const poster =
             movie.poster_path == null
@@ -103,8 +103,8 @@ export default function MovieList({ movies, actualGenre , props}) {
 
           // Validar el tamanio del title, no mayor a 23 caracteres
           movie.title =
-            movie.title.length > 23
-              ? movie.title.substring(0, 22) + ".."
+            movie.title.length > 18
+              ? movie.title.substring(0, 15) + ".."
               : movie.title;
 
           return (

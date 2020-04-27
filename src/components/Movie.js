@@ -56,7 +56,8 @@ export default function Movie({
           />
         </Link>
         <CardContent className={classes.cardContent}>
-          <Typography component="p" variant="subtitle1">
+          <Typography component="p" variant="subtitle1"
+           style={{paddingLeft: '2px'}}>
             {title} ({year})
           </Typography>
 
@@ -66,6 +67,7 @@ export default function Movie({
             precision={0.5}
             readOnly
             max={10}
+            className={classes.Rating}
           />
 
           <div className={classes.divGenres}>
@@ -84,12 +86,13 @@ export default function Movie({
 
           <Divider className={classes.divider} light />
 
-          <AvatarGroup className={classes.avatarGroup} max={5}>
+          <AvatarGroup className={classes.avatarGroup} max={4}>
             {actors.map((face) => (
               <Avatar
                 key={face.cast_id}
                 alt={face.name}
                 src={face.profile_path}
+                className={classes.avatar}
               />
             ))}
           </AvatarGroup>
@@ -107,19 +110,27 @@ export default function Movie({
   );
 }
 
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles((theme) => ({
+  Rating: {
+    fontSize: '1.1rem'
+  },
   item: {
     // maxWidth: "600px",
-    margin: "1em",
-    width: "260px",
-    height: "515px",
+    // margin: "1em",
+    width: "190px",
+    height: "415px",
     boxSizing: "border-box",
+    marginBottom: "1em"
   },
   media: {
-    height: "350px",
+    height: "260px",
+  },
+  avatar: {
+    width: theme.spacing(5),
+    height: theme.spacing(5),
   },
   cardContent: {
-    padding: "8px",
+    padding: "4px",
     textAlign: "left",
   },
   cardActions: {
@@ -129,7 +140,7 @@ const useStyles = makeStyles(() => ({
     margin: "10px",
   },
   avatarGroup: {
-    paddingLeft: "8px",
+    paddingLeft: "10px",
   },
   divGenres: {
     display: "flex",
