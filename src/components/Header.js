@@ -27,17 +27,18 @@ import PropTypes from "prop-types";
 
 const drawerWidth = 240;
 
-export default function Header({ container, onResults, genres, actualGenre }) {
+export default function Header({ container, onResults, genres,
+   actualGenre, loadingValue }) {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [inputMovie, setInputMovie] = useState("");
   const classes = useStyles();
   const theme = useTheme();
 
   function _handleSubmit() {
+    loadingValue(true)
     
     if (inputMovie !== "") {
       apiMovies.searchMovie(inputMovie).then((Search) => {
-        console.log('Search', Search)
         onResults(Search);
       });
       actualGenre(-1,inputMovie); //Props que se utiliza para mostrar el title en Home.js
@@ -45,11 +46,12 @@ export default function Header({ container, onResults, genres, actualGenre }) {
   }
 
   function _handleChangeGenre(idGenre, nameGenre) {
+    loadingValue(true)
     actualGenre(idGenre,nameGenre);
 
     //Consultar las peliculas por el genero y enviarlas por props
     apiMovies.getMoviesByGenreId(idGenre).then((Search) => {
-      onResults(Search);
+      onResults(Search)
     });
 
     mobileOpen && handleDrawerToggle();

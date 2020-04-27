@@ -3,9 +3,9 @@ node_js:
   - "stable"
 install:
   - npm install
-#   - npm install react
-#   - npm install -g react-scripts
-#   - npm install -g firebase-tools
+  - npm install react
+  - npm install -g react-scripts
+  - npm install -g firebase-tools
 script:
   - npm run build
 # deploy:

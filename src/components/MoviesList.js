@@ -1,4 +1,4 @@
-import { createMuiTheme, Grid, ThemeProvider, Typography } from "@material-ui/core";
+import { createMuiTheme, Grid, ThemeProvider, Typography, CircularProgress } from "@material-ui/core";
 import { Pagination } from "@material-ui/lab";
 import PropTypes from "prop-types";
 import React, { useContext, useEffect, useState } from "react";
@@ -12,6 +12,7 @@ export default function MovieList({ movies, actualGenre , props}) {
   const { genres } = useContext(GenresContext);
   const [films, setFilms] = useState(movies)
   const [pageActual, setpageActual] = useState(1)
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     setFilms(movies)
@@ -19,6 +20,8 @@ export default function MovieList({ movies, actualGenre , props}) {
   }, [movies]);
 
   function _handleChangePage(page){
+    setLoading(true)
+
     //Identificar en que genero se encuentra , sino es popular (id=0)
     if (actualGenre.id === -1) {
       apiMovies.searchMovie(actualGenre.name, page).then((Search) => {
@@ -32,7 +35,9 @@ export default function MovieList({ movies, actualGenre , props}) {
           );
           return (movie.generos = generos);
         });
-        setFilms(Search);
+        setFilms(Search)
+        setLoading(false)
+
       });
     }else if (actualGenre.id === 0) {
       apiMovies.getPopularMovies(page).then((Search) => {
@@ -46,7 +51,9 @@ export default function MovieList({ movies, actualGenre , props}) {
           );
           return (movie.generos = generos);
         });
-        setFilms(Search);
+        setFilms(Search)
+        setLoading(false)
+
   
       });
     }else{
@@ -61,7 +68,9 @@ export default function MovieList({ movies, actualGenre , props}) {
           );
           return (movie.generos = generos);
         });
-        setFilms(Search);
+        setFilms(Search)
+        setLoading(false)
+
       });
     }
 
@@ -71,6 +80,8 @@ export default function MovieList({ movies, actualGenre , props}) {
   
   return (
     <ThemeProvider theme={theme}>
+          {loading && <CircularProgress />}
+
       <Pagination
       page={pageActual}
         count={films.total_pages}

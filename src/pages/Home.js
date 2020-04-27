@@ -1,11 +1,12 @@
+import { CircularProgress, createMuiTheme, ThemeProvider } from "@material-ui/core";
 import Container from "@material-ui/core/Container";
-import Fab from '@material-ui/core/Fab';
+import Fab from "@material-ui/core/Fab";
 import Link from "@material-ui/core/Link";
 import { makeStyles } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
-import useScrollTrigger from '@material-ui/core/useScrollTrigger';
-import Zoom from '@material-ui/core/Zoom';
-import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
+import useScrollTrigger from "@material-ui/core/useScrollTrigger";
+import Zoom from "@material-ui/core/Zoom";
+import KeyboardArrowUpIcon from "@material-ui/icons/KeyboardArrowUp";
 import React, { useContext, useEffect, useState } from "react";
 import BackgroundImage from "../assets/minionsTransparente.png";
 import Header from "../components/Header";
@@ -16,13 +17,21 @@ import apiMovies from "../services/apiMovies";
 export default function Home(props) {
   const classes = useStyles();
 
+  const [loading, setLoading] = useState(true);
   const [results, setResults] = useState("");
-  const [actualGenre, setActualGenre] = useState({id:0,name:'Las del momento'});
+  const [actualGenre, setActualGenre] = useState({
+    id: 0,
+    name: "Las del momento",
+  });
   const { genres, setGenres } = useContext(GenresContext);
 
   useEffect(() => {
     // Actualiza el título del documento usando la API del navegador
     document.title = `Info Peli - ${actualGenre.name}`;
+  },[actualGenre])
+
+  useEffect(() => {
+
     //Obtener directamente las peliculas populares y los generos
     if (results === "") {
       apiMovies.getGenres().then((res) => {
@@ -39,12 +48,14 @@ export default function Home(props) {
             return (movie.generos = generos);
           });
           setResults(Search);
+          setLoading(false)
         });
       });
     }
-  }, [actualGenre,results, setGenres]);
+  }, [results, setGenres]);
 
   function _handleResults(movies) {
+
     //Agregar los generos a las peliculas
     movies.results.map((movie) => {
       let generos = [];
@@ -60,17 +71,19 @@ export default function Home(props) {
     setResults(movies);
 
     //Volver al inicio de la pagina
-    const anchor = document.querySelector('#root');
+    const anchor = document.querySelector("#root");
     if (anchor) {
-      anchor.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      anchor.scrollIntoView({ behavior: "smooth", block: "center" });
     }
+
+    setLoading(false)
+    
 
   }
 
   function _renderResults() {
+    if (results === "") return <></>;
 
-    if(results === "") return <></>
-    
     return results.length === 0 ? (
       <h2 style={{ marginTop: "5%" }}>
         <span role="img" aria-label="Triste">
@@ -80,66 +93,74 @@ export default function Home(props) {
       </h2>
     ) : (
       <>
+        
         <Typography
           align="left"
           variant="h4"
           color="textPrimary"
           className={classes.tituloGenero}
         >
-         {actualGenre.name}
+          {actualGenre.name}
         </Typography>
-        <MoviesList movies={results} actualGenre={actualGenre} />       
+        <MoviesList movies={results} actualGenre={actualGenre} />
       </>
     );
   }
 
   return (
-    <div className={classes.root}>
-      <Header
-        genres={genres}
-        onResults={_handleResults}
-        actualGenre={(idGenre,nameGenre) => setActualGenre(({id: idGenre, name: nameGenre}))}
-      />
+    <ThemeProvider theme={theme}>
+      <div className={classes.root}>
+        <Header
+          genres={genres}
+          onResults={_handleResults}
+          actualGenre={(idGenre, nameGenre) =>
+            setActualGenre({ id: idGenre, name: nameGenre })
+          }
+          loadingValue={(loadingValue) => setLoading(loadingValue)}
+        />
 
-      <main className={classes.content}>
-        <div className={classes.toolbar} />
+        <main className={classes.content}>
+          <div className={classes.toolbar} />
 
-        {_renderResults()}
+          
+          {loading && <CircularProgress />}
+          
+          {_renderResults()}
 
-        <div>
-          <img
-            id="imgMinion"
-            style={{ width: "50%", paddingTop: "10%" }}
-            src={BackgroundImage}
-            alt="background"
-          />
-        </div>
+          <div>
+            <img
+              id="imgMinion"
+              style={{ width: "50%", paddingTop: "10%" }}
+              src={BackgroundImage}
+              alt="background"
+            />
+          </div>
 
-        <footer className={classes.footer}>
-          <Container maxWidth="sm">
-            <Typography variant="body1">
-              <strong>Info Peli</strong>
-              <span style={{ margin: "2px" }} role="img" aria-label="Movie">
-                🎥
-              </span>
-              <Link
-                color="inherit"
-                href="https://www.linkedin.com/in/freud-alexandro/"
-              >
-                por Freud Munera
-              </Link>
-            </Typography>
-          </Container>
-        </footer>
-      </main>
+          <footer className={classes.footer}>
+            <Container maxWidth="sm">
+              <Typography variant="body1">
+                <strong>Info Peli</strong>
+                <span style={{ margin: "2px" }} role="img" aria-label="Movie">
+                  🎥
+                </span>
+                <Link
+                  color="inherit"
+                  href="https://www.linkedin.com/in/freud-alexandro/"
+                >
+                  por Freud Munera
+                </Link>
+              </Typography>
+            </Container>
+          </footer>
+        </main>
 
-      <ScrollTop {...props}>
+        <ScrollTop {...props}>
           <Fab color="secondary" size="small" aria-label="scroll back to top">
             <KeyboardArrowUpIcon />
           </Fab>
         </ScrollTop>
-
-    </div>
+      </div>
+    </ThemeProvider>
   );
 }
 
@@ -152,15 +173,21 @@ function ScrollTop(props) {
   });
 
   const handleClick = (event) => {
-    const anchor = (event.target.ownerDocument || document).querySelector('#root');
+    const anchor = (event.target.ownerDocument || document).querySelector(
+      "#root"
+    );
     if (anchor) {
-      anchor.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      anchor.scrollIntoView({ behavior: "smooth", block: "center" });
     }
   };
 
   return (
     <Zoom in={trigger}>
-      <div onClick={handleClick} role="presentation" className={classes.rootZoom}>
+      <div
+        onClick={handleClick}
+        role="presentation"
+        className={classes.rootZoom}
+      >
         {children}
       </div>
     </Zoom>
@@ -172,10 +199,10 @@ const useStyles = makeStyles((theme) => ({
     display: "flex",
     // flexDirection: 'column',
     minHeight: "100vh",
-    background: '#f5f5f5'
+    background: "#f5f5f5",
   },
   rootZoom: {
-    position: 'fixed',
+    position: "fixed",
     bottom: theme.spacing(2),
     right: theme.spacing(2),
   },
@@ -197,3 +224,11 @@ const useStyles = makeStyles((theme) => ({
     paddingLeft: theme.spacing(6),
   },
 }));
+
+const theme = createMuiTheme({
+  palette: {
+    primary: {
+      main: "#1976d2",
+    },
+  },
+});
