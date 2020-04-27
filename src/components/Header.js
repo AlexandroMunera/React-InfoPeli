@@ -27,31 +27,46 @@ import PropTypes from "prop-types";
 
 const drawerWidth = 240;
 
-export default function Header({ container, onResults, genres,
-   actualGenre, loadingValue }) {
+export default function Header({
+  container,
+  onResults,
+  genres,
+  actualGenre,
+  loadingValue,
+}) {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [inputMovie, setInputMovie] = useState("");
   const classes = useStyles();
   const theme = useTheme();
 
-  function _handleSubmit() {
-    loadingValue(true)
+  function _handleClickLogo() {
+      loadingValue(true);
+
+      apiMovies.getPopularMovies().then((Search) => {
+        onResults(Search);
+      });
+      actualGenre(0, "Las del momento");
     
+  }
+
+  function _handleSubmit() {
+    loadingValue(true);
+
     if (inputMovie !== "") {
       apiMovies.searchMovie(inputMovie).then((Search) => {
         onResults(Search);
       });
-      actualGenre(-1,inputMovie); //Props que se utiliza para mostrar el title en Home.js
+      actualGenre(-1, inputMovie); //Props que se utiliza para mostrar el title en Home.js
     }
   }
 
   function _handleChangeGenre(idGenre, nameGenre) {
-    loadingValue(true)
-    actualGenre(idGenre,nameGenre);
+    loadingValue(true);
+    actualGenre(idGenre, nameGenre);
 
     //Consultar las peliculas por el genero y enviarlas por props
     apiMovies.getMoviesByGenreId(idGenre).then((Search) => {
-      onResults(Search)
+      onResults(Search);
     });
 
     mobileOpen && handleDrawerToggle();
@@ -107,8 +122,10 @@ export default function Header({ container, onResults, genres,
           >
             <MenuIcon />
           </IconButton>
+          <IconButton color="inherit" onClick={() => _handleClickLogo()}>
+            <MovieFilterIcon fontSize="large" />
+          </IconButton>
 
-          <MovieFilterIcon style={{ marginRight: "10px" }} fontSize="large" />
           <Typography className={classes.title} variant="h6" noWrap>
             Info Peli
           </Typography>

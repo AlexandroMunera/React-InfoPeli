@@ -112,13 +112,13 @@ export default function Movie({
 
 const useStyles = makeStyles((theme) => ({
   Rating: {
-    fontSize: '1.1rem'
+    fontSize: '1rem'
   },
   item: {
     // maxWidth: "600px",
     // margin: "1em",
-    width: "190px",
-    height: "415px",
+    width: "170px",
+    height: "400px",
     boxSizing: "border-box",
     marginBottom: "1em"
   },
@@ -140,7 +140,7 @@ const useStyles = makeStyles((theme) => ({
     margin: "10px",
   },
   avatarGroup: {
-    paddingLeft: "10px",
+    paddingLeft: "5px",
   },
   divGenres: {
     display: "flex",

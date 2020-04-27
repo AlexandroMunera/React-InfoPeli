@@ -103,8 +103,8 @@ export default function MovieList({ movies, actualGenre , props}) {
 
           // Validar el tamanio del title, no mayor a 23 caracteres
           movie.title =
-            movie.title.length > 18
-              ? movie.title.substring(0, 15) + ".."
+            movie.title.length > 13
+              ? movie.title.substring(0, 11) + ".."
               : movie.title;
 
           return (
