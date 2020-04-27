@@ -7,7 +7,7 @@ import useScrollTrigger from '@material-ui/core/useScrollTrigger';
 import Zoom from '@material-ui/core/Zoom';
 import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
 import React, { useContext, useEffect, useState } from "react";
-import BackgroundImage from "../assets/backgroundImage2.jpg";
+import BackgroundImage from "../assets/minionsTransparente.png";
 import Header from "../components/Header";
 import MoviesList from "../components/MoviesList";
 import GenresContext from "../context/genresContext";
@@ -68,6 +68,9 @@ export default function Home(props) {
   }
 
   function _renderResults() {
+
+    if(results === "") return <></>
+    
     return results.length === 0 ? (
       <h2 style={{ marginTop: "5%" }}>
         <span role="img" aria-label="Triste">
@@ -169,6 +172,7 @@ const useStyles = makeStyles((theme) => ({
     display: "flex",
     // flexDirection: 'column',
     minHeight: "100vh",
+    background: '#f5f5f5'
   },
   rootZoom: {
     position: 'fixed',
