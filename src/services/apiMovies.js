@@ -30,9 +30,9 @@ class ApiMovies {
     return await query.json();
   }
 
-  async searchMovie(text) {
+  async searchMovie(text, page = 1) {
     const query = await fetch(
-      `${BASE_API}search/movie?api_key=${API_KEY}&query=${text}&page=1`
+      `${BASE_API}search/movie?api_key=${API_KEY}&query=${text}&page=${page}`
     );
     return await query.json();
 

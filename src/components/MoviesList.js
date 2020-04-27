@@ -1,18 +1,13 @@
-import {
-  createMuiTheme,
-  Grid,
-  ThemeProvider,
-  Typography,
-} from "@material-ui/core";
+import { createMuiTheme, Grid, ThemeProvider, Typography } from "@material-ui/core";
 import { Pagination } from "@material-ui/lab";
 import PropTypes from "prop-types";
-import React, { useEffect, useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import IMG_NULL from "../assets/noImg.png";
-import Movie from "./Movie";
-import apiMovies from "../services/apiMovies";
 import GenresContext from "../context/genresContext";
+import apiMovies from "../services/apiMovies";
+import Movie from "./Movie";
 
-export default function MovieList({ movies, actualGenre }) {
+export default function MovieList({ movies, actualGenre , props}) {
   const IMG_URL = "https://image.tmdb.org/t/p/w342"; //Solo renderizar si cambian las peliculas
   const { genres } = useContext(GenresContext);
   const [films, setFilms] = useState(movies)
@@ -24,8 +19,24 @@ export default function MovieList({ movies, actualGenre }) {
   }, [movies]);
 
   function _handleChangePage(page){
+    console.log('entre a _handleChangePage y el id de genre es', actualGenre.id)
     //Identificar en que genero se encuentra , sino es popular (id=0)
-    if (actualGenre.id === 0) {
+
+    if (actualGenre.id === -1) {
+      apiMovies.searchMovie(actualGenre.name, page).then((Search) => {
+        Search.results.map((movie) => {
+          let generos = [];
+          movie.genre_ids.map((genreId) =>
+            generos.push({
+              id: genreId,
+              name: genres.filter((g) => g.id === genreId)[0].name,
+            })
+          );
+          return (movie.generos = generos);
+        });
+        setFilms(Search);
+      });
+    }else if (actualGenre.id === 0) {
       apiMovies.getPopularMovies(page).then((Search) => {
         Search.results.map((movie) => {
           let generos = [];
@@ -55,7 +66,7 @@ export default function MovieList({ movies, actualGenre }) {
         setFilms(Search);
       });
     }
-    
+
     setpageActual(page)
 
   }

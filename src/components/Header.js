@@ -37,10 +37,10 @@ export default function Header({ container, onResults, genres, actualGenre }) {
     
     if (inputMovie !== "") {
       apiMovies.searchMovie(inputMovie).then((Search) => {
+        console.log('Search', Search)
         onResults(Search);
       });
-
-      actualGenre(inputMovie); //Props que se utiliza para mostrar el title en Home.js
+      actualGenre(-1,inputMovie); //Props que se utiliza para mostrar el title en Home.js
     }
   }
 
