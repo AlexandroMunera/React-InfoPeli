@@ -19,9 +19,7 @@ export default function MovieList({ movies, actualGenre , props}) {
   }, [movies]);
 
   function _handleChangePage(page){
-    console.log('entre a _handleChangePage y el id de genre es', actualGenre.id)
     //Identificar en que genero se encuentra , sino es popular (id=0)
-
     if (actualGenre.id === -1) {
       apiMovies.searchMovie(actualGenre.name, page).then((Search) => {
         Search.results.map((movie) => {
