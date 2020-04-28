@@ -36,6 +36,8 @@ export default function Header({
 }) {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [inputMovie, setInputMovie] = useState("");
+  const [selectedGenreId, setSelecteGenredId] = useState(1);
+  
   const classes = useStyles();
   const theme = useTheme();
 
@@ -50,20 +52,25 @@ export default function Header({
   }
 
   function _handleSubmit() {
-    loadingValue(true);
-
+    
     if (inputMovie !== "") {
+      loadingValue(true);
       apiMovies.searchMovie(inputMovie).then((Search) => {
         onResults(Search);
       });
       actualGenre(-1, inputMovie); //Props que se utiliza para mostrar el title en Home.js
+
+      document.activeElement.blur();
+      document.querySelector("#root").scrollIntoView({ behavior: "smooth", block: "center" });
+	    // $("input").blur();
     }
   }
 
-  function _handleChangeGenre(idGenre, nameGenre) {
+  function _handleChangeGenre(event, idGenre, nameGenre) {
+    console.log('idGenre', idGenre)
     loadingValue(true);
     actualGenre(idGenre, nameGenre);
-
+    setSelecteGenredId(idGenre)
     //Consultar las peliculas por el genero y enviarlas por props
     apiMovies.getMoviesByGenreId(idGenre).then((Search) => {
       onResults(Search);
@@ -85,7 +92,8 @@ export default function Header({
           <ListItem
             button
             key={g.id}
-            onClick={() => _handleChangeGenre(g.id, g.name)}
+            selected={selectedGenreId === g.id}
+            onClick={(event) => _handleChangeGenre(event,g.id, g.name)}
           >
             <ListItemIcon>
               {g.id % 2 === 0 ? <MovieFilterIcon /> : <LocalMoviesIcon />}
