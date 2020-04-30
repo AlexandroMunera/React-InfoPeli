@@ -6,75 +6,73 @@ import IMG_NULL from "../assets/noImg.png";
 import GenresContext from "../context/genresContext";
 import apiMovies from "../services/apiMovies";
 import Movie from "./Movie";
+import { withRouter } from "react-router-dom";
 
-export default function MovieList({ movies, actualGenre , props}) {
+function MovieList({ movies, history,location}) {
   const IMG_URL = "https://image.tmdb.org/t/p/w342"; //Solo renderizar si cambian las peliculas
   const { genres } = useContext(GenresContext);
   const [films, setFilms] = useState(movies)
-  const [pageActual, setpageActual] = useState(1)
+  const [pageActual, setPageActual] = useState(1)
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
+    console.log('Entre al useEffect MoviesList cuando movies cambien')
     setFilms(movies)
-    setpageActual(1)
+    setPageActual(1)
   }, [movies]);
 
   function _handleChangePage(page){
     setLoading(true)
 
-    //Identificar en que genero se encuentra , sino es popular (id=0)
-    if (actualGenre.id === -1) {
-      apiMovies.searchMovie(actualGenre.name, page).then((Search) => {
-        Search.results.map((movie) => {
-          let generos = [];
-          movie.genre_ids.map((genreId) =>
-            generos.push({
-              id: genreId,
-              name: genres.filter((g) => g.id === genreId)[0].name,
-            })
-          );
-          return (movie.generos = generos);
-        });
-        setFilms(Search)
-        setLoading(false)
+    console.log("objeto location en movieslist", location);
 
-      });
-    }else if (actualGenre.id === 0) {
-      apiMovies.getPopularMovies(page).then((Search) => {
-        Search.results.map((movie) => {
-          let generos = [];
-          movie.genre_ids.map((genreId) =>
-            generos.push({
-              id: genreId,
-              name: genres.filter((g) => g.id === genreId)[0].name,
-            })
-          );
-          return (movie.generos = generos);
-        });
-        setFilms(Search)
-        setLoading(false)
+    console.log('a la pagina', page)
+    let genero = location.pathname.split('/')[1] 
+                  ? location.pathname.split('/')[1]
+                  : "Populares"
+    
+     console.log("el genero que cambie es ", genero);
+
+    history.push(`/${genero}/${page}`)
+
+    // if (actualGenre.id === -1) {
+    //   apiMovies.searchMovie(actualGenre.name, page).then((Search) => {
+    //     Search.results.map((movie) => {
+    //       let generos = [];
+    //       movie.genre_ids.map((genreId) =>
+    //         generos.push({
+    //           id: genreId,
+    //           name: genres.filter((g) => g.id === genreId)[0].name,
+    //         })
+    //       );
+    //       return (movie.generos = generos);
+    //     });
+    //     setFilms(Search)
+    //     setLoading(false)
+
+    //   });
+    // }else if (actualGenre.id === 0) {
+    //   apiMovies.getPopularMovies(page).then((Search) => {
+    //     Search.results.map((movie) => {
+    //       let generos = [];
+    //       movie.genre_ids.map((genreId) =>
+    //         generos.push({
+    //           id: genreId,
+    //           name: genres.filter((g) => g.id === genreId)[0].name,
+    //         })
+    //       );
+    //       return (movie.generos = generos);
+    //     });
+    //     setFilms(Search)
+    //     setLoading(false)
 
   
-      });
-    }else{
-      apiMovies.getMoviesByGenreId(actualGenre.id, page).then((Search) => {
-        Search.results.map((movie) => {
-          let generos = [];
-          movie.genre_ids.map((genreId) =>
-            generos.push({
-              id: genreId,
-              name: genres.filter((g) => g.id === genreId)[0].name,
-            })
-          );
-          return (movie.generos = generos);
-        });
-        setFilms(Search)
-        setLoading(false)
+    //   });
+    // }else{
+      
+    // }
 
-      });
-    }
-
-    setpageActual(page)
+    setPageActual(page)
 
   }
   
@@ -139,3 +137,5 @@ const theme = createMuiTheme({
     },
   },
 });
+
+export default withRouter(MovieList)

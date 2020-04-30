@@ -1,4 +1,8 @@
-import { CircularProgress, createMuiTheme, ThemeProvider } from "@material-ui/core";
+import {
+  CircularProgress,
+  createMuiTheme,
+  ThemeProvider,
+} from "@material-ui/core";
 import Container from "@material-ui/core/Container";
 import Fab from "@material-ui/core/Fab";
 import Link from "@material-ui/core/Link";
@@ -13,9 +17,24 @@ import Header from "../components/Header";
 import MoviesList from "../components/MoviesList";
 import GenresContext from "../context/genresContext";
 import apiMovies from "../services/apiMovies";
+import PropTypes from "prop-types";
+import { withRouter } from "react-router-dom";
 
-export default function Home(props) {
+Home.propTypes = {
+  match: PropTypes.shape({
+    params: PropTypes.object,
+    isExact: PropTypes.bool,
+    path: PropTypes.string,
+    ulr: PropTypes.string,
+  }),
+};
+
+function Home(props) {
   const classes = useStyles();
+
+  const { match, history, location } = props;
+  const { params } = match;
+  const { genreName } = params;
 
   const [loading, setLoading] = useState(true);
   const [results, setResults] = useState("");
@@ -26,14 +45,220 @@ export default function Home(props) {
   const { genres, setGenres } = useContext(GenresContext);
 
   useEffect(() => {
-    // Actualiza el título del documento usando la API del navegador
-    document.title = `Info Peli - ${actualGenre.name}`;
-  },[actualGenre])
+    document.title = `Info Peli - ${genreName}`;
 
-  useEffect(() => {
+    console.log("Y los parametros url son", params);
+    console.log("objeto match", match);
+    console.log("objeto location", location);
 
-    //Obtener directamente las peliculas populares y los generos
-    if (results === "") {
+    let page =  location.pathname.split('/')[2] 
+                   ? location.pathname.split('/')[2] : 1
+
+    console.log("la page seleccionada es ", page);
+
+    if (genreName !== undefined) {
+      let encontroGenero = false
+      
+      if (genres.length === 0) {
+        console.log("necesario consultar los generos");
+        apiMovies.getGenres().then((res) => {
+          setGenres(res["genres"]);
+          //Validar si existe un genero con el nombre de la url
+          if(genreName === "Populares"){
+            encontroGenero = true
+            apiMovies.getPopularMovies(page).then((Search) => {
+              Search.results.map((movie) => {
+                let generos = [];
+                movie.genre_ids.map((genreId) =>
+                  generos.push({
+                    id: genreId,
+                    name: res.genres.filter((g) => g.id === genreId)[0].name,
+                  })
+                );
+                return (movie.generos = generos);
+              });
+              setResults(Search);
+              setLoading(false);
+            });
+          }else{
+            res["genres"].map((g) => {
+            if (g.name === genreName) {
+              console.log("Encontre el genero y el id es: ", g);
+              encontroGenero = true
+              //Buscar por genero con el id
+              apiMovies.getMoviesByGenreId(g.id,page).then((Search) => {
+                //Agregar los generos a las peliculas
+                Search.results.map((movie) => {
+                  let generos = [];
+                  movie.genre_ids.map((genreId) =>
+                    generos.push({
+                      id: genreId,
+                      name: res["genres"].filter((g) => g.id === genreId)[0]
+                        .name,
+                    })
+                  );
+                  return (movie.generos = generos);
+                });
+
+                setResults(Search);
+
+                //Volver al inicio de la pagina
+                const anchor = document.querySelector("#root");
+                if (anchor) {
+                  anchor.scrollIntoView({
+                    behavior: "smooth",
+                    block: "center",
+                  });
+                }
+
+                setLoading(false);
+              });
+            }
+          });
+        }
+        });
+      } else {
+        console.log("No necesario consultar los generos");
+
+        if(genreName === "Populares"){
+          encontroGenero = true
+          apiMovies.getPopularMovies(page).then((Search) => {
+            console.log('Search', Search)
+            Search.results.map((movie) => {
+              let generos = [];
+              movie.genre_ids.map((genreId) =>
+                generos.push({
+                  id: genreId,
+                  name: genres.filter((g) => g.id === genreId)[0].name,
+                })
+              );
+              return (movie.generos = generos);
+            });
+            setResults(Search);
+            setLoading(false);
+          });
+        }else{
+        //Validar si existe un genero con el nombre de la url
+        genres.map((g) => {
+          if (g.name === genreName) {
+            console.log("Encontre el genero en los  ya existentes y el id es: ", g);
+            encontroGenero = true
+
+           
+            //Buscar por genero con el id
+            apiMovies.getMoviesByGenreId(g.id,page).then((Search) => {
+              //Agregar los generos a las peliculas
+              Search.results.map((movie) => {
+                let generos = [];
+                movie.genre_ids.map((genreId) =>
+                  generos.push({
+                    id: genreId,
+                    name: genres.filter((g) => g.id === genreId)[0].name,
+                  })
+                );
+                return (movie.generos = generos);
+              });
+
+              setResults(Search);
+
+              //Volver al inicio de la pagina
+              const anchor = document.querySelector("#root");
+              if (anchor) {
+                anchor.scrollIntoView({
+                  behavior: "smooth",
+                  block: "center",
+                });
+              }
+
+              setLoading(false);
+            });
+          
+          }
+        });
+
+      }
+      }
+      // !encontroGenero && history.push('/404')
+
+    } else if (location.search) {
+      location.search &&
+        console.log(
+          "Use la caja de busqueda",
+          location.search.slice(1, location.search.length)
+        );
+      console.log("genres", genres);
+
+      document.title = `Info Peli - Buscador`;
+
+      setActualGenre(-1, location.search.slice(1, location.search.length));
+
+      if (genres.length === 0) {
+        console.log("necesario consultar los generos");
+        apiMovies.getGenres().then((res) => {
+          setGenres(res["genres"]);
+              apiMovies
+                .searchMovie(location.search.slice(1, location.search.length))
+                .then((Search) => {
+                  //Agregar los generos a las peliculas
+                  Search.results.map((movie) => {
+                    let generos = [];
+                    movie.genre_ids.map((genreId) =>
+                      generos.push({
+                        id: genreId,
+                        name: res["genres"].filter((g) => g.id === genreId)[0]
+                          .name,
+                      })
+                    );
+                    return (movie.generos = generos);
+                  });
+
+                  setResults(Search);
+
+                  //Volver al inicio de la pagina
+                  const anchor = document.querySelector("#root");
+                  if (anchor) {
+                    anchor.scrollIntoView({
+                      behavior: "smooth",
+                      block: "center",
+                    });
+                  }
+
+                  setLoading(false);
+                });
+            }
+          
+        );
+      } else {
+        apiMovies
+          .searchMovie(location.search.slice(1, location.search.length))
+          .then((Search) => {
+            //Agregar los generos a las peliculas
+            Search.results.map((movie) => {
+              let generos = [];
+              movie.genre_ids.map((genreId) =>
+                generos.push({
+                  id: genreId,
+                  name: genres.filter((g) => g.id === genreId)[0].name,
+                })
+              );
+              return (movie.generos = generos);
+            });
+
+            setResults(Search);
+
+            //Volver al inicio de la pagina
+            const anchor = document.querySelector("#root");
+            if (anchor) {
+              anchor.scrollIntoView({
+                behavior: "smooth",
+                block: "center",
+              });
+            }
+
+            setLoading(false);
+          });
+      }
+    } else if (results === "" || Object.keys(params).length === 0) {
       apiMovies.getGenres().then((res) => {
         setGenres(res["genres"]);
         apiMovies.getPopularMovies().then((Search) => {
@@ -48,38 +273,11 @@ export default function Home(props) {
             return (movie.generos = generos);
           });
           setResults(Search);
-          setLoading(false)
+          setLoading(false);
         });
       });
     }
-  }, [results, setGenres]);
-
-  function _handleResults(movies) {
-
-    //Agregar los generos a las peliculas
-    movies.results.map((movie) => {
-      let generos = [];
-      movie.genre_ids.map((genreId) =>
-        generos.push({
-          id: genreId,
-          name: genres.filter((g) => g.id === genreId)[0].name,
-        })
-      );
-      return (movie.generos = generos);
-    });
-
-    setResults(movies);
-
-    //Volver al inicio de la pagina
-    const anchor = document.querySelector("#root");
-    if (anchor) {
-      anchor.scrollIntoView({ behavior: "smooth", block: "center" });
-    }
-
-    setLoading(false)
-    
-
-  }
+  }, [props]);
 
   function _renderResults() {
     if (results === "") return <></>;
@@ -93,14 +291,13 @@ export default function Home(props) {
       </h2>
     ) : (
       <>
-        
         <Typography
           align="left"
           variant="h4"
           color="textPrimary"
           className={classes.tituloGenero}
         >
-          {actualGenre.name}
+          {genreName || location.search.slice(1, location.search.length) || actualGenre.name}
         </Typography>
         <MoviesList movies={results} actualGenre={actualGenre} />
       </>
@@ -112,19 +309,14 @@ export default function Home(props) {
       <div className={classes.root}>
         <Header
           genres={genres}
-          onResults={_handleResults}
-          actualGenre={(idGenre, nameGenre) =>
-            setActualGenre({ id: idGenre, name: nameGenre })
-          }
           loadingValue={(loadingValue) => setLoading(loadingValue)}
         />
 
         <main className={classes.content}>
           <div className={classes.toolbar} />
 
-          
           {loading && <CircularProgress />}
-          
+
           {_renderResults()}
 
           <div>
@@ -232,3 +424,5 @@ const theme = createMuiTheme({
     },
   },
 });
+
+export default withRouter(Home);

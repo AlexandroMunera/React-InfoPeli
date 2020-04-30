@@ -1,13 +1,4 @@
-import {
-  fade,
-  IconButton,
-  InputBase,
-  makeStyles,
-  Toolbar,
-  Typography,
-  useTheme,
-  SwipeableDrawer,
-} from "@material-ui/core";
+import { fade, IconButton, InputBase, makeStyles, SwipeableDrawer, Toolbar, Typography, useTheme } from "@material-ui/core";
 import AppBar from "@material-ui/core/AppBar";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import Divider from "@material-ui/core/Divider";
@@ -21,62 +12,49 @@ import LocalMoviesIcon from "@material-ui/icons/LocalMovies";
 import MenuIcon from "@material-ui/icons/Menu";
 import MovieFilterIcon from "@material-ui/icons/MovieFilter";
 import SearchIcon from "@material-ui/icons/Search";
-import React, { useState } from "react";
-import apiMovies from "../services/apiMovies";
 import PropTypes from "prop-types";
+import React, { useState } from "react";
+import { withRouter } from "react-router-dom";
 
 const drawerWidth = 240;
 
-export default function Header({
+function Header({
   container,
-  onResults,
   genres,
-  actualGenre,
   loadingValue,
+  history
 }) {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [inputMovie, setInputMovie] = useState("");
   const [selectedGenreId, setSelecteGenredId] = useState(1);
-  
+
   const classes = useStyles();
   const theme = useTheme();
 
   function _handleClickLogo() {
-      loadingValue(true);
-
-      apiMovies.getPopularMovies().then((Search) => {
-        onResults(Search);
-      });
-      actualGenre(0, "Las del momento");
-    
+    loadingValue(true);
+    history.push(`/`)
   }
 
   function _handleSubmit() {
-    
     if (inputMovie !== "") {
       loadingValue(true);
-      apiMovies.searchMovie(inputMovie).then((Search) => {
-        onResults(Search);
-      });
-      actualGenre(-1, inputMovie); //Props que se utiliza para mostrar el title en Home.js
-
       document.activeElement.blur();
-      document.querySelector("#root").scrollIntoView({ behavior: "smooth", block: "center" });
-	    // $("input").blur();
+      document
+        .querySelector("#root")
+        .scrollIntoView({ behavior: "smooth", block: "center" });
+
+      history.push(`/?${inputMovie}`)
+      
     }
   }
 
   function _handleChangeGenre(event, idGenre, nameGenre) {
-    console.log('idGenre', idGenre)
+    
     loadingValue(true);
-    actualGenre(idGenre, nameGenre);
-    setSelecteGenredId(idGenre)
-    //Consultar las peliculas por el genero y enviarlas por props
-    apiMovies.getMoviesByGenreId(idGenre).then((Search) => {
-      onResults(Search);
-    });
-
+    setSelecteGenredId(idGenre);    
     mobileOpen && handleDrawerToggle();
+    history.push(`/${nameGenre}`)
   }
 
   const handleDrawerToggle = () => {
@@ -93,7 +71,7 @@ export default function Header({
             button
             key={g.id}
             selected={selectedGenreId === g.id}
-            onClick={(event) => _handleChangeGenre(event,g.id, g.name)}
+            onClick={(event) => _handleChangeGenre(event, g.id, g.name)}
           >
             <ListItemIcon>
               {g.id % 2 === 0 ? <MovieFilterIcon /> : <LocalMoviesIcon />}
@@ -102,17 +80,6 @@ export default function Header({
           </ListItem>
         ))}
       </List>
-      {/* <Divider />
-      <List>
-        {['All mail', 'Trash', 'Spam','Favoritos'].map((text, index) => (
-          <ListItem button key={text}>
-            <ListItemIcon>{index % 2 === 0
-              ? <RecentActorsIcon /> : <FavoriteIcon />}
-            </ListItemIcon>
-            <ListItemText primary={text} />
-          </ListItem>
-        ))}
-      </List> */}
     </div>
   );
 
@@ -281,3 +248,5 @@ const useStyles = makeStyles((theme) => ({
     width: drawerWidth,
   },
 }));
+
+export default withRouter(Header)
