@@ -18,19 +18,26 @@ function MovieList({ movies, history,location}) {
   useEffect(() => {
     console.log('Entre al useEffect MoviesList cuando movies cambien')
     setFilms(movies)
-    setPageActual(1)
+
+    let page =  location.pathname.split('/')[2] 
+                   ? location.pathname.split('/')[2] : 1
+    
+    if(location.search) page = location.search.split('/')[1]
+    setPageActual(parseInt(page))
+
+    setLoading(false)
+
   }, [movies]);
 
   function _handleChangePage(page){
     setLoading(true)
-
     console.log("objeto location en movieslist", location);
 
     console.log('a la pagina', page)
     let genero = location.pathname.split('/')[1] 
                   ? location.pathname.split('/')[1]
                   : "Populares"
-    
+    if(location.search) genero = location.search.split('/')[0]
      console.log("el genero que cambie es ", genero);
 
     history.push(`/${genero}/${page}`)

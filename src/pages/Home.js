@@ -40,12 +40,11 @@ function Home(props) {
   const [results, setResults] = useState("");
   const [actualGenre, setActualGenre] = useState({
     id: 0,
-    name: "Las del momento",
+    name: "Populares",
   });
   const { genres, setGenres } = useContext(GenresContext);
 
   useEffect(() => {
-    document.title = `Info Peli - ${genreName}`;
 
     console.log("Y los parametros url son", params);
     console.log("objeto match", match);
@@ -53,11 +52,13 @@ function Home(props) {
 
     let page =  location.pathname.split('/')[2] 
                    ? location.pathname.split('/')[2] : 1
+    
+     if(location.search) page = location.search.split('/')[1]
 
     console.log("la page seleccionada es ", page);
 
     if (genreName !== undefined) {
-      let encontroGenero = false
+      console.log('genreName diferente de undfined')
       
       if (genres.length === 0) {
         console.log("necesario consultar los generos");
@@ -65,7 +66,7 @@ function Home(props) {
           setGenres(res["genres"]);
           //Validar si existe un genero con el nombre de la url
           if(genreName === "Populares"){
-            encontroGenero = true
+            
             apiMovies.getPopularMovies(page).then((Search) => {
               Search.results.map((movie) => {
                 let generos = [];
@@ -79,12 +80,14 @@ function Home(props) {
               });
               setResults(Search);
               setLoading(false);
+    document.title = `Info Peli - ${genreName}`;
+
             });
           }else{
             res["genres"].map((g) => {
             if (g.name === genreName) {
               console.log("Encontre el genero y el id es: ", g);
-              encontroGenero = true
+              
               //Buscar por genero con el id
               apiMovies.getMoviesByGenreId(g.id,page).then((Search) => {
                 //Agregar los generos a las peliculas
@@ -101,6 +104,8 @@ function Home(props) {
                 });
 
                 setResults(Search);
+    document.title = `Info Peli - ${g.name}`;
+
 
                 //Volver al inicio de la pagina
                 const anchor = document.querySelector("#root");
@@ -121,7 +126,7 @@ function Home(props) {
         console.log("No necesario consultar los generos");
 
         if(genreName === "Populares"){
-          encontroGenero = true
+          
           apiMovies.getPopularMovies(page).then((Search) => {
             console.log('Search', Search)
             Search.results.map((movie) => {
@@ -135,16 +140,17 @@ function Home(props) {
               return (movie.generos = generos);
             });
             setResults(Search);
+            document.title = `Info Peli - ${genreName}`;
+            console.log('Valor loading', loading)
             setLoading(false);
+
           });
         }else{
         //Validar si existe un genero con el nombre de la url
         genres.map((g) => {
           if (g.name === genreName) {
             console.log("Encontre el genero en los  ya existentes y el id es: ", g);
-            encontroGenero = true
-
-           
+            
             //Buscar por genero con el id
             apiMovies.getMoviesByGenreId(g.id,page).then((Search) => {
               //Agregar los generos a las peliculas
@@ -161,6 +167,7 @@ function Home(props) {
 
               setResults(Search);
 
+
               //Volver al inicio de la pagina
               const anchor = document.querySelector("#root");
               if (anchor) {
@@ -170,6 +177,7 @@ function Home(props) {
                 });
               }
 
+              document.title = `Info Peli - ${g.name}`;
               setLoading(false);
             });
           
@@ -178,7 +186,7 @@ function Home(props) {
 
       }
       }
-      // !encontroGenero && history.push('/404')
+      
 
     } else if (location.search) {
       location.search &&
@@ -189,15 +197,14 @@ function Home(props) {
       console.log("genres", genres);
 
       document.title = `Info Peli - Buscador`;
-
-      setActualGenre(-1, location.search.slice(1, location.search.length));
+      setActualGenre(-1, 'Búsquedas encontradas');
 
       if (genres.length === 0) {
         console.log("necesario consultar los generos");
         apiMovies.getGenres().then((res) => {
           setGenres(res["genres"]);
               apiMovies
-                .searchMovie(location.search.slice(1, location.search.length))
+                .searchMovie(location.search.split('/')[0].slice(1, location.search.length),page)
                 .then((Search) => {
                   //Agregar los generos a las peliculas
                   Search.results.map((movie) => {
@@ -229,8 +236,9 @@ function Home(props) {
           
         );
       } else {
+        console.log('location.search.slice(1, location.search.length)', location.search.split('/')[0].slice(1, location.search.length))
         apiMovies
-          .searchMovie(location.search.slice(1, location.search.length))
+          .searchMovie(location.search.split('/')[0].slice(1, location.search.length),page)
           .then((Search) => {
             //Agregar los generos a las peliculas
             Search.results.map((movie) => {
@@ -259,6 +267,9 @@ function Home(props) {
           });
       }
     } else if (results === "" || Object.keys(params).length === 0) {
+      console.log('results === ""')
+    document.title = `Info Peli - Populares`;
+
       apiMovies.getGenres().then((res) => {
         setGenres(res["genres"]);
         apiMovies.getPopularMovies().then((Search) => {
@@ -297,7 +308,7 @@ function Home(props) {
           color="textPrimary"
           className={classes.tituloGenero}
         >
-          {genreName || location.search.slice(1, location.search.length) || actualGenre.name}
+          {genreName || "Búsquedas encontradas"}
         </Typography>
         <MoviesList movies={results} actualGenre={actualGenre} />
       </>

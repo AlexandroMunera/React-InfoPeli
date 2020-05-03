@@ -1,4 +1,13 @@
-import { Avatar, Card, CardActionArea, CardContent, CardMedia, Chip, Divider, Typography } from "@material-ui/core";
+import {
+  Avatar,
+  Card,
+  CardActionArea,
+  CardContent,
+  CardMedia,
+  Chip,
+  Divider,
+  Typography,
+} from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import { AvatarGroup, Rating } from "@material-ui/lab";
 import React, { useEffect, useState } from "react";
@@ -26,20 +35,24 @@ export default function Movie({
     const actores = async () => {
       const mainCastMovieAPI = await apiMovies.getMainCast(id);
 
-      const actors =  mainCastMovieAPI.cast.map(
-        (actor) => {
-          let aObj = {};
-          aObj["cast_id"] = actor.cast_id;
-          aObj["profile_path"] =
-            actor.profile_path === null
-              ? IMG_NULL
-              : PROFIL_IMG_URL + actor.profile_path;
-          aObj["name"] = actor.name;
-          return aObj;
-        },
-        [id]
-      );
-      setActors(actors);
+      if (mainCastMovieAPI.cast !== undefined) {
+        const actors = mainCastMovieAPI.cast.map(
+          (actor) => {
+            let aObj = {};
+            aObj["cast_id"] = actor.cast_id;
+            aObj["profile_path"] =
+              actor.profile_path === null
+                ? IMG_NULL
+                : PROFIL_IMG_URL + actor.profile_path;
+            aObj["name"] = actor.name;
+            return aObj;
+          },
+          [id]
+        );
+        setActors(actors);
+      } else {
+        setActors([]);
+      }
     };
     actores();
   }, [setActors, id]);
@@ -56,8 +69,11 @@ export default function Movie({
           />
         </Link>
         <CardContent className={classes.cardContent}>
-          <Typography component="p" variant="subtitle1"
-           style={{paddingLeft: '2px'}}>
+          <Typography
+            component="p"
+            variant="subtitle1"
+            style={{ paddingLeft: "2px" }}
+          >
             {title} ({year})
           </Typography>
 
@@ -112,7 +128,7 @@ export default function Movie({
 
 const useStyles = makeStyles((theme) => ({
   Rating: {
-    fontSize: '1rem'
+    fontSize: "1rem",
   },
   item: {
     // maxWidth: "600px",
@@ -120,7 +136,7 @@ const useStyles = makeStyles((theme) => ({
     width: "170px",
     height: "400px",
     boxSizing: "border-box",
-    marginBottom: "1em"
+    marginBottom: "1em",
   },
   media: {
     height: "260px",
