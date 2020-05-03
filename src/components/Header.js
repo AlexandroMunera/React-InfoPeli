@@ -30,6 +30,7 @@ function Header({
 
   const classes = useStyles();
   const theme = useTheme();
+  
 
   function _handleClickLogo() {
     loadingValue(true);

@@ -1,21 +1,8 @@
-import {
-  Avatar,
-  Card,
-  CardActionArea,
-  CardContent,
-  CardMedia,
-  Chip,
-  Divider,
-  Typography,
-} from "@material-ui/core";
+import { Card, CardActionArea, CardContent, CardMedia, Divider, Typography } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
-import { AvatarGroup, Rating } from "@material-ui/lab";
-import React, { useEffect, useState } from "react";
+import { Rating } from "@material-ui/lab";
+import React from "react";
 import { Link } from "react-router-dom";
-import IMG_NULL from "../assets/noImg.png";
-import apiMovies from "../services/apiMovies";
-
-const PROFIL_IMG_URL = "https://image.tmdb.org/t/p/w45";
 
 // class Movie extends Component {
 export default function Movie({
@@ -23,49 +10,18 @@ export default function Movie({
   poster,
   title,
   year,
-  titleFull,
   vote_average,
-  genres,
 }) {
   const classes = useStyles();
-
-  const [actors, setActors] = useState([]);
-
-  useEffect(() => {
-    const actores = async () => {
-      const mainCastMovieAPI = await apiMovies.getMainCast(id);
-
-      if (mainCastMovieAPI.cast !== undefined) {
-        const actors = mainCastMovieAPI.cast.map(
-          (actor) => {
-            let aObj = {};
-            aObj["cast_id"] = actor.cast_id;
-            aObj["profile_path"] =
-              actor.profile_path === null
-                ? IMG_NULL
-                : PROFIL_IMG_URL + actor.profile_path;
-            aObj["name"] = actor.name;
-            return aObj;
-          },
-          [id]
-        );
-        setActors(actors);
-      } else {
-        setActors([]);
-      }
-    };
-    actores();
-  }, [setActors, id]);
 
   return (
     <Card className={classes.item}>
       <CardActionArea>
-        {/* <Link to={`/detail/${id}`} > */}
-        <Link to="">
+        <Link to={`/detail/${id}`} >
           <CardMedia
             className={classes.media}
             image={poster}
-            title={titleFull}
+            title={title}
           />
         </Link>
         <CardContent className={classes.cardContent}>
@@ -86,32 +42,7 @@ export default function Movie({
             className={classes.Rating}
           />
 
-          <div className={classes.divGenres}>
-            {genres.map((genre) => {
-              return (
-                <li key={genre.id}>
-                  <Chip
-                    size="small"
-                    label={genre.name}
-                    className={classes.chip}
-                  />
-                </li>
-              );
-            })}
-          </div>
-
           <Divider className={classes.divider} light />
-
-          <AvatarGroup className={classes.avatarGroup} max={4}>
-            {actors.map((face) => (
-              <Avatar
-                key={face.cast_id}
-                alt={face.name}
-                src={face.profile_path}
-                className={classes.avatar}
-              />
-            ))}
-          </AvatarGroup>
         </CardContent>
       </CardActionArea>
       {/* <CardActions className={classes.cardActions}>
@@ -134,7 +65,7 @@ const useStyles = makeStyles((theme) => ({
     // maxWidth: "600px",
     // margin: "1em",
     width: "170px",
-    height: "400px",
+    height: "340px",
     boxSizing: "border-box",
     marginBottom: "1em",
   },
