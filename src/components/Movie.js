@@ -1,4 +1,4 @@
-import { Card, CardActionArea, CardContent, CardMedia, Divider, Typography } from "@material-ui/core";
+import { Card, CardActionArea, CardContent, CardMedia, Typography } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import { Rating } from "@material-ui/lab";
 import React from "react";
@@ -41,8 +41,6 @@ export default function Movie({
             max={10}
             className={classes.Rating}
           />
-
-          <Divider className={classes.divider} light />
         </CardContent>
       </CardActionArea>
       {/* <CardActions className={classes.cardActions}>
@@ -65,7 +63,7 @@ const useStyles = makeStyles((theme) => ({
     // maxWidth: "600px",
     // margin: "1em",
     width: "170px",
-    height: "340px",
+    height: "318px",
     boxSizing: "border-box",
     marginBottom: "1em",
   },

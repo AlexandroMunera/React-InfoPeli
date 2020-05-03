@@ -19,6 +19,7 @@ import GenresContext from "../context/genresContext";
 import apiMovies from "../services/apiMovies";
 import PropTypes from "prop-types";
 import { withRouter } from "react-router-dom";
+import Detail from "./Detail";
 
 Home.propTypes = {
   match: PropTypes.shape({
@@ -35,10 +36,12 @@ function Home(props) {
   const { match, history, location } = props;
   const { params } = match;
   const { genreName } = params;
+  const { movieId } = params;
 
   const [loading, setLoading] = useState(true);
   const [results, setResults] = useState("");
   const { genres, setGenres } = useContext(GenresContext);
+
 
   useEffect(() => {
     let page = location.pathname.split("/")[2]
@@ -58,9 +61,8 @@ function Home(props) {
         generos = genres;
       }
       setGenres(generos);
-
-      if (genreName !== undefined) {
-
+      
+      if (genreName !== undefined && movieId === undefined) {
         if (genreName === "Populares") {
           const Search = await apiMovies.getPopularMovies(page);
           setResults(Search);
@@ -120,7 +122,7 @@ function Home(props) {
       }
     };
     realizarConsultas();
-  }, [props]);
+  }, [props,params]);
 
   function _renderResults() {
     if (results === "") return <></>;
@@ -160,7 +162,8 @@ function Home(props) {
 
           {loading && <CircularProgress />}
 
-          {_renderResults()}
+          { movieId !== undefined ? <Detail movieId={movieId} /> : _renderResults()}
+          
 
           <div>
             <img
