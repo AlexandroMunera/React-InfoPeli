@@ -10,6 +10,7 @@ const IMG_URL = "https://image.tmdb.org/t/p/w185"; //Solo renderizar si cambian 
 const PROFIL_IMG_URL = 'https://image.tmdb.org/t/p/w45';
 const URL_YOUTUBE = "https://www.youtube.com/watch?v=";
 
+
 export default function DetailMovie({movieId}) {
   const [infoMovie, setInfoMovie] = useState([]);
   const [generos, setGeneros] = useState([])
@@ -23,6 +24,7 @@ export default function DetailMovie({movieId}) {
      } = infoMovie;
 
   useEffect(() => {
+    console.log('poster_path', poster_path)
     const realizarConsultas = async () => {
 
       const infoMovie = await apiMovies.getMovie(movieId);
@@ -52,18 +54,19 @@ export default function DetailMovie({movieId}) {
   const classes = useStyles();
 
   return (
-    <div>
+    <>
       
       <Box
         display="flex"
-        flexDirection="row"
-        p={1}
         m={1}
         justifyContent="center"
         bgcolor="background.paper"
       >
         <Box bgcolor="grey.100">
-         {poster_path !== undefined && <img src={IMG_URL + poster_path} alt={title} />}
+         {poster_path === undefined || poster_path == null
+           ? <img src={IMG_NULL} alt={title} className={classes.poster} /> 
+           : <img src={IMG_URL + poster_path} alt={title} />
+         }
 
           <FormControl variant="outlined" className={classes.agregarALista}>
           <InputLabel id="labelSelect">Agregar a ...</InputLabel>
@@ -81,10 +84,10 @@ export default function DetailMovie({movieId}) {
           </FormControl>
         </Box>
 
-        <Box textAlign="left" p={1} bgcolor="grey.400" width="100%">
+        <Box textAlign="left" p={1} color="white" bgcolor="primary.dark" width="100%">
           <Box m={1}>
-            <Typography variant="h4" color="initial">{title}</Typography>
-            <Typography variant="caption" color="initial">{original_title}</Typography>
+            <Typography variant="h4" color="textPrimary">{title}</Typography>
+            {/* <Typography variant="caption" color="initial">{original_title}</Typography> */}
           </Box>
 
           <Box m={1}> 
@@ -94,21 +97,21 @@ export default function DetailMovie({movieId}) {
           </Box>
 
           <Box m={1}>
-            <Typography variant="subtitle1" color="initial">Generos:</Typography>          
+            <Typography variant="subtitle1" color="textPrimary">Generos:</Typography>          
             <Typography variant="body2" color="initial">
               {generos.map(g => <span key={g.id}> {g.name} </span>)}
             </Typography>
           </Box>
           
           <Box m={1}>
-             <Typography variant="subtitle1" color="initial">Resumen:</Typography>
+             <Typography variant="subtitle1" color="textPrimary">Resumen:</Typography>
             <Typography variant="body2" component="p"  color="initial">
                 {overview}
             </Typography>
           </Box>
 
           <Box m={1}>
-            <Typography variant="subtitle1" color="initial">Actores:</Typography>
+            <Typography variant="subtitle1" color="textPrimary">Actores:</Typography>
             <AvatarGroup className={classes.avatarGroup} max={10}>            
               {actores.map((face) =>  <Avatar
                   key={face.cast_id}
@@ -123,32 +126,40 @@ export default function DetailMovie({movieId}) {
         </Box>
       </Box>
     
-      {videos.length !== 0 && <Box p={1}
+      {videos.length !== 0 && <Box
         m={1}>
-        <Typography variant="h5" color="initial">
+        <Typography className={classes.titleVideos} paragraph variant="h5" >
           Videos
         </Typography>
-        {videos.map(v => <ReactPlayer className={classes.reproductor} key={ v.key} url={URL_YOUTUBE + v.key}  />)}
+        {videos.map(v => <ReactPlayer width="100%" className={classes.reproductor} key={ v.key} url={URL_YOUTUBE + v.key}  />)}
         
       </Box>
       }
-    </div>
+    </>
   );
 }
 
 const useStyles = makeStyles((theme) => ({
 
-  avatarGroup: {
-    paddingLeft: "10px",
-  },
-  avatar: {
-    width: theme.spacing(5),
-    height: theme.spacing(5),
-  },
   agregarALista: {
     width: "80%"
   },
+  avatar: {
+    height: theme.spacing(5),
+    width: theme.spacing(5),
+  },
+  avatarGroup: {
+    paddingLeft: "10px",
+  },
+  poster:{
+    heigth: "264px",
+    width:  "185px"
+  },
   reproductor: {
     display: "inline-flex",
-  }
+  },
+  titleVideos:{
+    backgroundColor: theme.palette.primary.main,
+    color: theme.palette.primary.contrastText
+  },
 }))

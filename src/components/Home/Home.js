@@ -115,10 +115,10 @@ function Home(props) {
     ) : (
       <>
         <Typography
-          align="left"
-          variant="h4"
-          color="textPrimary"
+          align="center"
           className={classes.tituloGenero}
+          color="textPrimary"
+          variant="h4"
         >
           {genreName || "Peliculas"}
         </Typography>
@@ -220,7 +220,6 @@ function ScrollTop(props) {
 const useStyles = makeStyles((theme) => ({
   root: {
     display: "flex",
-    // flexDirection: 'column',
     minHeight: "100vh",
     background: "#f5f5f5",
   },
@@ -239,13 +238,14 @@ const useStyles = makeStyles((theme) => ({
   },
   toolbar: theme.mixins.toolbar,
   content: {
-    // textAlign: "center"
      flexGrow: 1,
-    //padding: theme.spacing(3),
   },
   tituloGenero: {
+    
     marginTop: theme.spacing(1),
     paddingLeft: theme.spacing(6),
+    textDecorationLine: "underline",
+    textDecorationStyle: "dotted",
   },
 }));
 
