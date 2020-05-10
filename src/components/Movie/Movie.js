@@ -61,19 +61,17 @@ const useStyles = makeStyles((theme) => ({
     fontSize: "1rem",
   },
   item: {
-    // maxWidth: "600px",
-    // margin: "1em",
-    width: "170px",
-    height: "318px",
     boxSizing: "border-box",
+    height: "318px",
     marginBottom: "1em",
+    width: "170px",
   },
   media: {
     height: "260px",
   },
   avatar: {
-    width: theme.spacing(5),
     height: theme.spacing(5),
+    width: theme.spacing(5),
   },
   cardContent: {
     padding: "4px",
@@ -90,8 +88,8 @@ const useStyles = makeStyles((theme) => ({
   },
   divGenres: {
     display: "flex",
-    justifyContent: "left",
     flexWrap: "wrap",
+    justifyContent: "left",
     listStyle: "none",
     margin: 0,
   },

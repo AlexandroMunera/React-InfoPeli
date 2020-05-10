@@ -18,7 +18,7 @@ export default function DetailMovie({movieId}) {
   const [lenguages, setLenguages] = useState([])
   const [videos, setVideos] = useState([])
 
-  const { title, poster_path, original_title,
+  const { title, poster_path,
      vote_average,
      runtime,release_date,overview,
      } = infoMovie;
@@ -49,7 +49,7 @@ export default function DetailMovie({movieId}) {
       
     };
     realizarConsultas();
-  }, [movieId]);
+  }, [movieId,poster_path]);
 
   const classes = useStyles();
 

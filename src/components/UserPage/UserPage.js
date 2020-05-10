@@ -52,8 +52,8 @@ function UserPage() {
     return (
       <EmptyState
         image={<ErrorIllustration />}
-        title="Couldn’t retrieve user"
-        description="Something went wrong when trying to retrieve the requested user"
+        title="No se pudo obtener el usuario"
+        description="Ocurrio un problema tratando de obtener tu información"
         button={
           <Fab
             variant="extended"
@@ -63,7 +63,7 @@ function UserPage() {
             <Box clone mr={1}>
               <RefreshIcon />
             </Box>
-            Retry
+            Reintentar
           </Fab>
         }
       />
@@ -78,14 +78,14 @@ function UserPage() {
     return (
       <EmptyState
         image={<NoDataIllustration />}
-        title="User doesn’t exist"
-        description="The requested user doesn’t exist"
+        title="El usuario no existe"
+        description="La solicitud de usuario no existe"
         button={
           <Fab variant="extended" color="primary" component={Link} to="/">
             <Box clone mr={1}>
               <HomeIcon />
             </Box>
-            Home
+            Inicio
           </Fab>
         }
       />

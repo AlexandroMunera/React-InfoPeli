@@ -115,6 +115,10 @@ class Bar extends Component {
       //   to: user ? `/user/${user.uid}` : null,
       // },
       {
+        name: "Listas",
+        to: user ? `/lists/${user.uid}` : null,
+      },
+      {
         name: "Cuenta",
         onClick: onSettingsClick,
       },

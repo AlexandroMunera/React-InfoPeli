@@ -1,15 +1,14 @@
-import React, { Component } from "react";
-
 import PropTypes from "prop-types";
-
-import { BrowserRouter, Switch, Redirect, Route } from "react-router-dom";
+import React, { Component } from "react";
+import { BrowserRouter, Redirect, Route, Switch } from "react-router-dom";
 import { GenresContexProvider } from "../../context/genresContext";
-
 // import HomePage from "../HomePage";
 import AdminPage from "../AdminPage";
-import UserPage from "../UserPage";
-import NotFoundPage from "../NotFoundPage";
 import Home from "../Home";
+import NotFoundPage from "../NotFoundPage";
+import UserPage from "../UserPage";
+import ListsPage from "../ListsPage/ListsPage";
+import ListMoviesPage from "../ListMoviesPage/ListMoviesPage";
 
 class Router extends Component {
   render() {
@@ -24,20 +23,18 @@ class Router extends Component {
         {bar}
 
         <Switch>
-          {/* <Route path="/" exact>
-            <HomePage user={user} openSnackbar={openSnackbar} />
-          </Route> */}
-
           <GenresContexProvider>
-            
+            <Route path="/" exact>
+              <Home user={user} openSnackbar={openSnackbar} />
+            </Route>
 
-          <Route path="/" exact>
-            <Home user={user} openSnackbar={openSnackbar} />            
-          </Route>
+            <Route path="/lists/:userId">
+              {user ? <ListsPage /> : <Redirect to="/" />}
+            </Route>
 
-            {/* <Route path="/404">
-              <NotFoundPage />
-            </Route> */}
+            <Route path="/list/:listId">
+              {user ? <ListMoviesPage /> : <Redirect to="/" />}
+            </Route>
 
             <Route path="/admin">
               {user && roles.includes("admin") ? (
@@ -62,16 +59,13 @@ class Router extends Component {
             <Route path="/peliculas" exact>
               <Home user={user} openSnackbar={openSnackbar} />
             </Route>
-            
+
             <Route path="/detail/:movieId" component={Home}></Route>
 
-            
+            {/* <Route>
+              <NotFoundPage />
+            </Route> */}
           </GenresContexProvider>
-
-          <Route>
-            <NotFoundPage />
-          </Route>
-
         </Switch>
       </BrowserRouter>
     );
