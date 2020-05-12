@@ -32,7 +32,7 @@ class Router extends Component {
               {user ? <ListsPage /> : <Redirect to="/" />}
             </Route>
 
-            <Route path="/list/:listId">
+            <Route path="/list/:listId/:listName">
               {user ? <ListMoviesPage /> : <Redirect to="/" />}
             </Route>
 
