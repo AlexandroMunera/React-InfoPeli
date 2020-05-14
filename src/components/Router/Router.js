@@ -5,7 +5,7 @@ import { GenresContexProvider } from "../../context/genresContext";
 // import HomePage from "../HomePage";
 import AdminPage from "../AdminPage";
 import Home from "../Home";
-import NotFoundPage from "../NotFoundPage";
+// import NotFoundPage from "../NotFoundPage";
 import UserPage from "../UserPage";
 import ListsPage from "../ListsPage/ListsPage";
 import ListMoviesPage from "../ListMoviesPage/ListMoviesPage";
@@ -60,7 +60,9 @@ class Router extends Component {
               <Home user={user} openSnackbar={openSnackbar} />
             </Route>
 
-            <Route path="/detail/:movieId" component={Home}></Route>
+            <Route path="/detail/:movieId" >
+              <Home user={user} />
+            </Route>
 
             {/* <Route>
               <NotFoundPage />

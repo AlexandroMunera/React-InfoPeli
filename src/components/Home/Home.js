@@ -12,7 +12,7 @@ import MoviesList from "../MovieList";
 
 function Home(props) {
   const classes = useStyles();
-  const { match, location } = props;
+  const { match, location, user } = props;
   const { params } = match;
   const { genreName } = params;  
   const { movieId } = params;
@@ -26,7 +26,7 @@ function Home(props) {
 
   useEffect(() => {
 
-    console.log('Entre al useEffect de home')    
+    console.log('Entre al useEffect de home')
 
       let page = 1
       location.search !== '' ? page = location.search.split("/")[1] : page = params.page
@@ -137,7 +137,7 @@ function Home(props) {
         <div id="back-to-top-anchor" />
         {loading && <CircularProgress />}
 
-        { movieId !== undefined ? <DetailMovie movieId={movieId} /> : _renderResults()}
+        { movieId !== undefined ? <DetailMovie movieId={movieId} user={user} /> : _renderResults()}
         
 
         <div>

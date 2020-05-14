@@ -12,11 +12,6 @@ import ErrorBoundary from "../ErrorBoundary";
 import LaunchScreen from "../LaunchScreen";
 import Router from "../Router";
 
-
-
-
-
-
 const initialState = {
   ready: false,
   performingAction: false,
