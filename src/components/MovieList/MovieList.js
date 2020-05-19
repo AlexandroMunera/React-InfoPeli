@@ -2,11 +2,11 @@ import { CircularProgress, Grid, Typography } from "@material-ui/core";
 import { Pagination } from "@material-ui/lab";
 import PropTypes from "prop-types";
 import React, { useEffect, useState } from "react";
-import { withRouter, useLocation } from "react-router-dom";
+import { useLocation, withRouter } from "react-router-dom";
 import IMG_NULL from "../../assets/noImg.png";
 import Movie from "../Movie";
 
-function MovieList({ movies, history, location }) {
+function MovieList({ movies, history, location, listId,deleteMovie }) {
   const IMG_URL = "https://image.tmdb.org/t/p/w342"; //Solo renderizar si cambian las peliculas
   const [films, setFilms] = useState(movies);
   const [pageActual, setPageActual] = useState(1);
@@ -38,26 +38,21 @@ function MovieList({ movies, history, location }) {
       : history.push(`/peliculas/${genero}/${page}`);
 
     setPageActual(page);
+
+    //Regresar el inicio de la pagina
+    const anchor = document.querySelector("#back-to-top-anchor");
+    if (anchor) {
+      anchor.scrollIntoView({ behavior: "smooth", block: "center" });
+    }
+  }
+
+  const eliminarMovie = (idMovie) => {
+    deleteMovie(idMovie)
   }
 
   return (
     <>
       {loading && <CircularProgress />}
-      {films.total_pages && (
-        <>
-          <Pagination
-            page={pageActual}
-            count={films.total_pages}
-            color="primary"
-            style={{ justifyContent: "center", display: "flex" }}
-            onChange={(e, page) => _handleChangePage(page)}
-          />
-
-          <Typography variant="caption" color="initial" align="center">
-            Se encontraron {films.total_results} pelis
-          </Typography>
-        </>
-      )}
 
       <Grid container justify="space-around" style={{ paddingTop: "1%" }}>
         {films.results.map((movie) => {
@@ -80,11 +75,29 @@ function MovieList({ movies, history, location }) {
                 year={new Date(movie.release_date).getFullYear()}
                 poster={poster}
                 vote_average={movie.vote_average}
+                deleteMovie={eliminarMovie}
+                listId={listId}
               />
             </Grid>
           );
         })}
       </Grid>
+
+      {films.total_pages && (
+        <>
+          <Pagination
+            color="primary"
+            count={films.total_pages}
+            onChange={(e, page) => _handleChangePage(page)}
+            page={pageActual}
+            style={{ justifyContent: "center", display: "flex" }}
+          />
+
+          <Typography variant="caption" color="initial" align="center">
+            Se encontraron {films.total_results} pelis
+          </Typography>
+        </>
+      )}
     </>
   );
 }

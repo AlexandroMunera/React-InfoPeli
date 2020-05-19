@@ -142,10 +142,10 @@ function Home(props) {
 
         <div>
           <img
-            id="imgMinion"
-            style={{ width: "50%", paddingTop: "10%" }}
-            src={BackgroundImage}
             alt="background"
+            id="imgMinion"
+            src={BackgroundImage}
+            style={{ width: "50%", paddingTop: "10%" }}
           />
         </div>
 
@@ -153,7 +153,7 @@ function Home(props) {
           <Container maxWidth="sm">
             <Typography variant="body1">
               <strong>Info Peli</strong>
-              <span style={{ margin: "2px" }} role="img" aria-label="Movie">
+              <span aria-label="Movie" role="img" style={{ margin: "2px" }}  >
                 🎥
               </span>
               <Link
@@ -168,7 +168,7 @@ function Home(props) {
       </main>
 
       <ScrollTop {...props}>
-        <Fab color="secondary" size="small" aria-label="scroll back to top">
+        <Fab aria-label="scroll back to top" color="secondary" size="small">
           <KeyboardArrowUpIcon />
         </Fab>
       </ScrollTop>

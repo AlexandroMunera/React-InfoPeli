@@ -1,20 +1,11 @@
-import {
-  Avatar,
-  Box,
-  MenuItem,
-  Select,
-  Typography,
-  InputLabel,
-  FormControl,
-  FormHelperText,
-} from "@material-ui/core";
+import { Avatar, Box, FormControl, FormHelperText, InputLabel, MenuItem, Select, Typography } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import { AvatarGroup } from "@material-ui/lab";
 import React, { useEffect, useState } from "react";
 import ReactPlayer from "react-player";
 import IMG_NULL from "../../assets/noImg.png";
-import apiMovies from "../../services/apiMovies";
 import { firestore } from "../../firebase";
+import apiMovies from "../../services/apiMovies";
 import Loader from "../Loader";
 
 const IMG_URL = "https://image.tmdb.org/t/p/w185"; //Solo renderizar si cambian las peliculas
@@ -218,10 +209,12 @@ export default function DetailMovie({ movieId, user }) {
               {loadingList && <Loader />}
             </FormControl>
           ) : (
-            "Registrate para crear tus listas"
+            <Typography color="initial" variant="body2" variantMapping="p" >
+              Registrate para ver tus listas
+            </Typography>
           )}
         </Box>
-
+        
         <Box
           textAlign="left"
           p={1}
