@@ -1,51 +1,63 @@
-import { CircularProgress, Container, Fab, Link, Typography, useScrollTrigger, Zoom } from "@material-ui/core";
+import {
+  CircularProgress,
+  Container,
+  Fab,
+  Link,
+  Typography,
+  useScrollTrigger,
+  Zoom,
+  Grid,
+} from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import KeyboardArrowUpIcon from "@material-ui/icons/KeyboardArrowUp";
 import PropTypes from "prop-types";
 import React, { useContext, useEffect, useState } from "react";
 import { useLocation, withRouter } from "react-router-dom";
-import BackgroundImage from "../../assets/minionsTransparente.png";
 import GenresContext from "../../context/genresContext";
 import apiMovies from "../../services/apiMovies";
 import DetailMovie from "../DetailMovie/DetailMovie";
 import MoviesList from "../MovieList";
+import BackgroundImage from "../../assets/fondo.svg";
+import OrderMovies from "../OrderMovies/OrderMovies";
 
 function Home(props) {
   const classes = useStyles();
+
   const { match, location, user } = props;
   const { params } = match;
-  const { genreName } = params;  
+  const { genreName } = params;
   const { movieId } = params;
-  const searchText = new URLSearchParams(useLocation().search).get("search")
-
+  const searchText = new URLSearchParams(useLocation().search).get("search");
   const [loading, setLoading] = useState(true);
   const [results, setResults] = useState("");
- 
   const { genres, setGenres } = useContext(GenresContext);
-  
+  const [sortBy, setSortBy] = useState("popularity.desc");
 
   useEffect(() => {
+    console.log("Entre al useEffect de home");
 
-    console.log('Entre al useEffect de home')
+    let page = 1;
+    location.search !== ""
+      ? (page = location.search.split("/")[1])
+      : (page = params.page);
 
-      let page = 1
-      location.search !== '' ? page = location.search.split("/")[1] : page = params.page
-
-      const realizarConsultas = async () => {
-      let generos = "";      
+    const realizarConsultas = async () => {
+      let generos = "";
       if (genres.length === 0) {
         let res = await apiMovies.getGenres();
-        generos = res.genres
-        
+        generos = res.genres;
       } else {
         generos = genres;
       }
 
-      setGenres(generos);      
+      setGenres(generos);
 
       if (searchText) {
         document.title = `Info Peli - Buscador`;
-        const Search = await apiMovies.searchMovie(searchText.split('/')[0],searchText.split('/')[1]);
+        const Search = await apiMovies.searchMovie(
+          searchText.split("/")[0],
+          searchText.split("/")[1]
+        );
 
         setResults(Search);
 
@@ -59,21 +71,21 @@ function Home(props) {
         }
 
         setLoading(false);
-      }
-      else if (genreName !== undefined && movieId === undefined) {
+      } else if (genreName !== undefined && movieId === undefined) {
         if (genreName === "Populares") {
-          const Search = await apiMovies.getPopularMovies(page);
+          const Search = await apiMovies.getMovisSortedBy(sortBy, page);
           setResults(Search);
           setLoading(false);
         } else {
           const generoEncontrado = generos.find((e) => e.name === genreName);
 
           if (generoEncontrado) {
-
             const Search = await apiMovies.getMoviesByGenreId(
               generoEncontrado.id,
-              page
+              page,
+              sortBy
             );
+
             setResults(Search);
 
             //Volver al inicio de la pagina
@@ -91,17 +103,21 @@ function Home(props) {
           }
         }
         document.title = `Info Peli - ${genreName}`;
-      }  else if (results === "" || Object.keys(params).length === 0) {
+      } else if (results === "" || Object.keys(params).length === 0) {
         document.title = `Info Peli - Populares`;
 
-        const Search = await apiMovies.getPopularMovies();
+        const Search = await apiMovies.getMovisSortedBy(sortBy);
         setResults(Search);
         setLoading(false);
       }
     };
     realizarConsultas();
-  }, [props,params]);
-  
+  }, [props, params, sortBy]);
+
+  const sortMovies = (itemSortBy) => {
+    setSortBy(itemSortBy);
+  };
+
   function _renderResults() {
     if (results === "") return <></>;
 
@@ -122,23 +138,30 @@ function Home(props) {
         >
           {genreName || "Peliculas"}
         </Typography>
-        <MoviesList movies={results}  />
+
+        {!searchText && (
+          <Grid container justify="space-around" style={{ padding: "2%" }}>
+            <OrderMovies sortMovies={sortMovies} />
+          </Grid>
+        )}
+        <MoviesList movies={results} />
       </>
     );
   }
 
-    return (
-      
-      <>
-      
+  return (
+    <>
       <main className={classes.content}>
         <div className={classes.toolbar} />
 
         <div id="back-to-top-anchor" />
         {loading && <CircularProgress />}
 
-        { movieId !== undefined ? <DetailMovie movieId={movieId} user={user} /> : _renderResults()}
-        
+        {movieId !== undefined ? (
+          <DetailMovie movieId={movieId} user={user} />
+        ) : (
+          _renderResults()
+        )}
 
         <div>
           <img
@@ -153,7 +176,7 @@ function Home(props) {
           <Container maxWidth="sm">
             <Typography variant="body1">
               <strong>Info Peli</strong>
-              <span aria-label="Movie" role="img" style={{ margin: "2px" }}  >
+              <span aria-label="Movie" role="img" style={{ margin: "2px" }}>
                 🎥
               </span>
               <Link
@@ -173,8 +196,7 @@ function Home(props) {
         </Fab>
       </ScrollTop>
     </>
-   
-   )
+  );
 }
 
 Home.propTypes = {
@@ -195,11 +217,10 @@ function ScrollTop(props) {
   });
 
   const handleClick = (event) => {
-    
-    const anchor = (event.target.ownerDocument || document)
-     .querySelector('#back-to-top-anchor');
+    const anchor = (event.target.ownerDocument || document).querySelector(
+      "#back-to-top-anchor"
+    );
     if (anchor) {
-      
       anchor.scrollIntoView({ behavior: "smooth", block: "center" });
     }
   };
@@ -238,10 +259,9 @@ const useStyles = makeStyles((theme) => ({
   },
   toolbar: theme.mixins.toolbar,
   content: {
-     flexGrow: 1,
+    flexGrow: 1,
   },
   tituloGenero: {
-    
     marginTop: theme.spacing(1),
     paddingLeft: theme.spacing(6),
     textDecorationLine: "underline",

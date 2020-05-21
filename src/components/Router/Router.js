@@ -5,15 +5,15 @@ import { GenresContexProvider } from "../../context/genresContext";
 // import HomePage from "../HomePage";
 import AdminPage from "../AdminPage";
 import Home from "../Home";
+import ListMoviesPage from "../ListMoviesPage/ListMoviesPage";
+import ListsPage from "../ListsPage/ListsPage";
 // import NotFoundPage from "../NotFoundPage";
 import UserPage from "../UserPage";
-import ListsPage from "../ListsPage/ListsPage";
-import ListMoviesPage from "../ListMoviesPage/ListMoviesPage";
 
 class Router extends Component {
   render() {
     // Properties
-    const { user, roles, bar } = this.props;
+    const { user, roles, bar} = this.props;
 
     // Functions
     const { openSnackbar } = this.props;

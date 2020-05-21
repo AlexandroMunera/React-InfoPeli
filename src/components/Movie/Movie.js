@@ -6,7 +6,6 @@ import { Rating } from "@material-ui/lab";
 import React from "react";
 import { Link } from "react-router-dom";
 
-
 export default function Movie({
   id,
   poster,
@@ -20,9 +19,7 @@ export default function Movie({
 
   const eliminarMovie = () => {
     deleteMovie(id)
-  }
-
- 
+  } 
 
   return (
     <Card className={classes.item}>
@@ -40,12 +37,12 @@ export default function Movie({
           </Typography>
 
           <Rating
+            className={classes.Rating}
             name="rating"
-            value={vote_average}
+            max={10}
             precision={0.5}
             readOnly
-            max={10}
-            className={classes.Rating}
+            value={vote_average}
           />
         </CardContent>
       </CardActionArea>

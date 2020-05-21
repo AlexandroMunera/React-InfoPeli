@@ -1,4 +1,13 @@
-import { Avatar, Box, FormControl, FormHelperText, InputLabel, MenuItem, Select, Typography } from "@material-ui/core";
+import {
+  Avatar,
+  Box,
+  FormControl,
+  FormHelperText,
+  InputLabel,
+  MenuItem,
+  Select,
+  Typography,
+} from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import { AvatarGroup } from "@material-ui/lab";
 import React, { useEffect, useState } from "react";
@@ -56,10 +65,9 @@ export default function DetailMovie({ movieId, user }) {
 
       const videosAPI = await apiMovies.getTrailer(movieId);
       setVideos(videosAPI);
-
     };
     realizarConsultas();
-  }, [movieId, poster_path,user]);
+  }, [movieId, poster_path, user]);
 
   const handleChangeList = (event) => {
     setSelectError(false);
@@ -85,69 +93,64 @@ export default function DetailMovie({ movieId, user }) {
   };
 
   const handleOpenLists = () => {
-      //Consultar las listas del usuario
-      setLoadingList(true)
+    //Consultar las listas del usuario
+    setLoadingList(true);
 
-      firestore
+    firestore
       .collection("lists")
       .where("userId", "==", user.uid)
       .get()
       .then(
-         (snapshot)  => {
-          
+        (snapshot) => {
           if (snapshot.empty) {
+            createDefaultList(user.uid);
+          } else {
+            let listas = [];
+            snapshot.forEach((doc) => {
+              let lista = {
+                id: doc.id,
+                listName: doc.data().listName,
+                description: doc.data().description,
+              };
+              listas.push(lista);
+            });
 
-            createDefaultList(user.uid)
-
-          }else{
-          let listas = [];
-           snapshot.forEach((doc) => {
-            let lista = {
-              id: doc.id,
-              listName: doc.data().listName,
-              description: doc.data().description,
-            };
-            listas.push(lista);
-           
-          });
-
-          setLists(listas);
-          setLoadingList(false);
-        }
-
+            setLists(listas);
+            setLoadingList(false);
+          }
         },
         (error) => {
           console.error(error);
         }
       );
-  }
+  };
 
   const createDefaultList = (userId) => {
-    console.log('createDefaultList', userId)
+    console.log("createDefaultList", userId);
     firestore
       .collection("lists")
       .add({
-        listName: 'Favoritas',
+        listName: "Favoritas",
         userId: userId,
-        description: 'Estas son mis pelis favoritas'
+        description: "Estas son mis pelis favoritas",
       })
       .then(function (doc) {
-        let listas = [{
-          id: doc.id,
-          listName: 'Favoritas',
-          description: 'Estas son mis pelis favoritas'
-        }]
+        let listas = [
+          {
+            id: doc.id,
+            listName: "Favoritas",
+            description: "Estas son mis pelis favoritas",
+          },
+        ];
         setLists(listas);
         setLoadingList(false);
-
       })
       .catch(function (error) {
         setSelectError(true);
         sethelperText(error);
         setLoadingList(false);
-
       });
-  }
+  };
 
   const addMovieToList = (idList, movieId) => {
     firestore
@@ -181,7 +184,7 @@ export default function DetailMovie({ movieId, user }) {
           {poster_path === undefined || poster_path == null ? (
             <img src={IMG_NULL} alt={title} className={classes.poster} />
           ) : (
-            <img src={IMG_URL + poster_path} alt={title} />
+            <img src={IMG_URL + poster_path} alt={title} className={classes.poster} />
           )}
 
           {user ? (
@@ -209,24 +212,23 @@ export default function DetailMovie({ movieId, user }) {
               {loadingList && <Loader />}
             </FormControl>
           ) : (
-            <Typography color="initial" variant="body2" variantMapping="p" >
+            <Typography color="initial" variant="body2" variantMapping="p">
               Registrate para ver tus listas
             </Typography>
           )}
         </Box>
-        
+
         <Box
-          textAlign="left"
-          p={1}
-          color="white"
           bgcolor="primary.dark"
+          color="white"
+          p={1}
+          textAlign="left"
           width="100%"
         >
           <Box m={1}>
             <Typography variant="h4" color="textPrimary">
               {title}
             </Typography>
-            {/* <Typography variant="caption" color="initial">{original_title}</Typography> */}
           </Box>
 
           <Box m={1}>
@@ -261,13 +263,13 @@ export default function DetailMovie({ movieId, user }) {
             <Typography variant="subtitle1" color="textPrimary">
               Actores:
             </Typography>
-            <AvatarGroup className={classes.avatarGroup} max={10}>
+            <AvatarGroup className={classes.avatarGroup} max={5}>
               {actores.map((face) => (
                 <Avatar
-                  key={face.cast_id}
                   alt={face.name}
-                  src={face.profile_path}
                   className={classes.avatar}
+                  key={face.cast_id}
+                  src={face.profile_path}
                 />
               ))}
             </AvatarGroup>
@@ -307,7 +309,7 @@ const useStyles = makeStyles((theme) => ({
   },
   poster: {
     heigth: "264px",
-    width: "185px",
+    maxWidth: "155px",
   },
   reproductor: {
     display: "inline-flex",

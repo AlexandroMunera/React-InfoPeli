@@ -1,19 +1,17 @@
 //Documentation:  https://developers.themoviedb.org/3/getting-started/introduction
 const BASE_API = "https://api.themoviedb.org/3/";
 const API_KEY = "b835070ca3f98419c2433584bf3af7cd";
-const SORT_BY = "popularity.desc";
 const API_LANGUAGE = "es";
-const INCLUDE_ADULTE = true;
+const INCLUDE_ADULTE = false;
 
 class ApiMovies {
-  async getPopularMovies(page = 1) {
+
+  async getMovisSortedBy(sortBy, page = 1) {
+
     const query = await fetch(
-      `${BASE_API}movie/popular?api_key=${API_KEY}&language=${API_LANGUAGE}&page=${page}`
+      `${BASE_API}discover/movie?api_key=${API_KEY}&language=${API_LANGUAGE}&sort_by=${sortBy}&include_adult=${INCLUDE_ADULTE}&page=${page}`
     );
     return await query.json();
-
-    // const { results } = await query.json();
-    // return results;
   }
 
   async getMovie(idMovie) {
@@ -35,9 +33,6 @@ class ApiMovies {
       `${BASE_API}search/movie?api_key=${API_KEY}&query=${text}&page=${page}`
     );
     return await query.json();
-
-    // const { results } = await query.json();
-    // return await results;
   }
 
   async getTrailer(idMovie) {
@@ -55,14 +50,12 @@ class ApiMovies {
     return await query.json();
   }
 
-  async getMoviesByGenreId(id, page) {
-    const query = await fetch(
-      `${BASE_API}discover/movie?api_key=${API_KEY}&language=${API_LANGUAGE}&sort_by=${SORT_BY}&include_adult=${INCLUDE_ADULTE}&with_genres=${id}&page=${page}`
-    );
-    return await query.json();
+  async getMoviesByGenreId(id, page, sortBy) {
 
-    // const { results } = await query.json();
-    // return results;
+    const query = await fetch(
+      `${BASE_API}discover/movie?api_key=${API_KEY}&language=${API_LANGUAGE}&sort_by=${sortBy}&include_adult=${INCLUDE_ADULTE}&with_genres=${id}&page=${page}`
+    )
+    return await query.json()
   }
 }
 

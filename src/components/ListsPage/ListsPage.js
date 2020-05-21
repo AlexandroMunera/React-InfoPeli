@@ -16,6 +16,7 @@ import { ReactComponent as NoDataIllustration } from "../../illustrations/no-dat
 import EmptyState from "../EmptyState";
 import ListCard from "../ListCard/ListCard";
 import Loader from "../Loader";
+import ListsSVG from "../../assets/lists.svg";
 
 function ListsPage() {
   const [loading, setLoading] = useState(true);
@@ -294,6 +295,13 @@ function ListsPage() {
             />
           ))}
       </Box>
+
+      <img
+            alt="background"
+            id="imgMinion"
+            src={ListsSVG}
+            style={{ width: "50%", paddingTop: "10%" }}
+          />
 
       <Dialog
         aria-labelledby="form-dialog-title"
