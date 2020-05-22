@@ -20,6 +20,7 @@ import MoviesList from "../MovieList";
 import BackgroundImage from "../../assets/fondo.svg";
 import OrderMovies from "../OrderMovies/OrderMovies";
 
+
 function Home(props) {
   const classes = useStyles();
 
@@ -162,7 +163,7 @@ function Home(props) {
         ) : (
           _renderResults()
         )}
-
+        
         <div>
           <img
             alt="background"

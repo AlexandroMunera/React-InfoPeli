@@ -1,7 +1,7 @@
 {
   "name": "info-peli",
   "version": "0.1.0",
-  "description" : "Mira toda la información de las peliculas y agregalas en tus favoritas.",
+  "description": "Mira toda la información de las peliculas y agregalas en tus favoritas.",
   "private": true,
   "dependencies": {
     "@material-ui/codemod": "^4.5.0",
@@ -17,6 +17,7 @@
     "camelcase": "^6.0.0",
     "customize-cra": "^0.9.1",
     "firebase": "^7.14.3",
+    "lottie-react": "^1.0.0",
     "mdi-material-ui": "^6.14.0",
     "moment": "2.25.3",
     "react": "^16.13.1",

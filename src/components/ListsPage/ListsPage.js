@@ -1,4 +1,4 @@
-import { Box, Button, Fab, IconButton, Snackbar, TextField, Typography } from "@material-ui/core";
+import { Box, Button, Fab, IconButton, Snackbar, TextField, Typography, Grid } from "@material-ui/core";
 import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
@@ -16,7 +16,8 @@ import { ReactComponent as NoDataIllustration } from "../../illustrations/no-dat
 import EmptyState from "../EmptyState";
 import ListCard from "../ListCard/ListCard";
 import Loader from "../Loader";
-import ListsSVG from "../../assets/lists.svg";
+import { Animator } from "lottie-react";
+import AnimationLists from "../../assets/animations/animationLists.json";
 
 function ListsPage() {
   const [loading, setLoading] = useState(true);
@@ -296,12 +297,9 @@ function ListsPage() {
           ))}
       </Box>
 
-      <img
-            alt="background"
-            id="imgMinion"
-            src={ListsSVG}
-            style={{ width: "50%", paddingTop: "10%" }}
-          />
+      <Grid container justify="space-around">
+        <Animator animationData={AnimationLists} loop="0" style={styleAnimation} />
+      </Grid>
 
       <Dialog
         aria-labelledby="form-dialog-title"
@@ -357,13 +355,17 @@ function ListsPage() {
   );
 }
 
+const styleAnimation = {
+  width: "40%",
+};
+
 const useStyles = makeStyles((theme) => ({
   tituloList: {
     marginTop: theme.spacing(1),
     paddingLeft: theme.spacing(6),
     textDecorationLine: "underline",
     textDecorationStyle: "dotted",
-  },
+  }
 }));
 
 export default ListsPage;

@@ -1,8 +1,10 @@
 import { IconButton, InputBase } from "@material-ui/core";
 import { fade, makeStyles } from "@material-ui/core/styles";
-import SearchIcon from "@material-ui/icons/Search";
+// import SearchIcon from "@material-ui/icons/Search";
 import React, { useState } from "react";
 import { withRouter } from "react-router-dom";
+import { Animator } from "lottie-react";
+import AnimationSearch from "../../assets/animations/animationSearch.json";
 
 // class Movie extends Component {
 function Search({history}) {
@@ -32,7 +34,9 @@ function Search({history}) {
               aria-label="open drawer"
               onClick={() => _handleSubmit()}
             >
-              <SearchIcon />
+              {/* <SearchIcon /> */}
+            <Animator animationData={AnimationSearch} loop="10" style={{width: "2em", height: "1em"}} />
+
             </IconButton>
             <InputBase
               onChange={(e) => setInputMovie(e.target.value)}

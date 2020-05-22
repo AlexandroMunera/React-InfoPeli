@@ -171,6 +171,7 @@ class Bar extends Component {
           onClick={this._handleClickLogo}
           >
             <MovieFilterIcon fontSize="large" />
+
           </IconButton>
 
           {/* <Box display="flex" flexGrow={1}> */}
