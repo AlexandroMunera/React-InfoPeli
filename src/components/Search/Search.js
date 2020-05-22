@@ -35,13 +35,13 @@ function Search({history}) {
               onClick={() => _handleSubmit()}
             >
               {/* <SearchIcon /> */}
-            <Animator animationData={AnimationSearch} loop="10" style={{width: "2em", height: "1em"}} />
+            <Animator animationData={AnimationSearch} loop="15" style={{width: "2em", height: "1em"}} />
 
             </IconButton>
             <InputBase
               onChange={(e) => setInputMovie(e.target.value)}
               onKeyPress={(e) => (e.key === "Enter" ? _handleSubmit(e) : "")}
-              placeholder="  Ingresa un peli…"
+              placeholder="Busca aquí …"
               classes={{
                 root: classes.inputRoot,
                 input: classes.inputInput,
@@ -72,7 +72,7 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   searchIcon: {
-    padding: theme.spacing(0, 2),
+    padding: theme.spacing(0, 1),
     height: "100%",
     position: "absolute",
     // pointerEvents: 'none',
@@ -82,17 +82,14 @@ const useStyles = makeStyles((theme) => ({
   },
   inputRoot: {
     color: "inherit",
-    width: "85%",
     justifyContent: "left",
+    width: "55%",
   },
   inputInput: {
     textAlign: "left",
     padding: theme.spacing(1, 1, 1, 0),
-    // vertical padding + font size from searchIcon
-    // paddingLeft: `calc(1em + ${theme.spacing(1)}px)`,
-    paddingLeft: `${theme.spacing(2)}px`,
+    // paddingLeft: `${theme.spacing(2)}px`,
     transition: theme.transitions.create("width"),
-    // width: '100%',
     [theme.breakpoints.up("sm")]: {
       width: "15ch",
       "&:focus": {
