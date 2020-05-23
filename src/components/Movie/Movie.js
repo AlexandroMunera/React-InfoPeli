@@ -1,10 +1,26 @@
-import { Card, CardActionArea, CardActions, CardContent, CardMedia, IconButton, Typography } from "@material-ui/core";
+import React, { useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
+import {
+  Card,
+  CardActionArea,
+  CardActions,
+  CardContent,
+  CardMedia,
+  IconButton,
+  Typography,
+} from "@material-ui/core";
 import DeleteIcon from "@material-ui/icons/Delete";
-import FavoriteIcon from "@material-ui/icons/Favorite";
 import { Rating } from "@material-ui/lab";
-import React from "react";
 import { Link } from "react-router-dom";
+import ShareIcon from "@material-ui/icons/Share";
+import {
+  FacebookIcon,
+  FacebookShareButton,
+  WhatsappIcon,
+  TwitterIcon,
+  TwitterShareButton,
+  WhatsappShareButton,
+} from "react-share";
 
 export default function Movie({
   id,
@@ -12,14 +28,18 @@ export default function Movie({
   title,
   year,
   vote_average,
-  listId,deleteMovie
+  listId,
+  deleteMovie,
 }) {
-
   const classes = useStyles();
+  const [showShareButtons, setShowShareButtons] = useState(false);
 
   const eliminarMovie = () => {
-    deleteMovie(id)
-  } 
+    deleteMovie(id);
+  };
+
+  const shareUrl = `https://infopeli.web.app/detail/${id}`
+  const titleToShare = `Hola, te recomiendo ver la pelicula ${title} o si quieres ver mas información y crear listas personalizables totalmente gratis, ingresa al sitio web.`
 
   return (
     <Card className={classes.item}>
@@ -46,18 +66,46 @@ export default function Movie({
           />
         </CardContent>
       </CardActionArea>
-      
-        <CardActions className={classes.cardActions} disableSpacing>
-          <IconButton aria-label="add to favorites">
-            <FavoriteIcon />
+
+      <CardActions className={classes.cardActions} disableSpacing>
+        {showShareButtons ? (
+          <>
+            <FacebookShareButton
+              url={shareUrl}
+              quote={titleToShare}
+              hashtag="Peliculas"
+            >
+              <FacebookIcon size={32} round />
+            </FacebookShareButton>
+
+            <TwitterShareButton
+              url={shareUrl}
+              title={titleToShare}
+              hashtags={["Información","Peliculas","Movies"]}
+            >
+              <TwitterIcon size={32} round />
+            </TwitterShareButton>
+
+            <WhatsappShareButton
+              url={shareUrl}
+              title={titleToShare}
+              separator=":: "
+            >
+              <WhatsappIcon size={32} round />
+            </WhatsappShareButton>
+          </>
+        ) : (
+          <IconButton onClick={() => setShowShareButtons(true)}>
+            <ShareIcon />
           </IconButton>
-          {listId && (
-          <IconButton aria-label="delete" onClick={eliminarMovie} >
+        )}
+
+        {listId && (
+          <IconButton aria-label="delete" onClick={eliminarMovie}>
             <DeleteIcon color="error" />
           </IconButton>
-          )}
-        </CardActions>
-      
+        )}
+      </CardActions>
     </Card>
   );
 }
@@ -85,6 +133,7 @@ const useStyles = makeStyles((theme) => ({
   },
   cardActions: {
     padding: "0px",
+    paddingLeft: "5px",
   },
   divider: {
     margin: "10px",

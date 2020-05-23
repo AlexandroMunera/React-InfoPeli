@@ -19,6 +19,7 @@ import Loader from "../Loader";
 import { Animator } from "lottie-react";
 import AnimationLists from "../../assets/animations/animationLists.json";
 
+
 function ListsPage() {
   const [loading, setLoading] = useState(true);
   const [user, setUser] = useState(null);

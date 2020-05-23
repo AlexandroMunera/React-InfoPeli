@@ -180,7 +180,7 @@ export default function DetailMovie({ movieId, user }) {
         justifyContent="center"
         bgcolor="background.paper"
       >
-        <Box bgcolor="grey.100">
+        <Box bgcolor="primary.dark">
           {poster_path === undefined || poster_path == null ? (
             <img src={IMG_NULL} alt={title} className={classes.poster} />
           ) : (
@@ -219,7 +219,7 @@ export default function DetailMovie({ movieId, user }) {
         </Box>
 
         <Box
-          bgcolor="primary.dark"
+          bgcolor="primary.main"
           color="white"
           p={1}
           textAlign="left"
