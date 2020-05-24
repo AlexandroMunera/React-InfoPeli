@@ -16,6 +16,7 @@ import IMG_NULL from "../../assets/noImg.png";
 import { firestore } from "../../firebase";
 import apiMovies from "../../services/apiMovies";
 import Loader from "../Loader";
+import Carousel from "react-elastic-carousel";
 
 const IMG_URL = "https://image.tmdb.org/t/p/w185"; //Solo renderizar si cambian las peliculas
 const PROFIL_IMG_URL = "https://image.tmdb.org/t/p/w45";
@@ -172,6 +173,15 @@ export default function DetailMovie({ movieId, user }) {
 
   const classes = useStyles();
 
+  const breakPointsCarouselActors = [
+    { width: 1, itemsToShow: 2 },
+    { width: 550, itemsToShow: 12, itemsToScroll: 2 },
+    { width: 850, itemsToShow: 15 },
+    { width: 1150, itemsToShow: 18, itemsToScroll: 2 },
+    { width: 1450, itemsToShow: 20},
+    { width: 1750, itemsToShow: 22 },
+  ]
+
   return (
     <>
       <Box
@@ -184,7 +194,11 @@ export default function DetailMovie({ movieId, user }) {
           {poster_path === undefined || poster_path == null ? (
             <img src={IMG_NULL} alt={title} className={classes.poster} />
           ) : (
-            <img src={IMG_URL + poster_path} alt={title} className={classes.poster} />
+            <img
+              src={IMG_URL + poster_path}
+              alt={title}
+              className={classes.poster}
+            />
           )}
 
           {user ? (
@@ -263,6 +277,18 @@ export default function DetailMovie({ movieId, user }) {
             <Typography variant="subtitle1" color="textPrimary">
               Actores:
             </Typography>
+            
+            <Carousel breakPoints={breakPointsCarouselActors} showArrows={true} disableArrowsOnEnd pagination={false} itemPadding={[0, 10, 0, 0]}>
+              {actores.map((face) => (
+                <img
+                  alt={face.name}
+                  // className={classes.avatar}
+                  key={face.cast_id}
+                  src={face.profile_path}
+                />
+              ))}
+            </Carousel>
+            
             <AvatarGroup className={classes.avatarGroup} max={5}>
               {actores.map((face) => (
                 <Avatar
