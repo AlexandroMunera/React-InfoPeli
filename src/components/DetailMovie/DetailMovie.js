@@ -1,22 +1,12 @@
-import {
-  Avatar,
-  Box,
-  FormControl,
-  FormHelperText,
-  InputLabel,
-  MenuItem,
-  Select,
-  Typography,
-} from "@material-ui/core";
+import { Box, Card, CardMedia, FormControl, FormHelperText, InputLabel, MenuItem, Select, Typography } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
-import { AvatarGroup } from "@material-ui/lab";
 import React, { useEffect, useState } from "react";
+import Carousel from "react-elastic-carousel";
 import ReactPlayer from "react-player";
 import IMG_NULL from "../../assets/noImg.png";
 import { firestore } from "../../firebase";
 import apiMovies from "../../services/apiMovies";
 import Loader from "../Loader";
-import Carousel from "react-elastic-carousel";
 
 const IMG_URL = "https://image.tmdb.org/t/p/w185"; //Solo renderizar si cambian las peliculas
 const PROFIL_IMG_URL = "https://image.tmdb.org/t/p/w45";
@@ -176,10 +166,10 @@ export default function DetailMovie({ movieId, user }) {
   const breakPointsCarouselActors = [
     { width: 1, itemsToShow: 2 },
     { width: 550, itemsToShow: 12, itemsToScroll: 2 },
-    { width: 850, itemsToShow: 15 },
-    { width: 1150, itemsToShow: 18, itemsToScroll: 2 },
-    { width: 1450, itemsToShow: 20},
-    { width: 1750, itemsToShow: 22 },
+    { width: 850, itemsToShow: 13 },
+    { width: 1150, itemsToShow: 15, itemsToScroll: 4 },
+    { width: 1450, itemsToShow: 18},
+    { width: 1750, itemsToShow: 20 },
   ]
 
   return (
@@ -278,27 +268,28 @@ export default function DetailMovie({ movieId, user }) {
               Actores:
             </Typography>
             
-            <Carousel breakPoints={breakPointsCarouselActors} showArrows={true} disableArrowsOnEnd pagination={false} itemPadding={[0, 10, 0, 0]}>
+            <Carousel 
+              breakPoints={breakPointsCarouselActors} 
+              disableArrowsOnEnd 
+              itemPadding={[0, 10, 0, 0]}
+              pagination={false} 
+              showArrows={false} 
+            >
               {actores.map((face) => (
-                <img
-                  alt={face.name}
-                  // className={classes.avatar}
-                  key={face.cast_id}
-                  src={face.profile_path}
-                />
+
+                <Card className={classes.actorCard}>                
+                  <CardMedia
+                    className={classes.imgActor}
+                    image={face.profile_path}
+                    title={face.name}
+                  />
+                    <Typography align="center" display="block" variant="caption">
+                    {face.name}
+                    </Typography>
+                </Card>
               ))}
             </Carousel>
             
-            <AvatarGroup className={classes.avatarGroup} max={5}>
-              {actores.map((face) => (
-                <Avatar
-                  alt={face.name}
-                  className={classes.avatar}
-                  key={face.cast_id}
-                  src={face.profile_path}
-                />
-              ))}
-            </AvatarGroup>
           </Box>
         </Box>
       </Box>
@@ -326,12 +317,12 @@ const useStyles = makeStyles((theme) => ({
   agregarALista: {
     width: "80%",
   },
-  avatar: {
-    height: theme.spacing(5),
-    width: theme.spacing(5),
+  actorCard:{
+    height:  theme.spacing(16),
+    width: theme.spacing(11),    
   },
-  avatarGroup: {
-    paddingLeft: "10px",
+  imgActor: {
+    height: theme.spacing(14),
   },
   poster: {
     heigth: "264px",
