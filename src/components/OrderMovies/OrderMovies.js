@@ -22,15 +22,15 @@ function OrderMovies({ sortMovies }) {
   };
 
   return (
-    <ExpansionPanel>
-      <ExpansionPanelSummary
-        expandIcon={<ExpandMoreIcon />}
-        aria-controls="panel1a-content"
-        id="panel1a-header"
-      >
-        <Typography className={classes.heading}>Ordenar</Typography>
-      </ExpansionPanelSummary>
-      <ExpansionPanelDetails>
+    // <ExpansionPanel>
+    //   <ExpansionPanelSummary
+    //     expandIcon={<ExpandMoreIcon />}
+    //     aria-controls="panel1a-content"
+    //     id="panel1a-header"
+    //   >
+    //     <Typography className={classes.heading}>Ordenar</Typography>
+    //   </ExpansionPanelSummary>
+    //   <ExpansionPanelDetails>
         <FormControl className={classes.formControl}>
           <InputLabel id="demo-simple-select-outlined-label">
             Ordenar por:
@@ -57,9 +57,9 @@ function OrderMovies({ sortMovies }) {
             <MenuItem value="title.asc">Título (A-Z)</MenuItem>
             <MenuItem value="title.desc">Título (Z-A)</MenuItem>
           </Select>
-        </FormControl>
-      </ExpansionPanelDetails>
-    </ExpansionPanel>
+         </FormControl>
+    //   </ExpansionPanelDetails>
+    // </ExpansionPanel>
   );
 }
 

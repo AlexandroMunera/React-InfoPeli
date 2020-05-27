@@ -20,7 +20,6 @@ import MoviesList from "../MovieList";
 import BackgroundImage from "../../assets/fondo.svg";
 import OrderMovies from "../OrderMovies/OrderMovies";
 
-
 function Home(props) {
   const classes = useStyles();
 
@@ -152,6 +151,8 @@ function Home(props) {
 
   return (
     <>
+   
+
       <main className={classes.content}>
         <div className={classes.toolbar} />
 

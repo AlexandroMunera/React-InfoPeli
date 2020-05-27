@@ -11,6 +11,7 @@ import DialogHost from "../DialogHost";
 import ErrorBoundary from "../ErrorBoundary";
 import LaunchScreen from "../LaunchScreen";
 import Router from "../Router";
+import UserWelcome from "../UserWelcome/UserWelcome";
 
 const initialState = {
   ready: false,
@@ -43,6 +44,10 @@ const initialState = {
 
   signOutDialog: {
     open: false,
+  },
+
+  userWelcomeDialog: {
+    open: true,
   },
 
   snackbar: {
@@ -240,6 +245,22 @@ class App extends Component {
     });
   };
 
+  handleClickDialogUserWelcome = (value) => {
+    this.setState({
+      userWelcomeDialog: {
+        open: value,
+      },
+    });
+  };
+
+  openDialogUserWelcome = () => {
+    this.setState({
+      userWelcomeDialog: {
+        open: true,
+      },
+    });  
+  };  
+
   render() {
     const {
       ready,
@@ -258,6 +279,7 @@ class App extends Component {
       settingsDialog,
       deleteAccountDialog,
       signOutDialog,
+      userWelcomeDialog,
     } = this.state;
 
     const { snackbar } = this.state;
@@ -270,13 +292,11 @@ class App extends Component {
           {!ready && <LaunchScreen />}
 
           {ready && (
-            <div style={{ display:'flex', textAlign:'center' }}>
-              
+            <div style={{ display: "flex", textAlign: "center" }}>
               <Router
                 user={user}
                 roles={roles}
                 bar={
-                   
                   <Bar
                     performingAction={performingAction}
                     theme={theme}
@@ -289,9 +309,15 @@ class App extends Component {
                     onAboutClick={() => this.openDialog("aboutDialog")}
                     onSettingsClick={() => this.openDialog("settingsDialog")}
                     onSignOutClick={() => this.openDialog("signOutDialog")}
+                    onUserWelcomeClick={() => this.openDialogUserWelcome()}
                   />
                 }
                 openSnackbar={this.openSnackbar}
+              />
+
+              <UserWelcome
+                handleOpen={userWelcomeDialog}
+                setHandleOpen={(value) => this.handleClickDialogUserWelcome(value)}
               />
 
               <DialogHost

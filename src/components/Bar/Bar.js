@@ -1,4 +1,21 @@
-import { AppBar, Button, Divider, Drawer, Grid, Hidden, IconButton, List, ListItem, ListItemIcon, ListItemText, Menu, MenuItem, SwipeableDrawer, Toolbar, Typography } from "@material-ui/core";
+import {
+  AppBar,
+  Button,
+  Divider,
+  Drawer,
+  Grid,
+  Hidden,
+  IconButton,
+  List,
+  ListItem,
+  ListItemIcon,
+  ListItemText,
+  Menu,
+  MenuItem,
+  SwipeableDrawer,
+  Toolbar,
+  Typography,
+} from "@material-ui/core";
 import { withStyles } from "@material-ui/core/styles";
 import LocalMoviesIcon from "@material-ui/icons/LocalMovies";
 import MenuIcon from "@material-ui/icons/Menu";
@@ -95,6 +112,7 @@ class Bar extends Component {
       onSignOutClick,
       onSignUpClick,
       onSignInClick,
+      onUserWelcomeClick
     } = this.props;
 
     const { menu, selectedGenreId } = this.state;
@@ -129,14 +147,22 @@ class Bar extends Component {
         <Divider />
 
         {!user && (
-          <Grid container justify="space-around" style={{ padding: "2%" }}>
-            <Button onClick={onSignUpClick} variant="outlined">
-              Registro
-            </Button>
-            <Button onClick={onSignInClick} variant="outlined">
-              Mi cuenta
-            </Button>
-          </Grid>
+          <>
+            <Grid container justify="space-around" style={{ padding: "2%" }}>
+              <Button onClick={onUserWelcomeClick} variant="outlined">
+                ¿ Cómo funciona ?
+              </Button>
+            </Grid>
+            <Divider />
+            <Grid container justify="space-around" style={{ padding: "2%" }}>
+              <Button onClick={onSignUpClick} variant="outlined">
+                Registro
+              </Button>
+              <Button onClick={onSignInClick} variant="outlined">
+                Mi cuenta
+              </Button>
+            </Grid>
+          </>
         )}
         <Divider />
         <List>
