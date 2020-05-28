@@ -83,6 +83,7 @@ function MovieList({ movies, history, location, listId,deleteMovie }) {
         })}
       </Grid>
 
+     
       {films.total_pages && (
         <>
           <Pagination

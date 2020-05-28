@@ -151,9 +151,7 @@ function Home(props) {
 
   return (
     <>
-   
-
-      <main className={classes.content}>
+    <main className={classes.content}>
         <div className={classes.toolbar} />
 
         <div id="back-to-top-anchor" />

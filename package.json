@@ -33,6 +33,7 @@
     "react-share": "^4.1.0",
     "react-swipeable-views": "^0.13.9",
     "reading-time": "^1.2.0",
+    "simplebar-react": "^2.2.0",
     "source-map-explorer": "^2.4.2",
     "styled-components": "^5.1.0",
     "typeface-roboto": "0.0.75",

@@ -26,6 +26,8 @@ import { Link, withRouter } from "react-router-dom";
 import apiMovies from "../../services/apiMovies";
 import Search from "../Search/Search";
 import UserAvatar from "../UserAvatar";
+import SimpleBarReact from "simplebar-react";
+import "simplebar/src/simplebar.css";
 
 class Bar extends Component {
   constructor(props) {
@@ -142,7 +144,9 @@ class Bar extends Component {
     ];
 
     const drawer = (
-      <div>
+
+      <SimpleBarReact style={{ maxHeight: "100vh" }}>
+        
         <div className={classes.toolbar} />
         <Divider />
 
@@ -179,8 +183,9 @@ class Bar extends Component {
               <ListItemText primary={g.name} />
             </ListItem>
           ))}
-        </List>
-      </div>
+        </List>        
+      
+      </SimpleBarReact>
     );
 
     return (
@@ -360,7 +365,7 @@ Bar.propTypes = {
   onSignOutClick: PropTypes.func.isRequired,
 };
 
-const drawerWidth = 240;
+const drawerWidth = 200;
 
 const styles = (theme) => ({
   toolbar: theme.mixins.toolbar,

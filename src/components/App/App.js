@@ -12,6 +12,8 @@ import ErrorBoundary from "../ErrorBoundary";
 import LaunchScreen from "../LaunchScreen";
 import Router from "../Router";
 import UserWelcome from "../UserWelcome/UserWelcome";
+import SimpleBarReact from "simplebar-react";
+import "simplebar/src/simplebar.css";
 
 const initialState = {
   ready: false,
@@ -64,10 +66,9 @@ class App extends Component {
     this.state = initialState;
 
     const isFirstVisit = localStorage.getItem("showUserWelcome");
-    console.log('firstVisit', isFirstVisit)
+    console.log("firstVisit", isFirstVisit);
 
-    if(isFirstVisit === null){
-
+    if (isFirstVisit === null) {
       this.setState({
         userWelcomeDialog: {
           open: true,
@@ -75,7 +76,6 @@ class App extends Component {
       });
       localStorage.setItem("showUserWelcome", true);
     }
-    
   }
 
   resetState = (callback) => {
@@ -306,7 +306,10 @@ class App extends Component {
           {!ready && <LaunchScreen />}
 
           {ready && (
-            <div style={{ display: "flex", textAlign: "center" }}>
+
+            <SimpleBarReact style={{ maxHeight: "100vh" }}>
+
+              <div style={{ display: "flex", textAlign: "center" }}>
               <Router
                 user={user}
                 roles={roles}
@@ -445,6 +448,8 @@ class App extends Component {
                 onClose={this.closeSnackbar}
               />
             </div>
+            
+            </SimpleBarReact>
           )}
         </ErrorBoundary>
       </MuiThemeProvider>
