@@ -59,10 +59,10 @@ export default function Movie({
           <Rating
             className={classes.Rating}
             name="rating"
-            max={10}
+            max={5}
             precision={0.5}
             readOnly
-            value={vote_average}
+            value={vote_average/2}
           />
         </CardContent>
       </CardActionArea>

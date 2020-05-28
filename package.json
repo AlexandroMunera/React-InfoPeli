@@ -28,6 +28,7 @@
     "react-elastic-carousel": "^0.6.1",
     "react-player": "^2.0.1",
     "react-router-dom": "^5.2.0",
+    "react-score-indicator": "^2.2.1",
     "react-scripts": "^3.4.1",
     "react-share": "^4.1.0",
     "react-swipeable-views": "^0.13.9",

@@ -1,5 +1,6 @@
 import { blue, green, red } from "@material-ui/core/colors";
 import { AutoRotatingCarousel, Slide } from "material-auto-rotating-carousel";
+import { makeStyles } from "@material-ui/core/styles";
 import React from "react";
 import { useMediaQuery } from "@material-ui/core";
 import SVGHomeCinema from "../../assets/homeCinema.svg";
@@ -7,28 +8,31 @@ import SVGListsToDo from "../../assets/listsToDo.svg";
 import SVGSocialGirl from "../../assets/socialGirl.svg";
 
 function UserWelcome({ handleOpen, setHandleOpen }) {
+  const classes = useStyles();
 
   const isMobile = useMediaQuery("(max-width:600px)");
 
   return (
     <div>
       <AutoRotatingCarousel
-        label="Get started"
+        autoplay={true}
+        interval={6000}
+        mobile={isMobile}
+        label="Empezar"
         open={handleOpen.open}
         onClose={() => setHandleOpen(false)}
         onStart={() => setHandleOpen(false)}
-        autoplay={true}
-        mobile={isMobile}
         style={{ position: "absolute" }}
       >
         <Slide
           media={
 
-            <img
+            <img              
               alt="SVGHomeCinema"
               id="SVGHomeCinema"
               src={SVGHomeCinema}
-              style={{ paddingTop: "20px" }}
+              className={classes.image}
+
             />
 
           }
@@ -44,7 +48,8 @@ function UserWelcome({ handleOpen, setHandleOpen }) {
               alt="SVGListsToDo"
               id="SVGListsToDo"
               src={SVGListsToDo}
-              style={{ paddingTop: "20px" }}
+              className={classes.image}
+
             />
             
           }
@@ -60,7 +65,7 @@ function UserWelcome({ handleOpen, setHandleOpen }) {
               alt="SVGSocialGirl"
               id="SVGSocialGirl"
               src={SVGSocialGirl}
-              style={{ paddingTop: "20px" }}
+              className={classes.image}
             />
             
           }
@@ -73,5 +78,13 @@ function UserWelcome({ handleOpen, setHandleOpen }) {
     </div>
   );
 }
+
+
+const useStyles = makeStyles((theme) => ({
+
+  image: {
+    width: theme.spacing(20)
+  },
+}));
 
 export default UserWelcome;

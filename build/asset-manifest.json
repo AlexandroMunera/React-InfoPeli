@@ -1,30 +1,33 @@
 {
   "files": {
     "main.css": "/static/css/main.61ff7de1.chunk.css",
-    "main.js": "/static/js/main.0ce2d480.chunk.js",
-    "main.js.map": "/static/js/main.0ce2d480.chunk.js.map",
+    "main.js": "/static/js/main.e730f254.chunk.js",
+    "main.js.map": "/static/js/main.e730f254.chunk.js.map",
     "runtime-main.js": "/static/js/runtime-main.cec73148.js",
     "runtime-main.js.map": "/static/js/runtime-main.cec73148.js.map",
     "static/css/2.80b2a496.chunk.css": "/static/css/2.80b2a496.chunk.css",
-    "static/js/2.9fd31782.chunk.js": "/static/js/2.9fd31782.chunk.js",
-    "static/js/2.9fd31782.chunk.js.map": "/static/js/2.9fd31782.chunk.js.map",
+    "static/js/2.4ac52bb7.chunk.js": "/static/js/2.4ac52bb7.chunk.js",
+    "static/js/2.4ac52bb7.chunk.js.map": "/static/js/2.4ac52bb7.chunk.js.map",
     "index.html": "/index.html",
-    "precache-manifest.a87cb98fda55976445e583eae674426c.js": "/precache-manifest.a87cb98fda55976445e583eae674426c.js",
+    "precache-manifest.5a8545a6b3284caaba08ab3ee6be1097.js": "/precache-manifest.5a8545a6b3284caaba08ab3ee6be1097.js",
     "service-worker.js": "/service-worker.js",
     "static/css/2.80b2a496.chunk.css.map": "/static/css/2.80b2a496.chunk.css.map",
     "static/css/main.61ff7de1.chunk.css.map": "/static/css/main.61ff7de1.chunk.css.map",
-    "static/js/2.9fd31782.chunk.js.LICENSE.txt": "/static/js/2.9fd31782.chunk.js.LICENSE.txt",
+    "static/js/2.4ac52bb7.chunk.js.LICENSE.txt": "/static/js/2.4ac52bb7.chunk.js.LICENSE.txt",
     "static/media/error.5446a452.svg": "/static/media/error.5446a452.svg",
     "static/media/fondo.svg": "/static/media/fondo.1867c53b.svg",
+    "static/media/homeCinema.svg": "/static/media/homeCinema.b0517f48.svg",
+    "static/media/listsToDo.svg": "/static/media/listsToDo.b838c666.svg",
     "static/media/no-data.f9b088ce.svg": "/static/media/no-data.f9b088ce.svg",
     "static/media/noImg.png": "/static/media/noImg.cceff107.png",
-    "static/media/index.css": "/static/media/roboto-latin-900italic.ebf6d164.woff2"
+    "static/media/index.css": "/static/media/roboto-latin-900italic.ebf6d164.woff2",
+    "static/media/socialGirl.svg": "/static/media/socialGirl.97968f99.svg"
   },
   "entrypoints": [
     "static/js/runtime-main.cec73148.js",
     "static/css/2.80b2a496.chunk.css",
-    "static/js/2.9fd31782.chunk.js",
+    "static/js/2.4ac52bb7.chunk.js",
     "static/css/main.61ff7de1.chunk.css",
-    "static/js/main.0ce2d480.chunk.js"
+    "static/js/main.e730f254.chunk.js"
   ]
 }

@@ -47,7 +47,7 @@ const initialState = {
   },
 
   userWelcomeDialog: {
-    open: true,
+    open: localStorage.getItem("showUserWelcome") === null ? true : false,
   },
 
   snackbar: {
@@ -62,6 +62,20 @@ class App extends Component {
     super(props);
 
     this.state = initialState;
+
+    const isFirstVisit = localStorage.getItem("showUserWelcome");
+    console.log('firstVisit', isFirstVisit)
+
+    if(isFirstVisit === null){
+
+      this.setState({
+        userWelcomeDialog: {
+          open: true,
+        },
+      });
+      localStorage.setItem("showUserWelcome", true);
+    }
+    
   }
 
   resetState = (callback) => {
@@ -258,8 +272,8 @@ class App extends Component {
       userWelcomeDialog: {
         open: true,
       },
-    });  
-  };  
+    });
+  };
 
   render() {
     const {
@@ -317,7 +331,9 @@ class App extends Component {
 
               <UserWelcome
                 handleOpen={userWelcomeDialog}
-                setHandleOpen={(value) => this.handleClickDialogUserWelcome(value)}
+                setHandleOpen={(value) =>
+                  this.handleClickDialogUserWelcome(value)
+                }
               />
 
               <DialogHost

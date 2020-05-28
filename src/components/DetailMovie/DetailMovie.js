@@ -1,4 +1,14 @@
-import { Box, Card, CardMedia, FormControl, FormHelperText, InputLabel, MenuItem, Select, Typography } from "@material-ui/core";
+import {
+  Box,
+  Card,
+  CardMedia,
+  FormControl,
+  FormHelperText,
+  InputLabel,
+  MenuItem,
+  Select,
+  Typography,
+} from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import React, { useEffect, useState } from "react";
 import Carousel from "react-elastic-carousel";
@@ -7,12 +17,25 @@ import IMG_NULL from "../../assets/noImg.png";
 import { firestore } from "../../firebase";
 import apiMovies from "../../services/apiMovies";
 import Loader from "../Loader";
+import withWidth, { isWidthUp } from "@material-ui/core/withWidth";
+import ReactStoreIndicator from "react-score-indicator";
+import { Rating } from "@material-ui/lab";
+import {
+  FacebookIcon,
+  FacebookShareButton,
+  WhatsappIcon,
+  TwitterIcon,
+  TwitterShareButton,
+  WhatsappShareButton,
+} from "react-share";
 
 const IMG_URL = "https://image.tmdb.org/t/p/w185"; //Solo renderizar si cambian las peliculas
 const PROFIL_IMG_URL = "https://image.tmdb.org/t/p/w45";
 const URL_YOUTUBE = "https://www.youtube.com/watch?v=";
 
-export default function DetailMovie({ movieId, user }) {
+function DetailMovie({ movieId, user, width }) {
+
+
   const [infoMovie, setInfoMovie] = useState([]);
   const [generos, setGeneros] = useState([]);
   const [actores, setActores] = useState([]);
@@ -161,16 +184,229 @@ export default function DetailMovie({ movieId, user }) {
       });
   };
 
+  function convertMinsToHrsMins(mins) { 
+    let h = Math.floor(mins / 60);
+    let m = mins % 60;
+    h = h < 10 ? '0' + h : h;
+    m = m < 10 ? '0' + m : m;
+     return `${h}h:${m}m`;
+  };
+
   const classes = useStyles();
 
+  const shareUrl = `https://infopeli.web.app/detail/${movieId}`
+  const titleToShare = `Hola, te recomiendo ver la pelicula ${title} o si quieres ver mas información y crear listas personalizables totalmente gratis, ingresa al sitio web.`
+
   const breakPointsCarouselActors = [
-    { width: 1, itemsToShow: 2 },
-    { width: 550, itemsToShow: 12, itemsToScroll: 2 },
-    { width: 850, itemsToShow: 13 },
-    { width: 1150, itemsToShow: 15, itemsToScroll: 4 },
-    { width: 1450, itemsToShow: 18},
-    { width: 1750, itemsToShow: 20 },
-  ]
+    { width: 1, itemsToShow: 4, itemsToScroll: 4 },
+    { width: 550, itemsToShow: 6, itemsToScroll: 4 },
+    { width: 850, itemsToShow: 8, itemsToScroll: 4 },
+    { width: 1150, itemsToShow: 14, itemsToScroll: 4 },
+    { width: 1450, itemsToShow: 18, itemsToScroll: 4 },
+    { width: 1750, itemsToShow: 20, itemsToScroll: 4 },
+  ];
+
+  if (isWidthUp("sm", width)) {
+    return (
+      <>
+        <Box
+          display="flex"
+          m={1}
+          justifyContent="center"
+          bgcolor="background.paper"
+        >
+          <Box bgcolor="primary.dark">
+            {poster_path === undefined || poster_path == null ? (
+              <img src={IMG_NULL} alt={title} className={classes.poster} />
+            ) : (
+              <img
+                src={IMG_URL + poster_path}
+                alt={title}
+                className={classes.poster}
+              />
+            )}
+
+            {user ? (
+              <FormControl
+                className={classes.agregarALista}
+                error={selectError}
+                variant="outlined"
+              >
+                <InputLabel id="labelSelect">Agregar a ...</InputLabel>
+                <Select
+                  id="demo-simple-select-outlined"
+                  label="Agregar a ..."
+                  labelId="labelSelect"
+                  onChange={handleChangeList}
+                  onOpen={handleOpenLists}
+                  value={listSelected}
+                >
+                  {lists.map((l) => (
+                    <MenuItem key={l.id} value={l.id}>
+                      {l.listName}
+                    </MenuItem>
+                  ))}
+                </Select>
+                <FormHelperText>{helperText}</FormHelperText>
+                {loadingList && <Loader />}
+              </FormControl>
+            ) : (
+              <Typography color="initial" variant="body2" variantMapping="p">
+                Registrate para ver tus listas
+              </Typography>
+            )}
+          </Box>
+
+          <Box
+            bgcolor="primary.main"
+            color="white"
+            p={1}
+            textAlign="left"
+            width="100%"
+          >
+            <Box m={1}>
+              <Typography variant="h4" color="textPrimary">
+                {title}
+              </Typography>
+            </Box>
+
+            <Box display="flex" justifyContent="flex-start" alignItems="center">
+            <ReactStoreIndicator
+              maxValue={5}
+              lineWidth={8}
+              style={{ margin: "0px 8px" }}
+              value={vote_average / 2}
+              width={50}
+              textStyle={{ bottom: "21.25px" }}
+            />
+
+            <Rating
+              className={classes.Rating}
+              name="rating"
+              max={5}
+              precision={0.5}
+              readOnly
+              value={vote_average / 2}
+            />
+          </Box>
+
+          <Box display= "flex" justifyContent= "flex-start" m={1}>
+
+            <Typography display="block" variant="caption" color="textPrimary" style={{marginRight:"5px"}}>
+              Duración: {convertMinsToHrsMins(runtime)}
+            </Typography>
+
+            <Typography display="block" variant="caption" color="textPrimary" style={{marginRight:"5px"}}>
+              Lanzamiento: {release_date}
+            </Typography>
+
+            <Typography display="block" variant="caption" color="textPrimary">
+              Lenguages: {lenguages.map((l) => (
+              <span style={{marginRight:"4px"}} key={l.iso_639_1}> {l.name}</span>
+            ))}
+            </Typography>
+            
+          </Box>
+
+          <Box m={1}>
+          
+            <FacebookShareButton
+              url={shareUrl}
+              quote={titleToShare}
+              hashtag="Peliculas"
+            >
+              <FacebookIcon size={32} round />
+            </FacebookShareButton>
+
+            <TwitterShareButton
+              url={shareUrl}
+              title={titleToShare}
+              hashtags={["Información","Peliculas","Movies"]}
+            >
+              <TwitterIcon size={32} round />
+            </TwitterShareButton>
+
+            <WhatsappShareButton
+              url={shareUrl}
+              title={titleToShare}
+              separator=":: "
+            >
+              <WhatsappIcon size={32} round />
+            </WhatsappShareButton>
+          
+          </Box>
+
+          <Box m={1}>
+            <Typography variant="subtitle1" color="textPrimary">
+              Generos:
+            </Typography>
+            <Typography variant="body2" color="initial">
+              {generos.map((g) => (
+                <span key={g.id}> {g.name} </span>
+              ))}
+            </Typography>
+          </Box>
+
+            <Box m={1}>
+              <Typography variant="subtitle1" color="textPrimary">
+                Resumen:
+              </Typography>
+              <Typography variant="body2" component="p" color="initial">
+                {overview}
+              </Typography>
+            </Box>
+
+            <Box m={1}>
+              <Typography variant="subtitle1" color="textPrimary">
+                Actores:
+              </Typography>
+
+              <Carousel
+                breakPoints={breakPointsCarouselActors}
+                disableArrowsOnEnd
+                itemPadding={[0, 10, 0, 0]}
+                pagination={false}
+                showArrows={false}
+              >
+                {actores.map((face) => (
+                  <Card className={classes.actorCard}>
+                    <CardMedia
+                      className={classes.imgActor}
+                      image={face.profile_path}
+                      title={face.name}
+                    />
+                    <Typography
+                      align="center"
+                      display="block"
+                      variant="caption"
+                    >
+                      {face.name}
+                    </Typography>
+                  </Card>
+                ))}
+              </Carousel>
+            </Box>
+          </Box>
+        </Box>
+
+        {videos.length !== 0 && (
+          <Box m={1}>
+            <Typography className={classes.titleVideos} paragraph variant="h5">
+              Videos
+            </Typography>
+            {videos.map((v) => (
+              <ReactPlayer
+                width="100%"
+                className={classes.reproductor}
+                key={v.key}
+                url={URL_YOUTUBE + v.key}
+              />
+            ))}
+          </Box>
+        )}
+      </>
+    );
+  }
 
   return (
     <>
@@ -235,12 +471,70 @@ export default function DetailMovie({ movieId, user }) {
             </Typography>
           </Box>
 
-          <Box m={1}>
-            <span>{vote_average}</span> | <span>{runtime}</span> |{" "}
-            <span>{release_date}</span> |
-            {lenguages.map((l) => (
-              <span key={l.iso_639_1}> {l.iso_639_1}</span>
+          <Box display="flex" justifyContent="flex-start" alignItems="center">
+            <ReactStoreIndicator
+              maxValue={5}
+              lineWidth={8}
+              style={{ margin: "0px 8px" }}
+              value={vote_average / 2}
+              width={50}
+              textStyle={{ bottom: "21.25px" }}
+            />
+
+            <Rating
+              className={classes.Rating}
+              name="rating"
+              max={5}
+              precision={0.5}
+              readOnly
+              value={vote_average / 2}
+            />
+          </Box>
+
+          <Box  m={1}>
+
+            <Typography display="block" variant="caption" color="textPrimary">
+              Duración: {convertMinsToHrsMins(runtime)}
+            </Typography>
+
+            <Typography display="block" variant="caption" color="textPrimary">
+              Lanzamiento: {release_date}
+            </Typography>
+
+            <Typography display="block" variant="caption" color="textPrimary">
+              Lenguages: {lenguages.map((l) => (
+              <span style={{marginRight:"4px"}} key={l.iso_639_1}> {l.name}</span>
             ))}
+            </Typography>
+            
+          </Box>
+
+          <Box m={1}>
+          
+            <FacebookShareButton
+              url={shareUrl}
+              quote={titleToShare}
+              hashtag="Peliculas"
+            >
+              <FacebookIcon size={32} round />
+            </FacebookShareButton>
+
+            <TwitterShareButton
+              url={shareUrl}
+              title={titleToShare}
+              hashtags={["Información","Peliculas","Movies"]}
+            >
+              <TwitterIcon size={32} round />
+            </TwitterShareButton>
+
+            <WhatsappShareButton
+              url={shareUrl}
+              title={titleToShare}
+              separator=":: "
+            >
+              <WhatsappIcon size={32} round />
+            </WhatsappShareButton>
+          
           </Box>
 
           <Box m={1}>
@@ -253,44 +547,44 @@ export default function DetailMovie({ movieId, user }) {
               ))}
             </Typography>
           </Box>
+        </Box>
+      </Box>
 
-          <Box m={1}>
-            <Typography variant="subtitle1" color="textPrimary">
-              Resumen:
-            </Typography>
-            <Typography variant="body2" component="p" color="initial">
-              {overview}
-            </Typography>
-          </Box>
+      <Box bgcolor="primary.main" color="white" m={1} p={1} textAlign="left">
+        <Box m={1}>
+          <Typography color="textPrimary" variant="subtitle1">
+            Resumen:
+          </Typography>
+          <Typography variant="body2" component="p" color="initial">
+            {overview}
+          </Typography>
+        </Box>
 
-          <Box m={1}>
-            <Typography variant="subtitle1" color="textPrimary">
-              Actores:
-            </Typography>
-            
-            <Carousel 
-              breakPoints={breakPointsCarouselActors} 
-              disableArrowsOnEnd 
-              itemPadding={[0, 10, 0, 0]}
-              pagination={false} 
-              showArrows={false} 
-            >
-              {actores.map((face) => (
+        <Box m={1}>
+          <Typography variant="subtitle1" color="textPrimary">
+            Actores:
+          </Typography>
 
-                <Card className={classes.actorCard}>                
-                  <CardMedia
-                    className={classes.imgActor}
-                    image={face.profile_path}
-                    title={face.name}
-                  />
-                    <Typography align="center" display="block" variant="caption">
-                    {face.name}
-                    </Typography>
-                </Card>
-              ))}
-            </Carousel>
-            
-          </Box>
+          <Carousel
+            breakPoints={breakPointsCarouselActors}
+            disableArrowsOnEnd
+            itemPadding={[0, 10, 0, 0]}
+            pagination={false}
+            showArrows={false}
+          >
+            {actores.map((face) => (
+              <Card className={classes.actorCard}>
+                <CardMedia
+                  className={classes.imgActor}
+                  image={face.profile_path}
+                  title={face.name}
+                />
+                <Typography align="center" display="block" variant="caption">
+                  {face.name}
+                </Typography>
+              </Card>
+            ))}
+          </Carousel>
         </Box>
       </Box>
 
@@ -317,9 +611,9 @@ const useStyles = makeStyles((theme) => ({
   agregarALista: {
     width: "80%",
   },
-  actorCard:{
-    height:  theme.spacing(16),
-    width: theme.spacing(11),    
+  actorCard: {
+    height: theme.spacing(16),
+    width: theme.spacing(11),
   },
   imgActor: {
     height: theme.spacing(14),
@@ -327,6 +621,9 @@ const useStyles = makeStyles((theme) => ({
   poster: {
     heigth: "264px",
     maxWidth: "155px",
+  },
+  Rating: {
+    fontSize: "1rem",
   },
   reproductor: {
     display: "inline-flex",
@@ -336,3 +633,5 @@ const useStyles = makeStyles((theme) => ({
     color: theme.palette.primary.contrastText,
   },
 }));
+
+export default withWidth()(DetailMovie);
