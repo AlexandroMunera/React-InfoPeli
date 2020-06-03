@@ -28,14 +28,15 @@ function Search({history}) {
   return (
           <div className={classes.search}>
             <IconButton
-              edge="start"
+              aria-label="open drawer"
               className={classes.searchIcon}
               color="inherit"
-              aria-label="open drawer"
+              disableFocusRipple
+              edge="start"
               onClick={() => _handleSubmit()}
             >
               {/* <SearchIcon /> */}
-            <Animator animationData={AnimationSearch} loop="15" style={{width: "2em", height: "1em"}} />
+              <Animator animationData={AnimationSearch} loop="15" style={{width: "2em", height: "1em"}} />
 
             </IconButton>
             <InputBase
@@ -79,6 +80,9 @@ const useStyles = makeStyles((theme) => ({
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
+    "&:hover": {
+      backgroundColor: "transparent"
+    }
   },
   inputRoot: {
     color: "inherit",

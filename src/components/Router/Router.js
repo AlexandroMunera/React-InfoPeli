@@ -9,6 +9,7 @@ import ListMoviesPage from "../ListMoviesPage/ListMoviesPage";
 import ListsPage from "../ListsPage/ListsPage";
 // import NotFoundPage from "../NotFoundPage";
 import UserPage from "../UserPage";
+import TinderCardsPage from "../TinderCardsPage/TinderCardsPage";
 
 class Router extends Component {
   render() {
@@ -64,9 +65,14 @@ class Router extends Component {
               <Home user={user} />
             </Route>
 
-            {/* <Route>
+            <Route path="/ramdonpelis" >
+              <TinderCardsPage />
+            </Route>
+            
+             {/* <Route>
               <NotFoundPage />
             </Route> */}
+            
           </GenresContexProvider>
         </Switch>
       </BrowserRouter>

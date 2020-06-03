@@ -61,13 +61,13 @@ const initialState = {
 
 class App extends Component {
   constructor(props) {
+    
     super(props);
 
     this.state = initialState;
 
     const isFirstVisit = localStorage.getItem("showUserWelcome");
-    console.log("firstVisit", isFirstVisit);
-
+    
     if (isFirstVisit === null) {
       this.setState({
         userWelcomeDialog: {

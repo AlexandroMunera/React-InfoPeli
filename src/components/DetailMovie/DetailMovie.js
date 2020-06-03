@@ -30,7 +30,7 @@ import {
 } from "react-share";
 
 const IMG_URL = "https://image.tmdb.org/t/p/w185"; //Solo renderizar si cambian las peliculas
-const PROFIL_IMG_URL = "https://image.tmdb.org/t/p/w45";
+const PROFIL_IMG_URL = "https://image.tmdb.org/t/p/w185";
 const URL_YOUTUBE = "https://www.youtube.com/watch?v=";
 
 function DetailMovie({ movieId, user, width }) {
@@ -272,12 +272,12 @@ function DetailMovie({ movieId, user, width }) {
 
             <Box display="flex" justifyContent="flex-start" alignItems="center">
             <ReactStoreIndicator
-              maxValue={5}
               lineWidth={8}
+              maxValue={5}
               style={{ margin: "0px 8px" }}
-              value={vote_average / 2}
+              value={vote_average}
+              textStyle={{ bottom: "21.25px", color: "white", fontSize: "14px" }}
               width={50}
-              textStyle={{ bottom: "21.25px" }}
             />
 
             <Rating
@@ -473,12 +473,12 @@ function DetailMovie({ movieId, user, width }) {
 
           <Box display="flex" justifyContent="flex-start" alignItems="center">
             <ReactStoreIndicator
-              maxValue={5}
               lineWidth={8}
+              maxValue={5}
               style={{ margin: "0px 8px" }}
-              value={vote_average / 2}
+              value={vote_average}
+              textStyle={{ bottom: "21.25px", color: "white", fontSize: "14px" }}
               width={50}
-              textStyle={{ bottom: "21.25px" }}
             />
 
             <Rating

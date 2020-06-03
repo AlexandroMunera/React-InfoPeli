@@ -140,7 +140,7 @@ function Home(props) {
         </Typography>
 
         {!searchText && (
-          <Grid container justify="space-around" style={{ padding: "2%" }}>
+          <Grid container justify="flex-end" p={8}>
             <OrderMovies sortMovies={sortMovies} />
           </Grid>
         )}
@@ -262,7 +262,7 @@ const useStyles = makeStyles((theme) => ({
     flexGrow: 1,
   },
   tituloGenero: {
-    marginTop: theme.spacing(1),
+    marginTop: theme.spacing(3),
     paddingLeft: theme.spacing(6),
     textDecorationLine: "underline",
     textDecorationStyle: "dotted",

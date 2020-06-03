@@ -117,7 +117,7 @@ const useStyles = makeStyles((theme) => ({
   item: {
     boxSizing: "border-box",
     height: "360px",
-    marginBottom: "1em",
+    margin: "0.5em",
     width: "170px",
   },
   media: {

@@ -54,7 +54,7 @@ function MovieList({ movies, history, location, listId,deleteMovie }) {
     <>
       {loading && <CircularProgress />}
 
-      <Grid container justify="space-around" style={{ paddingTop: "1%" }}>
+      <Grid container justify="center" style={{ paddingTop: "1%" }}>
         {films.results.map((movie) => {
           const poster =
             movie.poster_path == null

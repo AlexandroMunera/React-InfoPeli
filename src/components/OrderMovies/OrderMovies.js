@@ -69,7 +69,7 @@ const useStyles = makeStyles((theme) => ({
     fontWeight: theme.typography.fontWeightRegular,
   },
   formControl: {
-    margin: theme.spacing(1),
+    marginRight: theme.spacing(2),
     minWidth: 120,
   },
 }));

@@ -37,7 +37,10 @@
     "source-map-explorer": "^2.4.2",
     "styled-components": "^5.1.0",
     "typeface-roboto": "0.0.75",
-    "validate.js": "^0.13.1"
+    "validate.js": "^0.13.1",
+    "nuka-carousel": "^4.4.7",
+    "react-spring": "^7.2.8",
+    "react-with-gesture": "^4.0.2"
   },
   "scripts": {
     "start": "react-app-rewired start",
