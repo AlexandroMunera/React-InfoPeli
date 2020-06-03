@@ -83,6 +83,17 @@ class Bar extends Component {
 
     this.props.history.push(`/peliculas/${nameGenre}/1`);
   }
+  
+  handlerTopRatedClick = () => {
+
+    this.setState({
+      mobileOpen: this.state.mobileOpen
+        ? this.handleDrawerToggle()
+        : this.state.mobileOpen,
+    });
+
+    this.props.history.push(`/mejorcalificadas`);
+  };
 
   async componentDidMount() {
     if (!this.props.genresData) {
@@ -168,6 +179,14 @@ class Bar extends Component {
             </Grid>
           </>
         )}
+        <Divider />
+
+        <Grid container justify="space-around" style={{ padding: "2%" }}>
+              <Button onClick={this.handlerTopRatedClick} variant="outlined">
+                Mejor Calificadas
+              </Button>
+            </Grid>
+
         <Divider />
         <List>
           {this.state.generos.map((g) => (

@@ -47,7 +47,7 @@ class Router extends Component {
 
             <Route path="/user/:userId">
               {user ? <UserPage /> : <Redirect to="/" />}
-            </Route>
+            </Route>           
 
             <Route path="/peliculas/:genreName/:page" exact>
               <Home user={user} openSnackbar={openSnackbar} />
@@ -65,7 +65,7 @@ class Router extends Component {
               <Home user={user} />
             </Route>
 
-            <Route path="/ramdonpelis" >
+            <Route path="/mejorcalificadas" exact >
               <TinderCardsPage />
             </Route>
             

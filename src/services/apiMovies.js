@@ -57,6 +57,15 @@ class ApiMovies {
     )
     return await query.json()
   }
+
+  async getTopRated( page = 1) {
+
+    const query = await fetch(
+      `${BASE_API}movie/top_rated?api_key=${API_KEY}&language=${API_LANGUAGE}&page=${page}`
+    )
+    return await query.json()
+  }
+
 }
 
 export default new ApiMovies();

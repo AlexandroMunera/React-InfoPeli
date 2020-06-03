@@ -2,11 +2,11 @@ import React from "react";
 import { string, number, array } from "prop-types";
 import { animated, interpolate } from "react-spring/hooks";
 import Carousel from "nuka-carousel";
-import data from "../TinderCardsPage/data.js";
+import { Link } from "react-router-dom";
 import "../TinderCardsPage/SylesTinderCards.css";
 
-const TinderCard = ({ i, x, y, rot, scale, trans, bind,  }) => {
-  const { name, age, distance, text, pics } = data[i];
+const TinderCard = ({ i, x, y, rot, scale, trans, bind, data  }) => {
+  const { id, title, year, voteCount, overview, pics } = data[i];
 
   return (
     <animated.div
@@ -21,27 +21,28 @@ const TinderCard = ({ i, x, y, rot, scale, trans, bind,  }) => {
           transform: interpolate([rot, scale], trans)
         }}
       >
+        <Link to={`/detail/${id}`}>
         <div className="card">
           <Carousel>
             {pics.map((pic, index) => (
               <img src={pic} key={index} alt="profilePicture" />
             ))}
           </Carousel>
-          <h2>{name},</h2>
-          <h2>{age}</h2>
-          <h5>{distance}</h5>
-          <h5>{text}</h5>
+          <h2>{title} ({year})</h2>
+          <h5>{voteCount} votos</h5>
+          <h5>{overview}</h5>
         </div>
+        </Link>
       </animated.div>
     </animated.div>
   );
 };
 
 TinderCard.propTypes = {
-  name: string,
-  age: number,
-  distance: string,
-  text: string,
+  title: string,
+  year: number,
+  voteCount: string,
+  overview: string,
   pics: array
 };
 

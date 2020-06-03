@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useSprings } from "react-spring/hooks";
 import { useGesture } from "react-with-gesture";
 import { makeStyles } from "@material-ui/core/styles";
@@ -7,6 +7,7 @@ import data from "./data.js";
 
 import "./SylesTinderCards.css";
 import { Box, Typography } from "@material-ui/core";
+import apiMovies from "../../services/apiMovies";
 
 const to = (i) => ({
   x: 0,
@@ -23,10 +24,43 @@ const trans = (r, s) =>
   }deg) rotateZ(${r}deg) scale(${s})`;
 
 function TinderCardsPage() {
+
+  const IMG_URL = "https://image.tmdb.org/t/p/w342";
+
   const [gone] = useState(() => new Set());
+  const [moviesTopRated, setMoviesTopRated] = useState(data)
   const classes = useStyles();
 
-  const [props, set] = useSprings(data.length, (i) => ({
+  useEffect(() => {
+    const realizarConsultas = async () => {
+
+      let moviesTopRatedFromAPI = []
+      let movies = await apiMovies.getTopRated();
+
+      movies.results.slice(0,10).forEach(m => {
+        const movie = {
+          id: m.id,
+          pics: [
+             IMG_URL + m.poster_path,
+             IMG_URL + m.backdrop_path
+             ],
+          title: m.title.substring(0, 13) + "..",
+          year: new Date(m.release_date).getFullYear(),
+          voteCount: m.vote_count,
+          overview: m.overview.substring(0, 110) + ".."
+        }
+
+        moviesTopRatedFromAPI.push(movie)
+
+      })
+
+      setMoviesTopRated(moviesTopRatedFromAPI)
+      
+    };
+     realizarConsultas();
+  }, []);
+
+  const [props, set] = useSprings(moviesTopRated.length, (i) => ({
     ...to(i),
     from: from(i),
   }));
@@ -36,7 +70,6 @@ function TinderCardsPage() {
       args: [index],
       down,
       delta: [xDelta],
-      distance,
       direction: [xDir],
       velocity,
     }) => {
@@ -64,7 +97,7 @@ function TinderCardsPage() {
         };
       });
 
-      if (!down && gone.size === data.length)
+      if (!down && gone.size === moviesTopRated.length)
         setTimeout(() => gone.clear() || set((i) => to(i)), 600);
     }
   );
@@ -77,7 +110,7 @@ function TinderCardsPage() {
         color="textPrimary"
         variant="h4"
       >
-        Mis listas
+        Mejor Calificadas
       </Typography>
 
       <Box
@@ -96,7 +129,7 @@ function TinderCardsPage() {
             rot={rot}
             scale={scale}
             trans={trans}
-            data={data}
+            data={moviesTopRated}
             bind={bind}
           />
         ))}

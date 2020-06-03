@@ -16,7 +16,7 @@ body {
 } */
 
 #rootCards {
-  background: salmon;
+  /* background: salmon; */
   position: fixed;
   overflow: hidden;
   width: 100%;
@@ -26,7 +26,7 @@ body {
 #rootCards > div {
   position: absolute;
   width: 80vw;
-  height: 80vh;
+  height: 70vh;
   will-change: transform;
   display: flex;
   align-items: center;
@@ -41,47 +41,47 @@ body {
   background-position: center center;
   width: 250px;
   max-width: 250px;
-  height: 500px;
-  max-height: 520px;
+  height: 480px;
+  max-height: 500px;
   will-change: transform;
   border-radius: 10px;
   box-shadow: 0 12.5px 100px -10px rgba(50, 50, 73, 0.4),
     0 10px 10px -10px rgba(50, 50, 73, 0.3);
 }
 
-img {
-  height: 330px;
+#rootCards img {
+  height: 300px;
   border-top-left-radius: 10px;
   border-top-right-radius: 10px;
 }
 
 button[aria-label="previous"],
 button[aria-label="next"] {
-  background: salmon !important;
+  background: grey !important;
   color: black !important;
 }
 
-h2 {
+#rootCards h2 {
   display: inline-block;
-  margin-right: 10px;
+  /* margin-right: 10px; */
 }
 
-h2:nth-of-type(2) {
+#rootCards h2:nth-of-type(2) {
   opacity: 0.7;
   font-size: 1.35rem;
 }
 
-h5 {
+#rootCards h5 {
   margin-top: -15px;
   margin-left: 2px;
-  color: lightgray;
+  color: rgb(66, 64, 64);
 }
-h5:last-of-type {
-  color: darkgray;
+#rootCards h5:last-of-type {
+  color: rgb(145, 144, 144);
 }
 
 .card > div {
-  height: 330px !important;
+  height: 312px !important;
 }
 
 .card {
@@ -95,4 +95,8 @@ h5:last-of-type {
 
 .slider-control-bottomcenter > ul > li > button {
   color: salmon !important;
+}
+
+a{
+  text-decoration: none;
 }
