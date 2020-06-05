@@ -85,8 +85,18 @@ button[aria-label="next"] {
 }
 
 .card {
-  height: 450px !important;
   color: black;
+  cursor: grab;
+  height: 450px !important;
+  -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+.card:active {
+  /* cursor: url(images/grabbing.cur); */
+  cursor: grabbing;
 }
 
 .slider-control-bottomcenter {

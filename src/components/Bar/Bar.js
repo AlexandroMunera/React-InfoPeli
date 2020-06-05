@@ -83,9 +83,8 @@ class Bar extends Component {
 
     this.props.history.push(`/peliculas/${nameGenre}/1`);
   }
-  
-  handlerTopRatedClick = () => {
 
+  handlerTopRatedClick = () => {
     this.setState({
       mobileOpen: this.state.mobileOpen
         ? this.handleDrawerToggle()
@@ -125,7 +124,7 @@ class Bar extends Component {
       onSignOutClick,
       onSignUpClick,
       onSignInClick,
-      onUserWelcomeClick
+      onUserWelcomeClick,
     } = this.props;
 
     const { menu, selectedGenreId } = this.state;
@@ -155,9 +154,7 @@ class Bar extends Component {
     ];
 
     const drawer = (
-
       <SimpleBarReact style={{ maxHeight: "100vh" }}>
-        
         <div className={classes.toolbar} />
         <Divider />
 
@@ -169,8 +166,17 @@ class Bar extends Component {
               </Button>
             </Grid>
             <Divider />
-            <Grid container justify="space-around" style={{ padding: "2%" }}>
-              <Button onClick={onSignUpClick} variant="outlined">
+            <Grid
+              container
+              direction="column"
+              alignContent="center"
+              style={{ padding: "2%" }}
+            >
+              <Button
+                onClick={onSignUpClick}
+                style={{ marginBottom: "10px" }}
+                variant="outlined"
+              >
                 Registro
               </Button>
               <Button onClick={onSignInClick} variant="outlined">
@@ -181,11 +187,18 @@ class Bar extends Component {
         )}
         <Divider />
 
-        <Grid container justify="space-around" style={{ padding: "2%" }}>
-              <Button onClick={this.handlerTopRatedClick} variant="outlined">
-                Mejor Calificadas
-              </Button>
-            </Grid>
+        
+
+          <ListItem
+              button
+              onClick={this.handlerTopRatedClick}
+            >
+              <ListItemIcon>
+                 <MovieFilterIcon />
+              </ListItemIcon>
+              <ListItemText primary="Top Rated" />
+            </ListItem>
+
 
         <Divider />
         <List>
@@ -202,8 +215,7 @@ class Bar extends Component {
               <ListItemText primary={g.name} />
             </ListItem>
           ))}
-        </List>        
-      
+        </List>
       </SimpleBarReact>
     );
 

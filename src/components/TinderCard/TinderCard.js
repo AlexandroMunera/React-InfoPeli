@@ -21,18 +21,20 @@ const TinderCard = ({ i, x, y, rot, scale, trans, bind, data  }) => {
           transform: interpolate([rot, scale], trans)
         }}
       >
-        <Link to={`/detail/${id}`}>
+        
         <div className="card">
+        <Link to={`/detail/${id}`}>
           <Carousel>
             {pics.map((pic, index) => (
               <img src={pic} key={index} alt="profilePicture" />
             ))}
           </Carousel>
+        </Link>
+
           <h2>{title} ({year})</h2>
           <h5>{voteCount} votos</h5>
           <h5>{overview}</h5>
         </div>
-        </Link>
       </animated.div>
     </animated.div>
   );

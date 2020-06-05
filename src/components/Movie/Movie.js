@@ -38,8 +38,8 @@ export default function Movie({
     deleteMovie(id);
   };
 
-  const shareUrl = `https://infopeli.web.app/detail/${id}`
-  const titleToShare = `Hola, te recomiendo ver la pelicula ${title} o si quieres ver mas información y crear listas personalizables totalmente gratis, ingresa al sitio web.`
+  const shareUrl = `https://infopeli.web.app/detail/${id}`;
+  const titleToShare = `Hola, te recomiendo ver la pelicula ${title} o si quieres ver mas información y crear listas personalizables totalmente gratis, ingresa al sitio web.`;
 
   return (
     <Card className={classes.item}>
@@ -62,7 +62,7 @@ export default function Movie({
             max={5}
             precision={0.5}
             readOnly
-            value={vote_average/2}
+            value={vote_average / 2}
           />
         </CardContent>
       </CardActionArea>
@@ -81,7 +81,7 @@ export default function Movie({
             <TwitterShareButton
               url={shareUrl}
               title={titleToShare}
-              hashtags={["Información","Peliculas","Movies"]}
+              hashtags={["Información", "Peliculas", "Movies"]}
             >
               <TwitterIcon size={32} round />
             </TwitterShareButton>

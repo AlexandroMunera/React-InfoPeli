@@ -35,7 +35,6 @@ const URL_YOUTUBE = "https://www.youtube.com/watch?v=";
 
 function DetailMovie({ movieId, user, width }) {
 
-
   const [infoMovie, setInfoMovie] = useState([]);
   const [generos, setGeneros] = useState([]);
   const [actores, setActores] = useState([]);
@@ -391,12 +390,13 @@ function DetailMovie({ movieId, user, width }) {
 
         {videos.length !== 0 && (
           <Box m={1}>
-            <Typography className={classes.titleVideos} paragraph variant="h5">
+            <Typography className={classes.titleVideos}
+                        paragraph variant="h5">
               Videos
             </Typography>
             {videos.map((v) => (
               <ReactPlayer
-                width="100%"
+                width="80%"
                 className={classes.reproductor}
                 key={v.key}
                 url={URL_YOUTUBE + v.key}
@@ -538,7 +538,7 @@ function DetailMovie({ movieId, user, width }) {
           </Box>
 
           <Box m={1}>
-            <Typography variant="subtitle1" color="textPrimary">
+            <Typography color="textPrimary" variant="subtitle1">
               Generos:
             </Typography>
             <Typography variant="body2" color="initial">

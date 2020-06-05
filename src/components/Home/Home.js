@@ -19,10 +19,10 @@ import DetailMovie from "../DetailMovie/DetailMovie";
 import MoviesList from "../MovieList";
 import BackgroundImage from "../../assets/fondo.svg";
 import OrderMovies from "../OrderMovies/OrderMovies";
+import { Helmet } from "react-helmet";
 
 function Home(props) {
   const classes = useStyles();
-
   const { match, location, user } = props;
   const { params } = match;
   const { genreName } = params;
@@ -54,6 +54,7 @@ function Home(props) {
 
       if (searchText) {
         document.title = `Info Peli - Buscador`;
+
         const Search = await apiMovies.searchMovie(
           searchText.split("/")[0],
           searchText.split("/")[1]
@@ -151,7 +152,7 @@ function Home(props) {
 
   return (
     <>
-    <main className={classes.content}>
+      <main className={classes.content}>
         <div className={classes.toolbar} />
 
         <div id="back-to-top-anchor" />
@@ -162,7 +163,7 @@ function Home(props) {
         ) : (
           _renderResults()
         )}
-        
+
         <div>
           <img
             alt="background"

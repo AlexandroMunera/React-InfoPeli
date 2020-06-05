@@ -1,4 +1,13 @@
-import { Box, Button, Fab, IconButton, Snackbar, TextField, Typography, Grid } from "@material-ui/core";
+import {
+  Box,
+  Button,
+  Fab,
+  IconButton,
+  Snackbar,
+  TextField,
+  Typography,
+  Grid,
+} from "@material-ui/core";
 import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
@@ -18,7 +27,7 @@ import ListCard from "../ListCard/ListCard";
 import Loader from "../Loader";
 import { Animator } from "lottie-react";
 import AnimationLists from "../../assets/animations/animationLists.json";
-
+import { Helmet } from "react-helmet";
 
 function ListsPage() {
   const [loading, setLoading] = useState(true);
@@ -130,7 +139,14 @@ function ListsPage() {
   }
 
   if (loading) {
-    return <Loader />;
+    return (
+      <>
+        <Helmet>
+          <title>Cargando...</title>
+        </Helmet>
+        <Loader />
+      </>
+    );
   }
 
   if (!user) {
@@ -138,7 +154,7 @@ function ListsPage() {
       <EmptyState
         image={<NoDataIllustration />}
         title="El usuario no existe"
-        description="La solicitud de usuario no existe"
+        description="La solicitud de usuario no existe."
         button={
           <Fab variant="extended" color="primary" component={Link} to="/">
             <Box clone mr={1}>
@@ -163,21 +179,20 @@ function ListsPage() {
     setLoading(true);
     // Validar si se esta creando o editando una lista
     if (idAlertEdit) {
-      console.log('idAlertEdit', idAlertEdit)
+      console.log("idAlertEdit", idAlertEdit);
       firestore
         .collection("lists")
         .doc(idAlertEdit)
         .set({
           listName: nameNewList,
           description: descriNewList,
-          userId: userId
+          userId: userId,
         })
         .then(function () {
           setMessageAlert("Lista editada !");
           setOpenSnackbar(true);
           setOpenAddList(false);
           realizarConsultas();
-
         })
         .catch(function (error) {
           setError(error);
@@ -197,7 +212,6 @@ function ListsPage() {
           setOpenSnackbar(true);
           setOpenAddList(false);
           realizarConsultas();
-
         })
         .catch(function (error) {
           setError(error);
@@ -267,6 +281,9 @@ function ListsPage() {
 
   return (
     <Box mt={9} width="100%">
+      <Helmet>
+        <title>Info Peli - Listas</title>
+      </Helmet>
       <Typography
         align="center"
         className={classes.tituloList}
@@ -299,7 +316,11 @@ function ListsPage() {
       </Box>
 
       <Grid container justify="space-around">
-        <Animator animationData={AnimationLists} loop="0" style={styleAnimation} />
+        <Animator
+          animationData={AnimationLists}
+          loop="0"
+          style={styleAnimation}
+        />
       </Grid>
 
       <Dialog
@@ -366,7 +387,7 @@ const useStyles = makeStyles((theme) => ({
     paddingLeft: theme.spacing(6),
     textDecorationLine: "underline",
     textDecorationStyle: "dotted",
-  }
+  },
 }));
 
 export default ListsPage;
