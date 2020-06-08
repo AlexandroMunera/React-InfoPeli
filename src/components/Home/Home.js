@@ -19,7 +19,6 @@ import DetailMovie from "../DetailMovie/DetailMovie";
 import MoviesList from "../MovieList";
 import BackgroundImage from "../../assets/fondo.svg";
 import OrderMovies from "../OrderMovies/OrderMovies";
-import { Helmet } from "react-helmet";
 
 function Home(props) {
   const classes = useStyles();

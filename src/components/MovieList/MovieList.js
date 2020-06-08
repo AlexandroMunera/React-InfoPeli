@@ -7,7 +7,7 @@ import IMG_NULL from "../../assets/noImg.png";
 import Movie from "../Movie";
 
 function MovieList({ movies, history, location, listId,deleteMovie }) {
-  const IMG_URL = "https://image.tmdb.org/t/p/w342";
+  const IMG_URL = "https://image.tmdb.org/t/p/w185";
   const [films, setFilms] = useState(movies);
   const [pageActual, setPageActual] = useState(1);
   const [loading, setLoading] = useState(false);
@@ -63,8 +63,8 @@ function MovieList({ movies, history, location, listId,deleteMovie }) {
 
           // Validar el tamanio del title, no mayor a 23 caracteres
           movie.title =
-            movie.title.length > 13
-              ? movie.title.substring(0, 11) + ".."
+            movie.title.length > 11
+              ? movie.title.substring(0, 9) + ".."
               : movie.title;
 
           return (

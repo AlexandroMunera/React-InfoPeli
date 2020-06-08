@@ -307,8 +307,6 @@ class App extends Component {
 
           {ready && (
 
-            <SimpleBarReact style={{ maxHeight: "100vh" }}>
-
               <div style={{ display: "flex", textAlign: "center" }}>
               <Router
                 user={user}
@@ -448,8 +446,7 @@ class App extends Component {
                 onClose={this.closeSnackbar}
               />
             </div>
-            
-            </SimpleBarReact>
+                        
           )}
         </ErrorBoundary>
       </MuiThemeProvider>

@@ -116,12 +116,12 @@ const useStyles = makeStyles((theme) => ({
   },
   item: {
     boxSizing: "border-box",
-    height: "360px",
-    margin: "0.5em",
-    width: "170px",
+    height: "320px",
+    margin: "0.3em",
+    width: "151px",
   },
   media: {
-    height: "260px",
+    height: "220px",
   },
   avatar: {
     height: theme.spacing(5),
