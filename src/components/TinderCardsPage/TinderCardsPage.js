@@ -8,6 +8,7 @@ import data from "./data.js";
 import "./SylesTinderCards.css";
 import { Box, Typography } from "@material-ui/core";
 import apiMovies from "../../services/apiMovies";
+import { useTranslation } from "react-i18next";
 
 const to = (i) => ({
   x: 0,
@@ -24,7 +25,7 @@ const trans = (r, s) =>
   }deg) rotateZ(${r}deg) scale(${s})`;
 
 function TinderCardsPage() {
-
+  const { t } = useTranslation();
   const IMG_URL = "https://image.tmdb.org/t/p/w342";
 
   const [gone] = useState(() => new Set());
@@ -110,7 +111,7 @@ function TinderCardsPage() {
         color="textPrimary"
         variant="h4"
       >
-        Mejor Calificadas
+        {t('Mejor Calificadas')}
       </Typography>
 
       <Box

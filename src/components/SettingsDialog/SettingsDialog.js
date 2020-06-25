@@ -21,7 +21,8 @@ import {
   Link as LinkIcon,
   Security as SecurityIcon,
 } from "@material-ui/icons";
-
+import SimpleBarReact from "simplebar-react";
+import "simplebar/src/simplebar.css";
 import SwipeableViews from "react-swipeable-views";
 
 import AccountTab from "../AccountTab";
@@ -113,7 +114,9 @@ class SettingsDialog extends Component {
     const { selectedTab } = this.state;
 
     return (
+
       <Dialog {...dialogProps} onExited={this.handleExited}>
+
         <DialogTitle disableTypography>
           <Typography variant="h6">Configuración</Typography>
 
@@ -163,6 +166,7 @@ class SettingsDialog extends Component {
           />
         </SwipeableViews>
       </Dialog>
+
     );
   }
 }

@@ -1,18 +1,10 @@
 import React, { useState } from "react";
-import {
-  ExpansionPanel,
-  ExpansionPanelDetails,
-  ExpansionPanelSummary,
-  Typography,
-  Select,
-  MenuItem,
-  InputLabel,
-  FormControl,
-} from "@material-ui/core";
-import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
+import { FormControl, InputLabel, MenuItem, Select } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
+import { useTranslation } from "react-i18next";
 
 function OrderMovies({ sortMovies }) {
+  const { t } = useTranslation();
   const classes = useStyles();
   const [sortBy, setSortBy] = useState("");
 
@@ -22,44 +14,31 @@ function OrderMovies({ sortMovies }) {
   };
 
   return (
-    // <ExpansionPanel>
-    //   <ExpansionPanelSummary
-    //     expandIcon={<ExpandMoreIcon />}
-    //     aria-controls="panel1a-content"
-    //     id="panel1a-header"
-    //   >
-    //     <Typography className={classes.heading}>Ordenar</Typography>
-    //   </ExpansionPanelSummary>
-    //   <ExpansionPanelDetails>
-        <FormControl className={classes.formControl}>
-          <InputLabel id="demo-simple-select-outlined-label">
-            Ordenar por:
-          </InputLabel>
-          <Select
-            labelId="demo-simple-select-outlined-label"
-            id="demo-simple-select-outlined"
-            value={sortBy}
-            onChange={changeSortBy}
-            label="Ordenar por"
-          >
-            <MenuItem value="popularity.desc">Popularidad descendente</MenuItem>
-            <MenuItem value="popularity.asc">Popularidad ascendente</MenuItem>
-            <MenuItem value="vote_average.desc">
-              Valoración descendente
-            </MenuItem>
-            <MenuItem value="vote_average.asc">Valoración ascendente</MenuItem>
-            <MenuItem value="primary_release_date.desc">
-              Fecha de estreno descendente
-            </MenuItem>
-            <MenuItem value="primary_release_date.asc">
-              Fecha de estreno ascendente
-            </MenuItem>
-            <MenuItem value="title.asc">Título (A-Z)</MenuItem>
-            <MenuItem value="title.desc">Título (Z-A)</MenuItem>
-          </Select>
-         </FormControl>
-    //   </ExpansionPanelDetails>
-    // </ExpansionPanel>
+    <FormControl className={classes.formControl}>
+      <InputLabel id="demo-simple-select-outlined-label">
+        {t("Ordenar por")}
+      </InputLabel>
+      <Select
+        labelId="demo-simple-select-outlined-label"
+        id="demo-simple-select-outlined"
+        value={sortBy}
+        onChange={changeSortBy}
+        label={t("Ordenar por")}
+      >
+        <MenuItem value="popularity.desc">{t("Popularidad descendente")}</MenuItem>
+        <MenuItem value="popularity.asc">{t("Popularidad ascendente")}</MenuItem>
+        <MenuItem value="vote_average.desc">{t("Valoración descendente")}</MenuItem>
+        <MenuItem value="vote_average.asc">{t("Valoración ascendente")}</MenuItem>
+        <MenuItem value="primary_release_date.desc">
+          {t("Fecha de estreno descendente")}
+        </MenuItem>
+        <MenuItem value="primary_release_date.asc">
+          {t("Fecha de estreno ascendente")}
+        </MenuItem>
+        <MenuItem value="title.asc">{t("Título (A-Z)")}</MenuItem>
+        <MenuItem value="title.desc">{t("Título (Z-A)")}</MenuItem>
+      </Select>
+    </FormControl>
   );
 }
 

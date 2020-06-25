@@ -1,3 +1,4 @@
+import React, { useContext, useEffect, useState } from "react";
 import {
   CircularProgress,
   Container,
@@ -8,10 +9,10 @@ import {
   Zoom,
   Grid,
 } from "@material-ui/core";
+import { useTranslation } from 'react-i18next';
 import { makeStyles } from "@material-ui/core/styles";
 import KeyboardArrowUpIcon from "@material-ui/icons/KeyboardArrowUp";
 import PropTypes from "prop-types";
-import React, { useContext, useEffect, useState } from "react";
 import { useLocation, withRouter } from "react-router-dom";
 import GenresContext from "../../context/genresContext";
 import apiMovies from "../../services/apiMovies";
@@ -19,8 +20,9 @@ import DetailMovie from "../DetailMovie/DetailMovie";
 import MoviesList from "../MovieList";
 import BackgroundImage from "../../assets/fondo.svg";
 import OrderMovies from "../OrderMovies/OrderMovies";
-
 function Home(props) {
+  const { t, i18n } = useTranslation();
+  
   const classes = useStyles();
   const { match, location, user } = props;
   const { params } = match;
@@ -112,7 +114,7 @@ function Home(props) {
       }
     };
     realizarConsultas();
-  }, [props, params, sortBy]);
+  }, [props, params, sortBy, i18n.language]);
 
   const sortMovies = (itemSortBy) => {
     setSortBy(itemSortBy);
@@ -126,7 +128,10 @@ function Home(props) {
         <span role="img" aria-label="Triste">
           😞
         </span>
-        No se encontraron resultados para tu busquedad.
+
+        {t('No se encontraron resultados para tu busquedad')}
+        
+        
       </h2>
     ) : (
       <>
@@ -136,7 +141,7 @@ function Home(props) {
           color="textPrimary"
           variant="h4"
         >
-          {genreName || "Peliculas"}
+          {genreName || t('Peliculas')}
         </Typography>
 
         {!searchText && (
@@ -153,8 +158,8 @@ function Home(props) {
     <>
       <main className={classes.content}>
         <div className={classes.toolbar} />
-
         <div id="back-to-top-anchor" />
+
         {loading && <CircularProgress />}
 
         {movieId !== undefined ? (
@@ -183,7 +188,7 @@ function Home(props) {
                 color="inherit"
                 href="https://www.linkedin.com/in/freud-alexandro/"
               >
-                por Freud Munera
+                by Freud Munera
               </Link>
             </Typography>
           </Container>

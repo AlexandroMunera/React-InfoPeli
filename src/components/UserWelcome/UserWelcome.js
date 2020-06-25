@@ -6,8 +6,10 @@ import { useMediaQuery } from "@material-ui/core";
 import SVGHomeCinema from "../../assets/homeCinema.svg";
 import SVGListsToDo from "../../assets/listsToDo.svg";
 import SVGSocialGirl from "../../assets/socialGirl.svg";
+import { useTranslation } from "react-i18next";
 
 function UserWelcome({ handleOpen, setHandleOpen }) {
+  const { t } = useTranslation();
   const classes = useStyles();
 
   const isMobile = useMediaQuery("(max-width:600px)");
@@ -18,7 +20,7 @@ function UserWelcome({ handleOpen, setHandleOpen }) {
         autoplay={true}
         interval={6000}
         mobile={isMobile}
-        label="Empezar"
+        label={t('Empezar')}
         open={handleOpen.open}
         onClose={() => setHandleOpen(false)}
         onStart={() => setHandleOpen(false)}
@@ -38,8 +40,8 @@ function UserWelcome({ handleOpen, setHandleOpen }) {
           }
           mediaBackgroundStyle={{ backgroundColor: red[400] }}
           style={{ backgroundColor: red[600] }}
-          title="Mira información de peliculas"
-          subtitle="Revisa en detalle la información de cualquier pelicula."
+          title={t('Mira información de peliculas')}
+          subtitle={t('Revisa en detalle la información de cualquier pelicula')}
         />
         <Slide
           media={
@@ -55,8 +57,8 @@ function UserWelcome({ handleOpen, setHandleOpen }) {
           }
           mediaBackgroundStyle={{ backgroundColor: blue[400] }}
           style={{ backgroundColor: blue[600] }}
-          title="Crea listas personalizadas"
-          subtitle="No solo agrega a favoritas, crea cuantas listas quieras."
+          title={t('Crea listas personalizadas')}
+          subtitle={t('No solo agrega a favoritas, crea cuantas listas quieras')}
         />
         <Slide
           media={
@@ -71,8 +73,8 @@ function UserWelcome({ handleOpen, setHandleOpen }) {
           }
           mediaBackgroundStyle={{ backgroundColor: green[400] }}
           style={{ backgroundColor: green[600] }}
-          title="Comparte lo que te gusta"
-          subtitle="Comparte en redes sociales el detalle de las peliculas que te interesan."
+          title={t('Comparte lo que te gusta')}
+          subtitle={t('Comparte en redes sociales el detalle de las peliculas que te interesan')}
         />
       </AutoRotatingCarousel>
     </div>

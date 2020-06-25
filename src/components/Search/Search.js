@@ -5,9 +5,11 @@ import React, { useState } from "react";
 import { withRouter } from "react-router-dom";
 import { Animator } from "lottie-react";
 import AnimationSearch from "../../assets/animations/animationSearch.json";
+import { useTranslation } from "react-i18next";
 
 // class Movie extends Component {
 function Search({history}) {
+  const { t } = useTranslation();
   const classes = useStyles();
 
   const [inputMovie, setInputMovie] = useState("");
@@ -42,7 +44,7 @@ function Search({history}) {
             <InputBase
               onChange={(e) => setInputMovie(e.target.value)}
               onKeyPress={(e) => (e.key === "Enter" ? _handleSubmit(e) : "")}
-              placeholder="Busca aquí …"
+              placeholder={t('Busca aquí...')}
               classes={{
                 root: classes.inputRoot,
                 input: classes.inputInput,

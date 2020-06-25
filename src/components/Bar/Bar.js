@@ -1,3 +1,4 @@
+import React, { Component } from "react";
 import {
   AppBar,
   Button,
@@ -21,13 +22,13 @@ import LocalMoviesIcon from "@material-ui/icons/LocalMovies";
 import MenuIcon from "@material-ui/icons/Menu";
 import MovieFilterIcon from "@material-ui/icons/MovieFilter";
 import PropTypes from "prop-types";
-import React, { Component } from "react";
 import { Link, withRouter } from "react-router-dom";
 import apiMovies from "../../services/apiMovies";
 import Search from "../Search/Search";
 import UserAvatar from "../UserAvatar";
 import SimpleBarReact from "simplebar-react";
 import "simplebar/src/simplebar.css";
+import { withTranslation } from "react-i18next";
 
 class Bar extends Component {
   constructor(props) {
@@ -108,7 +109,23 @@ class Bar extends Component {
   }
 
   render() {
-    const { classes, theme } = this.props;
+    const { classes, theme, t, i18n } = this.props;
+
+    const changeLanguage = async (lng) => {
+      i18n.changeLanguage(lng);
+
+      if (!this.props.genresData) {
+        let res = await apiMovies.getGenres();
+        this.setState({
+          generos: res.genres,
+        });
+      } else {
+        this.setState({
+          generos: this.props.genresData,
+        });
+      }
+    };
+
     // Properties
     const {
       performingAction,
@@ -130,24 +147,16 @@ class Bar extends Component {
     const { menu, selectedGenreId } = this.state;
 
     const menuItems = [
-      // {
-      //   name: "About",
-      //   onClick: onAboutClick,
-      // },
-      // {
-      //   name: "Perfil",
-      //   to: user ? `/user/${user.uid}` : null,
-      // },
       {
-        name: "Listas",
+        name: t("Listas"),
         to: user ? `/lists/${user.uid}` : null,
       },
       {
-        name: "Cuenta",
+        name: t("Cuenta"),
         onClick: onSettingsClick,
       },
       {
-        name: "Salir",
+        name: t("Salir"),
         divide: true,
         onClick: onSignOutClick,
       },
@@ -162,7 +171,7 @@ class Bar extends Component {
           <>
             <Grid container justify="space-around" style={{ padding: "2%" }}>
               <Button onClick={onUserWelcomeClick} variant="outlined">
-                ¿ Cómo funciona ?
+                {t("¿ Cómo funciona ?")}
               </Button>
             </Grid>
             <Divider />
@@ -177,28 +186,39 @@ class Bar extends Component {
                 style={{ marginBottom: "10px" }}
                 variant="outlined"
               >
-                Registro
+                {t("Registro")}
               </Button>
               <Button onClick={onSignInClick} variant="outlined">
-                Mi cuenta
+                {t("Mi cuenta")}
               </Button>
             </Grid>
           </>
         )}
         <Divider />
 
-        
+        <Grid
+          container
+          alignContent="center"
+          justify="space-around"
+          style={{ padding: "2%" }}
+        >
+          <Button variant="outlined" onClick={() => changeLanguage("es")}>
+            ES
+          </Button>
+          <Button variant="outlined" onClick={() => changeLanguage("fr")}>
+            FR
+          </Button>
+          {/* <Button onClick={() => changeLanguage('en')}>EN</Button> */}
+        </Grid>
 
-          <ListItem
-              button
-              onClick={this.handlerTopRatedClick}
-            >
-              <ListItemIcon>
-                 <MovieFilterIcon />
-              </ListItemIcon>
-              <ListItemText primary="Top Rated" />
-            </ListItem>
+        <Divider />
 
+        <ListItem button onClick={this.handlerTopRatedClick}>
+          <ListItemIcon>
+            <MovieFilterIcon />
+          </ListItemIcon>
+          <ListItemText primary={t("Mejor calificadas")} />
+        </ListItem>
 
         <Divider />
         <List>
@@ -430,4 +450,6 @@ const styles = (theme) => ({
   },
 });
 
-export default withStyles(styles, { withTheme: true })(withRouter(Bar));
+export default withStyles(styles, { withTheme: true })(
+  withTranslation()(withRouter(Bar))
+);

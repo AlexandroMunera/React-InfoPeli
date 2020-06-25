@@ -28,12 +28,14 @@ import {
   TwitterShareButton,
   WhatsappShareButton,
 } from "react-share";
+import { useTranslation } from "react-i18next";
 
 const IMG_URL = "https://image.tmdb.org/t/p/w185"; //Solo renderizar si cambian las peliculas
 const PROFIL_IMG_URL = "https://image.tmdb.org/t/p/w185";
 const URL_YOUTUBE = "https://www.youtube.com/watch?v=";
 
 function DetailMovie({ movieId, user, width }) {
+  const { t, i18n } = useTranslation();
 
   const [infoMovie, setInfoMovie] = useState([]);
   const [generos, setGeneros] = useState([]);
@@ -80,7 +82,7 @@ function DetailMovie({ movieId, user, width }) {
       setVideos(videosAPI);
     };
     realizarConsultas();
-  }, [movieId, poster_path, user]);
+  }, [movieId, i18n.language, poster_path, user]);
 
   const handleChangeList = (event) => {
     setSelectError(false);
@@ -99,7 +101,7 @@ function DetailMovie({ movieId, user, width }) {
           addMovieToList(idList, movieId);
         } else {
           setSelectError(true);
-          sethelperText("Ya esta en esta lista");
+          sethelperText(t("Ya esta en esta lista"));
           setLoadingList(false);
         }
       });
@@ -143,16 +145,16 @@ function DetailMovie({ movieId, user, width }) {
     firestore
       .collection("lists")
       .add({
-        listName: "Favoritas",
+        listName: t("Favoritas"),
         userId: userId,
-        description: "Estas son mis pelis favoritas",
+        description: t("Estas son mis pelis favoritas"),
       })
       .then(function (doc) {
         let listas = [
           {
             id: doc.id,
-            listName: "Favoritas",
-            description: "Estas son mis pelis favoritas",
+            listName: t("Favoritas"),
+            description: t("Estas son mis pelis favoritas"),
           },
         ];
         setLists(listas);
@@ -173,7 +175,7 @@ function DetailMovie({ movieId, user, width }) {
         movieId: movieId,
       })
       .then(function () {
-        sethelperText("Agregada 👍");
+        sethelperText(`${t("Agregada")} 👍`);
         setLoadingList(false);
       })
       .catch(function (error) {
@@ -183,18 +185,20 @@ function DetailMovie({ movieId, user, width }) {
       });
   };
 
-  function convertMinsToHrsMins(mins) { 
+  function convertMinsToHrsMins(mins) {
     let h = Math.floor(mins / 60);
     let m = mins % 60;
-    h = h < 10 ? '0' + h : h;
-    m = m < 10 ? '0' + m : m;
-     return `${h}h:${m}m`;
-  };
+    h = h < 10 ? "0" + h : h;
+    m = m < 10 ? "0" + m : m;
+    return `${h}h:${m}m`;
+  }
 
   const classes = useStyles();
 
-  const shareUrl = `https://infopeli.web.app/detail/${movieId}`
-  const titleToShare = `Hola, te recomiendo ver la pelicula ${title} o si quieres ver mas información y crear listas personalizables totalmente gratis, ingresa al sitio web.`
+  const shareUrl = `https://infopeli.web.app/detail/${movieId}`;
+  const titleToShare = t(
+    "Hola, te recomiendo ver esta película o si quieres ver mas información y crear listas personalizables totalmente gratis, ingresa al sitio web."
+  );
 
   const breakPointsCarouselActors = [
     { width: 1, itemsToShow: 4, itemsToScroll: 4 },
@@ -231,7 +235,7 @@ function DetailMovie({ movieId, user, width }) {
                 error={selectError}
                 variant="outlined"
               >
-                <InputLabel id="labelSelect">Agregar a ...</InputLabel>
+                <InputLabel id="labelSelect">{t("Agregar a")}...</InputLabel>
                 <Select
                   id="demo-simple-select-outlined"
                   label="Agregar a ..."
@@ -251,7 +255,7 @@ function DetailMovie({ movieId, user, width }) {
               </FormControl>
             ) : (
               <Typography color="initial" variant="body2" variantMapping="p">
-                Registrate para ver tus listas
+                {t("Registrate para ver tus listas")}
               </Typography>
             )}
           </Box>
@@ -270,85 +274,99 @@ function DetailMovie({ movieId, user, width }) {
             </Box>
 
             <Box display="flex" justifyContent="flex-start" alignItems="center">
-            <ReactStoreIndicator
-              lineWidth={8}
-              maxValue={5}
-              style={{ margin: "0px 8px" }}
-              value={vote_average}
-              textStyle={{ bottom: "21.25px", color: "white", fontSize: "14px" }}
-              width={50}
-            />
+              <ReactStoreIndicator
+                lineWidth={8}
+                maxValue={5}
+                style={{ margin: "0px 8px" }}
+                value={vote_average}
+                textStyle={{
+                  bottom: "21.25px",
+                  color: "white",
+                  fontSize: "14px",
+                }}
+                width={50}
+              />
 
-            <Rating
-              className={classes.Rating}
-              name="rating"
-              max={5}
-              precision={0.5}
-              readOnly
-              value={vote_average / 2}
-            />
-          </Box>
+              <Rating
+                className={classes.Rating}
+                name="rating"
+                max={5}
+                precision={0.5}
+                readOnly
+                value={vote_average / 2}
+              />
+            </Box>
 
-          <Box display= "flex" justifyContent= "flex-start" m={1}>
+            <Box display="flex" justifyContent="flex-start" m={1}>
+              <Typography
+                display="block"
+                variant="caption"
+                color="textPrimary"
+                style={{ marginRight: "5px" }}
+              >
+                {t("Duración")}: {convertMinsToHrsMins(runtime)}
+              </Typography>
 
-            <Typography display="block" variant="caption" color="textPrimary" style={{marginRight:"5px"}}>
-              Duración: {convertMinsToHrsMins(runtime)}
-            </Typography>
+              <Typography
+                display="block"
+                variant="caption"
+                color="textPrimary"
+                style={{ marginRight: "5px" }}
+              >
+                {t("Lanzamiento")}: {release_date}
+              </Typography>
 
-            <Typography display="block" variant="caption" color="textPrimary" style={{marginRight:"5px"}}>
-              Lanzamiento: {release_date}
-            </Typography>
+              <Typography display="block" variant="caption" color="textPrimary">
+                {t("Lenguages")}:{" "}
+                {lenguages.map((l) => (
+                  <span style={{ marginRight: "4px" }} key={l.iso_639_1}>
+                    {" "}
+                    {l.name}
+                  </span>
+                ))}
+              </Typography>
+            </Box>
 
-            <Typography display="block" variant="caption" color="textPrimary">
-              Lenguages: {lenguages.map((l) => (
-              <span style={{marginRight:"4px"}} key={l.iso_639_1}> {l.name}</span>
-            ))}
-            </Typography>
-            
-          </Box>
+            <Box m={1}>
+              <FacebookShareButton
+                url={shareUrl}
+                quote={titleToShare}
+                hashtag={t('Peliculas')}
+              >
+                <FacebookIcon size={32} round />
+              </FacebookShareButton>
 
-          <Box m={1}>
-          
-            <FacebookShareButton
-              url={shareUrl}
-              quote={titleToShare}
-              hashtag="Peliculas"
-            >
-              <FacebookIcon size={32} round />
-            </FacebookShareButton>
+              <TwitterShareButton
+                url={shareUrl}
+                title={titleToShare}
+                hashtags={[t('Peliculas')]}
+              >
+                <TwitterIcon size={32} round />
+              </TwitterShareButton>
 
-            <TwitterShareButton
-              url={shareUrl}
-              title={titleToShare}
-              hashtags={["Información","Peliculas","Movies"]}
-            >
-              <TwitterIcon size={32} round />
-            </TwitterShareButton>
-
-            <WhatsappShareButton
-              url={shareUrl}
-              title={titleToShare}
-              separator=":: "
-            >
-              <WhatsappIcon size={32} round />
-            </WhatsappShareButton>
-          
-          </Box>
-
-          <Box m={1}>
-            <Typography variant="subtitle1" color="textPrimary">
-              Generos:
-            </Typography>
-            <Typography variant="body2" color="initial">
-              {generos.map((g) => (
-                <span key={g.id}> {g.name} </span>
-              ))}
-            </Typography>
-          </Box>
+              <WhatsappShareButton
+                url={shareUrl}
+                title={titleToShare}
+                separator=":: "
+              >
+                <WhatsappIcon size={32} round />
+              </WhatsappShareButton>
+            </Box>
 
             <Box m={1}>
               <Typography variant="subtitle1" color="textPrimary">
-                Resumen:
+                {t("Generos")}:
+              </Typography>
+              <Typography variant="body2" color="initial">
+                {generos.map((g) => (
+                  <span key={g.id}> {g.name} </span>
+                ))}
+              </Typography>
+            </Box>
+
+            <Box m={1}>
+              <Typography variant="subtitle1" color="textPrimary">
+                {t("Resumen")}:
               </Typography>
               <Typography variant="body2" component="p" color="initial">
                 {overview}
@@ -357,7 +375,7 @@ function DetailMovie({ movieId, user, width }) {
 
             <Box m={1}>
               <Typography variant="subtitle1" color="textPrimary">
-                Actores:
+                {t("Actores")}:
               </Typography>
 
               <Carousel
@@ -390,9 +408,8 @@ function DetailMovie({ movieId, user, width }) {
 
         {videos.length !== 0 && (
           <Box m={1}>
-            <Typography className={classes.titleVideos}
-                        paragraph variant="h5">
-              Videos
+            <Typography className={classes.titleVideos} paragraph variant="h5">
+              {t("Videos")}
             </Typography>
             {videos.map((v) => (
               <ReactPlayer
@@ -433,7 +450,7 @@ function DetailMovie({ movieId, user, width }) {
               error={selectError}
               variant="outlined"
             >
-              <InputLabel id="labelSelect">Agregar a ...</InputLabel>
+              <InputLabel id="labelSelect">{t("Agregar a")}...</InputLabel>
               <Select
                 id="demo-simple-select-outlined"
                 label="Agregar a ..."
@@ -453,7 +470,7 @@ function DetailMovie({ movieId, user, width }) {
             </FormControl>
           ) : (
             <Typography color="initial" variant="body2" variantMapping="p">
-              Registrate para ver tus listas
+              {t("Registrate para ver tus listas")}
             </Typography>
           )}
         </Box>
@@ -477,7 +494,11 @@ function DetailMovie({ movieId, user, width }) {
               maxValue={5}
               style={{ margin: "0px 8px" }}
               value={vote_average}
-              textStyle={{ bottom: "21.25px", color: "white", fontSize: "14px" }}
+              textStyle={{
+                bottom: "21.25px",
+                color: "white",
+                fontSize: "14px",
+              }}
               width={50}
             />
 
@@ -491,30 +512,31 @@ function DetailMovie({ movieId, user, width }) {
             />
           </Box>
 
-          <Box  m={1}>
-
+          <Box m={1}>
             <Typography display="block" variant="caption" color="textPrimary">
-              Duración: {convertMinsToHrsMins(runtime)}
+              {t("Duración")}: {convertMinsToHrsMins(runtime)}
             </Typography>
 
             <Typography display="block" variant="caption" color="textPrimary">
-              Lanzamiento: {release_date}
+              {t("Lanzamiento")}: {release_date}
             </Typography>
 
             <Typography display="block" variant="caption" color="textPrimary">
-              Lenguages: {lenguages.map((l) => (
-              <span style={{marginRight:"4px"}} key={l.iso_639_1}> {l.name}</span>
-            ))}
+              {t("Lenguages")}:{" "}
+              {lenguages.map((l) => (
+                <span style={{ marginRight: "4px" }} key={l.iso_639_1}>
+                  {" "}
+                  {l.name}
+                </span>
+              ))}
             </Typography>
-            
           </Box>
 
           <Box m={1}>
-          
             <FacebookShareButton
               url={shareUrl}
               quote={titleToShare}
-              hashtag="Peliculas"
+              hashtag={t('Peliculas')}
             >
               <FacebookIcon size={32} round />
             </FacebookShareButton>
@@ -522,8 +544,7 @@ function DetailMovie({ movieId, user, width }) {
             <TwitterShareButton
               url={shareUrl}
               title={titleToShare}
-              hashtags={["Información","Peliculas","Movies"]}
-            >
+              hashtags={[t('Peliculas')]}            >
               <TwitterIcon size={32} round />
             </TwitterShareButton>
 
@@ -534,12 +555,11 @@ function DetailMovie({ movieId, user, width }) {
             >
               <WhatsappIcon size={32} round />
             </WhatsappShareButton>
-          
           </Box>
 
           <Box m={1}>
             <Typography color="textPrimary" variant="subtitle1">
-              Generos:
+              {t("Generos")}:
             </Typography>
             <Typography variant="body2" color="initial">
               {generos.map((g) => (
@@ -553,7 +573,7 @@ function DetailMovie({ movieId, user, width }) {
       <Box bgcolor="primary.main" color="white" m={1} p={1} textAlign="left">
         <Box m={1}>
           <Typography color="textPrimary" variant="subtitle1">
-            Resumen:
+            {t("Resumen")}:
           </Typography>
           <Typography variant="body2" component="p" color="initial">
             {overview}
@@ -562,7 +582,7 @@ function DetailMovie({ movieId, user, width }) {
 
         <Box m={1}>
           <Typography variant="subtitle1" color="textPrimary">
-            Actores:
+            {t("Actores")}:
           </Typography>
 
           <Carousel
@@ -591,7 +611,7 @@ function DetailMovie({ movieId, user, width }) {
       {videos.length !== 0 && (
         <Box m={1}>
           <Typography className={classes.titleVideos} paragraph variant="h5">
-            Videos
+            {t("Videos")}
           </Typography>
           {videos.map((v) => (
             <ReactPlayer

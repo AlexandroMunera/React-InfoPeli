@@ -5,8 +5,10 @@ import React, { useEffect, useState } from "react";
 import { useLocation, withRouter } from "react-router-dom";
 import IMG_NULL from "../../assets/noImg.png";
 import Movie from "../Movie";
+import { useTranslation } from "react-i18next";
 
 function MovieList({ movies, history, location, listId,deleteMovie }) {
+  const { t } = useTranslation();
   const IMG_URL = "https://image.tmdb.org/t/p/w185";
   const [films, setFilms] = useState(movies);
   const [pageActual, setPageActual] = useState(1);
@@ -95,7 +97,7 @@ function MovieList({ movies, history, location, listId,deleteMovie }) {
           />
 
           <Typography variant="caption" color="initial" align="center">
-            Se encontraron {films.total_results} pelis
+      {films.total_results} {t('pelis encontradas')}
           </Typography>
         </>
       )}

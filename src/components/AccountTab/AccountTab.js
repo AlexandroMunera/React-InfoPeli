@@ -1241,9 +1241,9 @@ class AccountTab extends Component {
                 helperText={
                   errors && errors.firstName
                     ? errors.firstName[0]
-                    : "Presiona enter para cambiar tu primer nombre"
+                    : "Presiona enter para cambiar tu nombre"
                 }
-                label="Primer nombre"
+                label="Nombre"
                 placeholder={hasFirstName && userData.firstName}
                 required
                 type="text"
@@ -1259,11 +1259,11 @@ class AccountTab extends Component {
             {showingField !== "first-name" && (
               <>
                 <ListItemText
-                  primary="Primer nombre"
+                  primary="Nombre"
                   secondary={
                     hasFirstName
                       ? userData.firstName
-                      : "No tienes un primer nombre"
+                      : "No tienes un nombre"
                   }
                 />
 
