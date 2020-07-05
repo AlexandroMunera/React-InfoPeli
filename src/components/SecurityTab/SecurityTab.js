@@ -4,6 +4,7 @@ import PropTypes from "prop-types";
 
 import validate from "validate.js";
 import moment from "moment";
+import { withTranslation } from "react-i18next";
 
 import {
   DialogContent,
@@ -212,6 +213,9 @@ class SecurityTab extends Component {
   };
 
   render() {
+    //Traductor
+    const { t } = this.props;
+
     // Properties
     const { userData } = this.props;
 
@@ -245,9 +249,9 @@ class SecurityTab extends Component {
                 helperText={
                   errors && errors.password
                     ? errors.password[0]
-                    : "Presiona enter para cambiar la contraseña."
+                    : t('Presiona enter para cambiar la contraseña')
                 }
-                label="Contraseña"
+                label={t('Contraseña')}
                 required
                 type="password"
                 value={password}
@@ -269,9 +273,9 @@ class SecurityTab extends Component {
                 helperText={
                   errors && errors.passwordConfirmation
                     ? errors.passwordConfirmation[0]
-                    : "Presiona enter para cambiar la contraseña."
+                    : t('Presiona enter para guardar')
                 }
-                label="Confirmación de contraseña."
+                label={t('Confirmar Contraseña')}
                 required
                 type="password"
                 value={passwordConfirmation}
@@ -290,32 +294,32 @@ class SecurityTab extends Component {
                 <>
                   <Hidden xsDown>
                     <ListItemText
-                      primary="Contraseña"
+                      primary={t('Contraseña')}
                       secondary={
                         hasChangedPassword
-                          ? `Ultimo cambio ${moment(
+                          ? `${t('Dernière modification')} ${moment(
                               userData.lastPasswordChange.toDate()
                             ).format("LL")}`
-                          : "Nunca modificada"
+                          : t('Nunca modificada')
                       }
                     />
                   </Hidden>
 
                   <Hidden smUp>
                     <ListItemText
-                      primary="Contraseña"
+                      primary={t('Contraseña')}
                       secondary={
                         hasChangedPassword
-                          ? `Ultimo cambio ${moment(
+                          ? `${t('Dernière modification')} ${moment(
                               userData.lastPasswordChange.toDate()
                             ).format("ll")}`
-                          : "Nunca modificada"
+                          : t('Nunca modificada')
                       }
                     />
                   </Hidden>
 
                   <ListItemSecondaryAction>
-                    <Tooltip title="Cambiar">
+                    <Tooltip title={t('Cambiar')}>
                       <div>
                         <IconButton
                           disabled={performingAction}
@@ -343,4 +347,4 @@ SecurityTab.propTypes = {
   openSnackbar: PropTypes.func.isRequired,
 };
 
-export default SecurityTab;
+export default withTranslation()(SecurityTab);

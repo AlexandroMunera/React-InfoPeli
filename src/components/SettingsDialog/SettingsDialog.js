@@ -1,30 +1,25 @@
-import React, { Component } from "react";
-
-import PropTypes from "prop-types";
-
-import { withStyles } from "@material-ui/core/styles";
-
 import {
   Dialog,
   DialogTitle,
-  Typography,
-  Tooltip,
   IconButton,
-  Tabs,
   Tab,
+  Tabs,
+  Tooltip,
+  Typography,
 } from "@material-ui/core";
-
+import { withStyles } from "@material-ui/core/styles";
 import {
-  Close as CloseIcon,
   AccountCircle as AccountCircleIcon,
-  Palette as PaletteIcon,
+  Close as CloseIcon,
   Link as LinkIcon,
+  Palette as PaletteIcon,
   Security as SecurityIcon,
 } from "@material-ui/icons";
-import SimpleBarReact from "simplebar-react";
-import "simplebar/src/simplebar.css";
+import PropTypes from "prop-types";
+import React, { Component } from "react";
+import { withTranslation } from "react-i18next";
 import SwipeableViews from "react-swipeable-views";
-
+import "simplebar/src/simplebar.css";
 import AccountTab from "../AccountTab";
 import AppearanceTab from "../AppearanceTab";
 import LinksTab from "../LinksTab";
@@ -41,32 +36,6 @@ const styles = (theme) => ({
     display: "initial",
   },
 });
-
-const tabs = [
-  {
-    key: "account",
-    icon: <AccountCircleIcon />,
-    label: "Cuenta",
-  },
-
-  {
-    key: "appearance",
-    icon: <PaletteIcon />,
-    label: "Apariencia",
-  },
-
-  {
-    key: "links",
-    icon: <LinkIcon />,
-    label: "Accesos",
-  },
-
-  {
-    key: "security",
-    icon: <SecurityIcon />,
-    label: "Seguridad",
-  },
-];
 
 const initialState = {
   selectedTab: 0,
@@ -96,6 +65,34 @@ class SettingsDialog extends Component {
   };
 
   render() {
+    //Traductor
+    const { t } = this.props;
+    const tabs = [
+      {
+        key: "account",
+        icon: <AccountCircleIcon />,
+        label: t("Cuenta"),
+      },
+
+      {
+        key: "appearance",
+        icon: <PaletteIcon />,
+        label: t("Apariencia"),
+      },
+
+      {
+        key: "links",
+        icon: <LinkIcon />,
+        label: t("Accesos"),
+      },
+
+      {
+        key: "security",
+        icon: <SecurityIcon />,
+        label: t("Seguridad"),
+      },
+    ];
+
     // Styling
     const { classes } = this.props;
 
@@ -114,13 +111,11 @@ class SettingsDialog extends Component {
     const { selectedTab } = this.state;
 
     return (
-
       <Dialog {...dialogProps} onExited={this.handleExited}>
-
         <DialogTitle disableTypography>
-          <Typography variant="h6">Configuración</Typography>
+          <Typography variant="h6">{t("Configuración")}</Typography>
 
-          <Tooltip title="Cerrar">
+          <Tooltip title={t("cerrar")}>
             <IconButton
               className={classes.closeButton}
               onClick={dialogProps.onClose}
@@ -166,7 +161,6 @@ class SettingsDialog extends Component {
           />
         </SwipeableViews>
       </Dialog>
-
     );
   }
 }
@@ -190,4 +184,4 @@ SettingsDialog.propTypes = {
   onDeleteAccountClick: PropTypes.func.isRequired,
 };
 
-export default withStyles(styles)(SettingsDialog);
+export default withStyles(styles)(withTranslation()(SettingsDialog));

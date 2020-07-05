@@ -13,6 +13,7 @@ import {
   Tooltip,
   IconButton,
 } from "@material-ui/core";
+import { withTranslation } from "react-i18next";
 
 import { Link as LinkIcon, LinkOff as LinkOffIcon } from "@material-ui/icons";
 
@@ -90,6 +91,9 @@ class LinksTab extends Component {
   };
 
   render() {
+    //Traductor
+    const { t } = this.props;
+
     // Properties
     const { theme } = this.props;
 
@@ -133,7 +137,7 @@ class LinksTab extends Component {
 
                 <ListItemSecondaryAction>
                   {authProviderData && (
-                    <Tooltip title="Desligar">
+                    <Tooltip title={t('Desligar')}>
                       <div>
                         <IconButton
                           disabled={performingAction}
@@ -146,7 +150,7 @@ class LinksTab extends Component {
                   )}
 
                   {!authProviderData && (
-                    <Tooltip title="Ligar">
+                    <Tooltip title={t('Ligar')}>
                       <div>
                         <IconButton
                           disabled={performingAction}
@@ -175,4 +179,4 @@ LinksTab.propTypes = {
   openSnackbar: PropTypes.func.isRequired,
 };
 
-export default LinksTab;
+export default withTranslation()(LinksTab);

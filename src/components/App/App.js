@@ -12,8 +12,7 @@ import ErrorBoundary from "../ErrorBoundary";
 import LaunchScreen from "../LaunchScreen";
 import Router from "../Router";
 import UserWelcome from "../UserWelcome/UserWelcome";
-import SimpleBarReact from "simplebar-react";
-import "simplebar/src/simplebar.css";
+import { withTranslation } from "react-i18next";
 
 const initialState = {
   ready: false,
@@ -61,13 +60,12 @@ const initialState = {
 
 class App extends Component {
   constructor(props) {
-    
     super(props);
 
     this.state = initialState;
 
     const isFirstVisit = localStorage.getItem("showUserWelcome");
-    
+
     if (isFirstVisit === null) {
       this.setState({
         userWelcomeDialog: {
@@ -177,7 +175,8 @@ class App extends Component {
           .deleteAccount()
           .then(() => {
             this.closeAllDialogs(() => {
-              this.openSnackbar("Deleted account");
+              const { t } = this.props;
+              this.openSnackbar(t("Cuenta eliminada"));
             });
           })
           .catch((reason) => {
@@ -209,7 +208,8 @@ class App extends Component {
           .signOut()
           .then(() => {
             this.closeAllDialogs(() => {
-              this.openSnackbar("Salir");
+              const { t } = this.props;
+              this.openSnackbar(t("Adios, vuelve pronto"));
             });
           })
           .catch((reason) => {
@@ -276,6 +276,9 @@ class App extends Component {
   };
 
   render() {
+    // Traducción
+    const { t } = this.props;
+
     const {
       ready,
       performingAction,
@@ -306,8 +309,7 @@ class App extends Component {
           {!ready && <LaunchScreen />}
 
           {ready && (
-
-              <div style={{ display: "flex", textAlign: "center" }}>
+            <div style={{ display: "flex", textAlign: "center" }}>
               <Router
                 user={user}
                 roles={roles}
@@ -413,15 +415,16 @@ class App extends Component {
                     },
 
                     props: {
-                      title: "¿ Salir ?",
-                      contentText:
-                        "Si sales ya no podras crear listas y administrar tus pelis.",
+                      title: t("¿ Salir ?"),
+                      contentText: t(
+                        "Si sales ya no podras crear listas y administrar tus pelis"
+                      ),
                       dismissiveAction: (
                         <Button
                           color="primary"
                           onClick={() => this.closeDialog("signOutDialog")}
                         >
-                          Cancelar
+                          {t("Cancelar")}
                         </Button>
                       ),
                       confirmingAction: (
@@ -431,7 +434,7 @@ class App extends Component {
                           variant="contained"
                           onClick={this.signOut}
                         >
-                          Salir
+                          {t("Salir")}
                         </Button>
                       ),
                     },
@@ -446,7 +449,6 @@ class App extends Component {
                 onClose={this.closeSnackbar}
               />
             </div>
-                        
           )}
         </ErrorBoundary>
       </MuiThemeProvider>
@@ -558,4 +560,4 @@ class App extends Component {
   }
 }
 
-export default App;
+export default withTranslation()(App);

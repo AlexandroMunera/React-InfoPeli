@@ -5,6 +5,7 @@ import PropTypes from "prop-types";
 import validate from "validate.js";
 
 import { withStyles } from "@material-ui/core/styles";
+import { withTranslation } from "react-i18next";
 
 import {
   Dialog,
@@ -62,7 +63,7 @@ class SignInDialog extends Component {
     this.state = initialState;
   }
 
-  getSignInButton = () => {
+  getSignInButton = (t) => {
     const { emailAddress, password, performingAction } = this.state;
 
     if (emailAddress && !password) {
@@ -73,7 +74,7 @@ class SignInDialog extends Component {
           variant="contained"
           onClick={() => this.sendSignInLinkToEmail()}
         >
-          Enviar Iniciar con link
+          {t('Enviar Iniciar con link')}
         </Button>
       );
     }
@@ -83,9 +84,9 @@ class SignInDialog extends Component {
         color="primary"
         disabled={!emailAddress || performingAction}
         variant="contained"
-        onClick={() => this.signIn()}
+        onClick={() => this.signIn(t)}
       >
-        Entrar
+        {t('Entrar')}
       </Button>
     );
   };
@@ -156,7 +157,7 @@ class SignInDialog extends Component {
     }
   };
 
-  signIn = () => {
+  signIn = (t) => {
     const { emailAddress, password } = this.state;
 
     const errors = validate(
@@ -189,7 +190,7 @@ class SignInDialog extends Component {
                 const emailAddress = user.email;
 
                 this.props.openSnackbar(
-                  `Entro como ${displayName || emailAddress}`
+                  `${t('Hola')} ${displayName || emailAddress}`
                 );
               });
             })
@@ -295,8 +296,11 @@ class SignInDialog extends Component {
               const displayName = user.displayName;
               const emailAddress = user.email;
 
+              // Traducción
+              const { t } = this.props;
+
               this.props.openSnackbar(
-                `Entro como ${displayName || emailAddress}`
+                `${t("Hola")} ${displayName || emailAddress}`
               );
             });
           })
@@ -330,7 +334,7 @@ class SignInDialog extends Component {
     );
   };
 
-  handleKeyPress = (event) => {
+  handleKeyPress = (event,t) => {
     const { emailAddress, password } = this.state;
 
     if (!emailAddress && !password) {
@@ -347,7 +351,7 @@ class SignInDialog extends Component {
       if (emailAddress && !password) {
         this.sendSignInLinkToEmail();
       } else {
-        this.signIn();
+        this.signIn(t);
       }
     }
   };
@@ -373,6 +377,9 @@ class SignInDialog extends Component {
   };
 
   render() {
+    // Traducción
+    const { t } = this.props;
+
     // Styling
     const { classes } = this.props;
 
@@ -388,13 +395,15 @@ class SignInDialog extends Component {
         disableBackdropClick={performingAction}
         disableEscapeKeyDown={performingAction}
         {...dialogProps}
-        onKeyPress={this.handleKeyPress}
+        onKeyPress={(e) => this.handleKeyPress(e,t)}
         onExited={this.handleExited}
       >
         <DialogTitle disableTypography>
-          <Typography variant="h6">Ingresa a tu cuenta</Typography>
+          <Typography variant="h6">
+          {t("Ingresa a tu cuenta")}
+          </Typography>
 
-          <Tooltip title="Close">
+          <Tooltip title={t('cerrar')}>
             <IconButton
               className={classes.closeButton}
               disabled={performingAction}
@@ -432,7 +441,7 @@ class SignInDialog extends Component {
                           ? errors.emailAddress[0]
                           : ""
                       }
-                      label="Email"
+                      label={t('Correo')}
                       placeholder="test@gmail.com"
                       required
                       type="email"
@@ -452,7 +461,7 @@ class SignInDialog extends Component {
                       helperText={
                         errors && errors.password ? errors.password[0] : ""
                       }
-                      label="Contraseña"
+                      label={t('Contraseña')}
                       placeholder="&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;"
                       required
                       type="password"
@@ -486,7 +495,7 @@ class SignInDialog extends Component {
                   helperText={
                     errors && errors.emailAddress ? errors.emailAddress[0] : ""
                   }
-                  label="Email"
+                  label={t('Correo')}
                   placeholder="test@gmail.com"
                   required
                   type="email"
@@ -506,7 +515,7 @@ class SignInDialog extends Component {
                   helperText={
                     errors && errors.password ? errors.password[0] : ""
                   }
-                  label="Contraseña"
+                  label={t('Contraseña')}
                   placeholder="&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;"
                   required
                   type="password"
@@ -527,10 +536,10 @@ class SignInDialog extends Component {
             variant="outlined"
             onClick={this.resetPassword}
           >
-            Recuperar contraseña
+            {t('Recuperar contraseña')}
           </Button>
 
-          {this.getSignInButton()}
+          {this.getSignInButton(t)}
         </DialogActions>
       </Dialog>
     );
@@ -548,4 +557,4 @@ SignInDialog.propTypes = {
   openSnackbar: PropTypes.func.isRequired,
 };
 
-export default withStyles(styles)(SignInDialog);
+export default withStyles(styles)(withTranslation()(SignInDialog));

@@ -2,11 +2,11 @@ import {
   Box,
   Button,
   Fab,
+  Grid,
   IconButton,
   Snackbar,
   TextField,
   Typography,
-  Grid,
 } from "@material-ui/core";
 import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
@@ -17,19 +17,21 @@ import { makeStyles } from "@material-ui/core/styles";
 import { Home as HomeIcon, Refresh as RefreshIcon } from "@material-ui/icons";
 import AddCircleIcon from "@material-ui/icons/AddCircle";
 import Alert from "@material-ui/lab/Alert";
+import { Animator } from "lottie-react";
 import React, { useEffect, useState } from "react";
+import { Helmet } from "react-helmet";
+import { useTranslation } from "react-i18next";
 import { Link, useParams } from "react-router-dom";
+import AnimationLists from "../../assets/animations/animationLists.json";
 import { firestore } from "../../firebase";
 import { ReactComponent as ErrorIllustration } from "../../illustrations/error.svg";
 import { ReactComponent as NoDataIllustration } from "../../illustrations/no-data.svg";
 import EmptyState from "../EmptyState";
 import ListCard from "../ListCard/ListCard";
 import Loader from "../Loader";
-import { Animator } from "lottie-react";
-import AnimationLists from "../../assets/animations/animationLists.json";
-import { Helmet } from "react-helmet";
 
 function ListsPage() {
+  const { t } = useTranslation();
   const [loading, setLoading] = useState(true);
   const [user, setUser] = useState(null);
   const [error, setError] = useState(null);
@@ -96,16 +98,16 @@ function ListsPage() {
     firestore
       .collection("lists")
       .add({
-        listName: "Favoritas",
+        listName: t("Favoritas"),
         userId: userId,
-        description: "Estas son mis pelis favoritas",
+        description: t("Estas son mis pelis favoritas"),
       })
       .then(function (doc) {
         let listas = [
           {
             id: doc.id,
-            listName: "Favoritas",
-            description: "Estas son mis pelis favoritas",
+            listName: t("Favoritas"),
+            description: t("Estas son mis pelis favoritas"),
           },
         ];
         setLists(listas);
@@ -120,8 +122,10 @@ function ListsPage() {
     return (
       <EmptyState
         image={<ErrorIllustration />}
-        title="No se pudo obtener el usuario"
-        description="Ocurrio un problema tratando de obtener tu información"
+        title={t("No se pudo obtener el usuario")}
+        description={t(
+          "Ocurrio un problema tratando de obtener tu información"
+        )}
         button={
           <Fab
             variant="extended"
@@ -131,7 +135,7 @@ function ListsPage() {
             <Box clone mr={1}>
               <RefreshIcon />
             </Box>
-            Reintentar
+            {t("Reintentar")}
           </Fab>
         }
       />
@@ -142,7 +146,7 @@ function ListsPage() {
     return (
       <>
         <Helmet>
-          <title>Cargando...</title>
+          <title>{t("Cargando")}...</title>
         </Helmet>
         <Loader />
       </>
@@ -153,8 +157,8 @@ function ListsPage() {
     return (
       <EmptyState
         image={<NoDataIllustration />}
-        title="El usuario no existe"
-        description="La solicitud de usuario no existe."
+        title={t("El usuario no existe")}
+        description={t("La solicitud de usuario no existe")}
         button={
           <Fab variant="extended" color="primary" component={Link} to="/">
             <Box clone mr={1}>
@@ -189,7 +193,7 @@ function ListsPage() {
           userId: userId,
         })
         .then(function () {
-          setMessageAlert("Lista editada !");
+          setMessageAlert(t("Lista editada"));
           setOpenSnackbar(true);
           setOpenAddList(false);
           realizarConsultas();
@@ -208,7 +212,7 @@ function ListsPage() {
           description: descriNewList,
         })
         .then(function () {
-          setMessageAlert("Lista agregada !");
+          setMessageAlert(t("Lista agregada"));
           setOpenSnackbar(true);
           setOpenAddList(false);
           realizarConsultas();
@@ -268,8 +272,7 @@ function ListsPage() {
       .doc(idList)
       .delete()
       .then(function () {
-        console.log("Lista eliminada");
-        setMessageAlert("Lista eliminada!");
+        setMessageAlert(t("Lista eliminada"));
         realizarConsultas();
         setOpenSnackbar(true);
       })
@@ -282,7 +285,7 @@ function ListsPage() {
   return (
     <Box mt={9} width="100%">
       <Helmet>
-        <title>Info Peli - Listas</title>
+        <title>{t("Listas")} - Info Peli</title>
       </Helmet>
       <Typography
         align="center"
@@ -290,7 +293,7 @@ function ListsPage() {
         color="textPrimary"
         variant="h4"
       >
-        Mis listas
+        {t("Mis listas")}
       </Typography>
 
       <IconButton color="inherit" onClick={_handleAddList}>
@@ -329,13 +332,15 @@ function ListsPage() {
         onClose={handleClose}
         open={openAddList}
       >
-        <DialogTitle>Datos de la lista</DialogTitle>
+        <DialogTitle>{t("Datos de la lista")}</DialogTitle>
         <DialogContent>
-          <DialogContentText>Ingresar los datos de tu lista.</DialogContentText>
+          <DialogContentText>
+            {t("Ingresar los datos de tu lista")}
+          </DialogContentText>
           <TextField
             fullWidth
             id="name"
-            label="Nombre"
+            label={t("NombreLista")}
             margin="dense"
             type="text"
             onChange={(e) => setNameNewList(e.target.value)}
@@ -344,7 +349,7 @@ function ListsPage() {
           <TextField
             fullWidth
             id="description"
-            label="Descripción"
+            label={t("Descripción")}
             margin="dense"
             type="text"
             onChange={(e) => setDescriNewList(e.target.value)}
@@ -353,10 +358,10 @@ function ListsPage() {
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose} color="primary">
-            Cancelar
+            {t("Cancelar")}
           </Button>
           <Button onClick={handleSaveList} color="primary">
-            Guardar
+            {t("Guardar")}
           </Button>
         </DialogActions>
       </Dialog>

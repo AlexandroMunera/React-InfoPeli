@@ -5,6 +5,7 @@ import PropTypes from "prop-types";
 import validate from "validate.js";
 
 import { withStyles } from "@material-ui/core/styles";
+import { withTranslation } from "react-i18next";
 
 import {
   Dialog,
@@ -142,9 +143,11 @@ class SignUpDialog extends Component {
             this.props.dialogProps.onClose(() => {
               const displayName = user.displayName;
               const emailAddress = user.email;
+              // Traducción
+              const { t } = this.props;
 
               this.props.openSnackbar(
-                `Entro como ${displayName || emailAddress}`
+                `${t("Hola")} ${displayName || emailAddress}`
               );
             });
           })
@@ -243,6 +246,9 @@ class SignUpDialog extends Component {
   };
 
   render() {
+    // Traducción
+    const { t } = this.props;
+
     // Styling
     const { classes } = this.props;
 
@@ -269,9 +275,9 @@ class SignUpDialog extends Component {
         onExited={this.handleExited}
       >
         <DialogTitle disableTypography>
-          <Typography variant="h6">Crear una cuenta</Typography>
+          <Typography variant="h6">{t("Crear una cuenta")}</Typography>
 
-          <Tooltip title="Cerrar">
+          <Tooltip title={t("cerrar")}>
             <IconButton
               className={classes.closeButton}
               disabled={performingAction}
@@ -309,7 +315,7 @@ class SignUpDialog extends Component {
                           ? errors.emailAddress[0]
                           : ""
                       }
-                      label="Email"
+                      label={t("Correo")}
                       placeholder="test@gmail.com"
                       required
                       type="email"
@@ -331,7 +337,7 @@ class SignUpDialog extends Component {
                           ? errors.emailAddressConfirmation[0]
                           : ""
                       }
-                      label="Confirmar Email"
+                      label={t("Confirmar Email")}
                       placeholder="test@gmail.com"
                       required
                       type="email"
@@ -351,7 +357,7 @@ class SignUpDialog extends Component {
                       helperText={
                         errors && errors.password ? errors.password[0] : ""
                       }
-                      label="Contraseña"
+                      label={t("Contraseña")}
                       placeholder="&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;"
                       required
                       type="password"
@@ -373,7 +379,7 @@ class SignUpDialog extends Component {
                           ? errors.passwordConfirmation[0]
                           : ""
                       }
-                      label="Confirmar Contraseña"
+                      label={t("Confirmar Contraseña")}
                       placeholder="&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;"
                       required
                       type="password"
@@ -407,7 +413,7 @@ class SignUpDialog extends Component {
                   helperText={
                     errors && errors.emailAddress ? errors.emailAddress[0] : ""
                   }
-                  label="Email"
+                  label={t("Correo")}
                   placeholder="test@gmail.com"
                   required
                   type="email"
@@ -429,7 +435,7 @@ class SignUpDialog extends Component {
                       ? errors.emailAddressConfirmation[0]
                       : ""
                   }
-                  label="Confirmar Email"
+                  label={t("Confirmar Email")}
                   placeholder="test@gmail.com"
                   required
                   type="email"
@@ -449,7 +455,7 @@ class SignUpDialog extends Component {
                   helperText={
                     errors && errors.password ? errors.password[0] : ""
                   }
-                  label="Contraseña"
+                  label={t("Contraseña")}
                   placeholder="&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;"
                   required
                   type="password"
@@ -471,7 +477,7 @@ class SignUpDialog extends Component {
                       ? errors.passwordConfirmation[0]
                       : ""
                   }
-                  label="Confirmar Contraseña"
+                  label={t("Confirmar Contraseña")}
                   placeholder="&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;"
                   required
                   type="password"
@@ -498,7 +504,7 @@ class SignUpDialog extends Component {
             variant="contained"
             onClick={this.signUp}
           >
-            Registrarse
+            {t("Registrarse")}
           </Button>
         </DialogActions>
       </Dialog>
@@ -517,4 +523,4 @@ SignUpDialog.propTypes = {
   openSnackbar: PropTypes.func.isRequired,
 };
 
-export default withStyles(styles)(SignUpDialog);
+export default withStyles(styles)(withTranslation()(SignUpDialog));

@@ -26,6 +26,7 @@ import {
   Brightness4 as Brightness4Icon,
   FormatColorReset as FormatColorResetIcon,
 } from "@material-ui/icons";
+import { withTranslation } from "react-i18next";
 
 import appearance from "../../services/appearance";
 
@@ -230,6 +231,9 @@ class AppearanceTab extends Component {
   };
 
   render() {
+    //Traductor
+    const { t } = this.props;
+
     // Properties
     const { theme } = this.props;
 
@@ -260,7 +264,7 @@ class AppearanceTab extends Component {
                 variant="outlined"
               >
                 <InputLabel ref={this.primaryColorLabel}>
-                  Color principal
+                  {t("Color principal")}
                 </InputLabel>
 
                 <Hidden smUp>
@@ -317,7 +321,7 @@ class AppearanceTab extends Component {
                 variant="outlined"
               >
                 <InputLabel ref={this.secondaryColorLabel}>
-                  Color secundario
+                  {t("Color secundario")}
                 </InputLabel>
 
                 <Hidden smUp>
@@ -369,7 +373,7 @@ class AppearanceTab extends Component {
 
             <ListItemText
               primary="Dark mode"
-              secondary="Muestra superficies oscuras."
+              secondary={t('Muestra superficies oscuras')}
             />
 
             <ListItemSecondaryAction>
@@ -403,11 +407,11 @@ class AppearanceTab extends Component {
             </Hidden>
 
             <ListItemText
-              primary="Resetear colores"
+              primary={t('Resetear colores')}
               secondary={
                 appearance.isDefaultTheme(theme)
-                  ? "No se restablecieron cambios"
-                  : "Los cambios se restablecerán"
+                  ? t('No se restablecieron cambios')
+                  : t('Los cambios se restablecerán')
               }
             />
 
@@ -418,7 +422,8 @@ class AppearanceTab extends Component {
                 variant="contained"
                 onClick={this.handleResetThemeClick}
               >
-                Restablecer
+                {t('Restablecer')}
+                
               </Button>
             </ListItemSecondaryAction>
           </ListItem>
@@ -443,4 +448,4 @@ AppearanceTab.propTypes = {
   openSnackbar: PropTypes.func.isRequired,
 };
 
-export default AppearanceTab;
+export default withTranslation()(AppearanceTab);
