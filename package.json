@@ -22,7 +22,7 @@
     "lottie-react": "^1.0.0",
     "material-auto-rotating-carousel": "^3.0.2",
     "mdi-material-ui": "^6.15.0",
-    "moment": "2.26.0",
+    "moment": "2.29.2",
     "nuka-carousel": "^4.4.7",
     "react": "^16.13.1",
     "react-app-rewired": "^2.1.6",
